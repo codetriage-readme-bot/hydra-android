@@ -128,3 +128,11 @@
   skip: true
 - artifact: android.arch.lifecycle:runtime:+
   skip: true
+- artifact: android.arch.persistence.room:common:+
+  skip: true
+- artifact: android.arch.persistence.room:runtime:+
+  skip: true
+- artifact: android.arch.persistence.room:support-db-impl:+
+  skip: true
+- artifact: android.arch.persistence.room:support-db:+
+  skip: true
