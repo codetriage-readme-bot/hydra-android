@@ -49,10 +49,10 @@ public class MinervaConfig {
 
     //Scopes
     //These are currently not used.
-    public final static String DEFAULT_SCOPE = "MINERVA_NOTIFICATION_COUNT";
     public static final String SCOPE_NOTIFICATION_COUNT = "MINERVA_NOTIFICATION_COUNT";
     public static final String SCOPE_COURSE_LIST = "MINERVA_COURSE_LIST";
     public static final String SCOPE_COURSE_CONTENT = "MINERVA_COURSE_CONTENT";
+    public final static String DEFAULT_SCOPE = SCOPE_NOTIFICATION_COUNT;
 
     //see https://github.ugent.be/Onderwijstechnologie/ugent-android-sdk/wiki/Registering-Your-Application
 }
