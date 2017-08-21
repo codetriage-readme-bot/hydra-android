@@ -1,30 +1,34 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.app.Application;
-import android.util.Pair;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 
-import be.ugent.zeus.hydra.data.models.minerva.Course;
-import be.ugent.zeus.hydra.repository.data.BaseLiveData;
+import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
+import be.ugent.zeus.hydra.domain.minerva.CourseRepository;
+import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
 import be.ugent.zeus.hydra.repository.requests.Result;
-import be.ugent.zeus.hydra.ui.common.RefreshViewModel;
 
 import java.util.List;
 
 /**
  * @author Niko Strijbol
  */
-public class MinervaViewModel extends RefreshViewModel<List<Pair<Course, Integer>>> {
+public class MinervaViewModel extends AndroidViewModel {
+
+    private LiveData<Result<List<CourseUnread>>> data;
 
     public MinervaViewModel(Application application) {
         super(application);
     }
 
-    @Override
-    protected BaseLiveData<Result<List<Pair<Course, Integer>>>> constructDataInstance() {
-        return new CourseLiveData(getApplication());
-    }
+    public LiveData<Result<List<CourseUnread>>> getData() {
+        if (data == null) {
+            CourseRepository repository = RepositoryFactory.getDatabaseRepository(getApplication());
+            data = Transformations.map(repository.getAllAndUnreadInOrder(), Result.Builder::fromData);
+        }
 
-    public void destroyInstance() {
-        onCleared();
+        return data;
     }
 }

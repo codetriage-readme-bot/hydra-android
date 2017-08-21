@@ -8,6 +8,11 @@ import org.threeten.bp.ZonedDateTime;
  */
 public final class AgendaItem {
 
+    /**
+     * Constant indicating this agenda item does not have an ID for the Android calendar.
+     */
+    public static final long NO_CALENDAR_ID = -1;
+
     private int id;
     private String title;
     private String content;
@@ -19,6 +24,7 @@ public final class AgendaItem {
     private ZonedDateTime lastEditDate;
     private String lastEditType;
     private Course course;
+    private long calendarId = NO_CALENDAR_ID;
 
     public int getId() {
         return id;
@@ -62,6 +68,58 @@ public final class AgendaItem {
 
     public Course getCourse() {
         return course;
+    }
+
+    public long getCalendarId() {
+        return calendarId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setLastEditedUser(Tutor lastEditedUser) {
+        this.lastEditedUser = lastEditedUser;
+    }
+
+    public void setLastEditDate(ZonedDateTime lastEditDate) {
+        this.lastEditDate = lastEditDate;
+    }
+
+    public void setLastEditType(String lastEditType) {
+        this.lastEditType = lastEditType;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void setCalendarId(long calendarId) {
+        this.calendarId = calendarId;
     }
 
     @Override

@@ -1,23 +1,23 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
+import be.ugent.zeus.hydra.domain.minerva.Course;
+import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ordering.OnStartDragListener;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
-import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 
 /**
  * @author Niko Strijbol
  */
-class MinervaCourseViewHolder extends DataViewHolder<Pair<Course, Integer>> implements SearchStateListener {
+class MinervaCourseViewHolder extends DataViewHolder<CourseUnread> implements SearchStateListener {
 
     private final TextView name;
     private final TextView subtitle;
@@ -50,16 +50,19 @@ class MinervaCourseViewHolder extends DataViewHolder<Pair<Course, Integer>> impl
      * @param data The data.
      */
     @Override
-    public void populate(final Pair<Course, Integer> data) {
-        Course course = data.first;
+    public void populate(final CourseUnread data) {
+        Course course = data.getCourse();
         name.setText(course.getTitle());
-        final CharSequence tutor = Utils.fromHtml(course.getTutorName());
+        final CharSequence tutor = Utils.fromHtml(course.getTutor().getName());
         subtitle.setText(tutor + " - " + course.getCode());
 
+        // TODO
+        // TODO
+        // TODO
         //Set onclick listener
-        itemView.setOnClickListener(view -> CourseActivity.startForResult(resultStarter, course, CourseActivity.Tab.ANNOUNCEMENTS));
+        //itemView.setOnClickListener(view -> CourseActivity.startForResult(resultStarter, course, CourseActivity.Tab.ANNOUNCEMENTS));
 
-        if (data.second > 0) {
+        if (data.getUnreadAnnouncements() > 0) {
             unreadCount.setVisibility(View.VISIBLE);
         } else {
             unreadCount.setVisibility(View.GONE);

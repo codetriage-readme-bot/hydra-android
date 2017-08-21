@@ -2,12 +2,12 @@ package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.ViewGroup;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
+import be.ugent.zeus.hydra.domain.minerva.Course;
+import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
 import be.ugent.zeus.hydra.ui.common.ViewUtils;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.SearchableDiffAdapter;
@@ -24,14 +24,14 @@ import java.util.Collections;
  *
  * @author Niko Strijbol
  */
-class MinervaCourseAdapter extends SearchableDiffAdapter<Pair<Course, Integer>, MinervaCourseViewHolder> implements ItemDragHelperAdapter {
+class MinervaCourseAdapter extends SearchableDiffAdapter<CourseUnread, MinervaCourseViewHolder> implements ItemDragHelperAdapter {
 
     private CourseDao courseDao;
     private final OnStartDragListener startDragListener;
     private final ResultStarter resultStarter;
 
     MinervaCourseAdapter(OnStartDragListener startDragListener, ResultStarter resultStarter) {
-        super(c -> c.first.getTitle().toLowerCase());
+        super(c -> c.getCourse().getTitle().toLowerCase());
         this.startDragListener = startDragListener;
         this.resultStarter = resultStarter;
     }
@@ -60,15 +60,18 @@ class MinervaCourseAdapter extends SearchableDiffAdapter<Pair<Course, Integer>, 
         if (courseDao == null) {
             throw new IllegalStateException("The course DAO cannot be null!");
         }
+        // TODO
+        // TODO
+        // TODO
         AsyncTask.execute(() -> {
             Collection<Course> courses = IntStreams.range(0, getItemCount())
                     .mapToObj(value -> {
-                        Course course1 = items.get(value).first;
+                        Course course1 = items.get(value).getCourse();
                         course1.setOrder(value);
                         return course1;
                     })
                     .collect(Collectors.toList());
-            courseDao.update(courses, true);
+            //courseDao.update(courses, true);
         });
     }
 

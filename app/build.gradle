@@ -126,6 +126,12 @@ dependencies {
     compile 'org.mapstruct:mapstruct:1.2.0.CR1'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.CR1'
 
+    compile "com.google.dagger:dagger:2.11"
+    compile 'com.google.dagger:dagger-android-support:2.11'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    provided 'javax.annotation:jsr250-api:1.0'
+
     // Used for the OAuth stuff
     compile ('org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:1.0.2') {
         exclude group: 'org.apache.oltu.oauth2'

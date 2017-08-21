@@ -142,3 +142,27 @@
   copyrightHolder: Gunnar Morling
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+
+- artifact: com.google.dagger:dagger:+
+  name: Dagger
+  copyrightHolder: Google
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/dagger
+- artifact: javax.inject:javax.inject:+
+  skip: true
+- artifact: com.google.code.findbugs:jsr305:+
+  skip: true
+- artifact: com.google.dagger:dagger-android-support:+
+  name: Dagger Android Support
+  copyrightHolder: Google
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/dagger
+- artifact: com.google.dagger:dagger-android:+
+  name: Dagger Android
+  copyrightHolder: Google
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/dagger
+

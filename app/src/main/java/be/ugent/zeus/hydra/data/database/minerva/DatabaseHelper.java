@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     public static final String NAME = "minervaDatabase.db";
-    private static final int VERSION = 8;
+    public static final int VERSION = 9;
 
     //Singleton - can we avoid this? Should we? I don't know.
     private static DatabaseHelper instance;

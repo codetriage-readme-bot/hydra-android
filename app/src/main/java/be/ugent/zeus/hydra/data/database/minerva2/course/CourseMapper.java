@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.data.database.minerva2.course;
 
+import be.ugent.zeus.hydra.data.database.minerva2.TutorMapper;
 import be.ugent.zeus.hydra.domain.minerva.AcademicYear;
-import be.ugent.zeus.hydra.domain.minerva.Tutor;
 import org.mapstruct.Mapper;
 
 /**
@@ -9,20 +9,12 @@ import org.mapstruct.Mapper;
  *
  * @author Niko Strijbol
  */
-@Mapper
+@Mapper(uses = {TutorMapper.class})
 public abstract class CourseMapper {
 
     public abstract be.ugent.zeus.hydra.domain.minerva.Course courseToCourse(Course course);
 
     public abstract Course courseToCourse(be.ugent.zeus.hydra.domain.minerva.Course course);
-
-    public Tutor tutorFromString(String name) {
-        return new Tutor(name);
-    }
-
-    public String stringFromTutor(Tutor tutor) {
-        return tutor.getName();
-    }
 
     public AcademicYear academicYearFromInt(int year) {
         return new AcademicYear(year);
@@ -31,4 +23,8 @@ public abstract class CourseMapper {
     public int intFromAcademicYear(AcademicYear year) {
         return year.getStartYear().getValue();
     }
+
+    public abstract CourseUnread convert(be.ugent.zeus.hydra.domain.minerva.CourseUnread courseUnread);
+
+    public abstract be.ugent.zeus.hydra.domain.minerva.CourseUnread convert(CourseUnread courseUnread);
 }

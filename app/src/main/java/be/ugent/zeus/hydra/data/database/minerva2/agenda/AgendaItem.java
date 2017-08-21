@@ -10,6 +10,8 @@ import be.ugent.zeus.hydra.data.database.minerva.CourseTable;
 import be.ugent.zeus.hydra.data.database.minerva2.course.Course;
 import org.threeten.bp.ZonedDateTime;
 
+import static be.ugent.zeus.hydra.domain.minerva.AgendaItem.NO_CALENDAR_ID;
+
 /**
  * Represents an agenda item as it is saved in the database.
  *
@@ -27,12 +29,7 @@ import org.threeten.bp.ZonedDateTime;
 )
 public class AgendaItem {
 
-    /**
-     * Constant indicating this agenda item does not have an ID for the Android calendar.
-     */
-    public static final long NO_CALENDAR_ID = -1;
-
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = AgendaTable.Columns.ID)
     private int id;
     @ColumnInfo(name = AgendaTable.Columns.TITLE)

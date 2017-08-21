@@ -11,13 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.util.Pair;
 import android.view.*;
 import android.widget.ProgressBar;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
+import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
@@ -102,9 +101,9 @@ public class CourseFragment extends LifecycleFragment implements OnStartDragList
         model.getData().observe(this, ErrorObserver.with(this::onError));
         model.getData().observe(this, new ProgressObserver<>(progressBar));
         model.getData().observe(this, new AdapterObserver<>(adapter));
-        model.getData().observe(this, new SuccessObserver<List<Pair<Course, Integer>>>() {
+        model.getData().observe(this, new SuccessObserver<List<CourseUnread>>() {
             @Override
-            protected void onSuccess(List<Pair<Course, Integer>> data) {
+            protected void onSuccess(List<CourseUnread> data) {
                 recyclerView.setVisibility(View.VISIBLE);
                 getActivity().invalidateOptionsMenu();
             }
@@ -130,7 +129,7 @@ public class CourseFragment extends LifecycleFragment implements OnStartDragList
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == resultStarter.getRequestCode() && resultCode == RESULT_OK) {
-            model.requestRefresh();
+            //model.requestRefresh();
         }
     }
 }

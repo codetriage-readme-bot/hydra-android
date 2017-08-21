@@ -7,6 +7,7 @@ import android.content.Context;
 import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.domain.minerva.Course;
 import be.ugent.zeus.hydra.domain.minerva.CourseRepository;
+import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Collection;
@@ -79,5 +80,20 @@ public class DatabaseCourseRepository implements CourseRepository {
     @Override
     public void delete(Collection<Course> objects) {
         courseDao.delete(transform(objects, courseMapper::courseToCourse));
+    }
+
+    @Override
+    public List<Course> getIn(List<String> ids) {
+        return transform(courseDao.getIn(ids), courseMapper::courseToCourse);
+    }
+
+    @Override
+    public LiveData<List<Course>> getInLive(List<String> ids) {
+        return Transformations.map(courseDao.getInLive(ids), l -> transform(l, courseMapper::courseToCourse));
+    }
+
+    @Override
+    public LiveData<List<CourseUnread>> getAllAndUnreadInOrder() {
+        return Transformations.map(courseDao.getAllAndUnreadInOrder(), l -> transform(l, courseMapper::convert));
     }
 }
