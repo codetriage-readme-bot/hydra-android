@@ -9,8 +9,10 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva.DatabaseHelper;
+import be.ugent.zeus.hydra.data.database.minerva2.agenda.AgendaDao;
 import be.ugent.zeus.hydra.data.database.minerva2.agenda.AgendaItem;
 import be.ugent.zeus.hydra.data.database.minerva2.announcement.Announcement;
+import be.ugent.zeus.hydra.data.database.minerva2.announcement.AnnouncementDao;
 import be.ugent.zeus.hydra.data.database.minerva2.course.Course;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseDao;
 import be.ugent.zeus.hydra.utils.TtbUtils;
@@ -34,6 +36,10 @@ public abstract class MinervaDatabase extends RoomDatabase {
     }
 
     public abstract CourseDao getCourseDao();
+
+    public abstract AnnouncementDao getAnnouncementDao();
+
+    public abstract AgendaDao getAgendaDao();
 
     // The initial migration
     private static class Migration_8_9 extends Migration {

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Represents the basics of a full repository. A full repository is a repository that contains at least the basic
  * query/update/delete methods.
- * <p>
+ *
  * Methods that return a {@link LiveData} should be executed on a separate thread (or at least not the main thread).
  *
  * @author Niko Strijbol

@@ -1,17 +1,14 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Parcelable;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.Announcement;
-import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
+import be.ugent.zeus.hydra.domain.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.MultiSelectDiffAdapter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
-import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**
@@ -22,12 +19,10 @@ public class AnnouncementsViewHolder extends DataViewHolder<Pair<Announcement, B
     private final TextView title;
     private final TextView subtitle;
     private final View backgroundHolder;
-    private final ResultStarter resultStarter;
     private final MultiSelectDiffAdapter<Announcement> adapter;
 
-    public AnnouncementsViewHolder(View itemView, ResultStarter starter, MultiSelectDiffAdapter<Announcement> adapter) {
+    public AnnouncementsViewHolder(View itemView, MultiSelectDiffAdapter<Announcement> adapter) {
         super(itemView);
-        this.resultStarter = starter;
         this.adapter = adapter;
         title = itemView.findViewById(R.id.title);
         subtitle = itemView.findViewById(R.id.subtitle);
@@ -44,7 +39,7 @@ public class AnnouncementsViewHolder extends DataViewHolder<Pair<Announcement, B
         title.setText(announcement.getTitle());
         String infoText = itemView.getContext().getString(R.string.agenda_subtitle,
                 announcement.getCourse().getTitle(),
-                DateUtils.relativeDateTimeString(announcement.getDate(), itemView.getContext(), false));
+                DateUtils.relativeDateTimeString(announcement.getLastEditedAt(), itemView.getContext(), false));
         subtitle.setText(infoText);
 
         itemView.setOnClickListener(v -> {
@@ -52,9 +47,9 @@ public class AnnouncementsViewHolder extends DataViewHolder<Pair<Announcement, B
             if (adapter.hasSelected()) {
                 toggleSelected();
             } else {
-                Intent intent = new Intent(resultStarter.getContext(), AnnouncementActivity.class);
-                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
-                resultStarter.startActivityForResult(intent, resultStarter.getRequestCode());
+                //Intent intent = new Intent(resultStarter.getContext(), AnnouncementActivity.class);
+                //intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
+                //resultStarter.startActivityForResult(intent, resultStarter.getRequestCode());
             }
         });
 

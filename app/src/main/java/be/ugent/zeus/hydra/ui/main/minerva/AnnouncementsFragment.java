@@ -2,7 +2,6 @@ package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,8 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.database.minerva.AnnouncementDao;
-import be.ugent.zeus.hydra.data.models.minerva.Announcement;
+import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
+import be.ugent.zeus.hydra.domain.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.minerva.AnnouncementRepository;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
@@ -25,14 +25,10 @@ import be.ugent.zeus.hydra.ui.common.BaseActivity;
 import be.ugent.zeus.hydra.ui.common.recyclerview.EmptyViewObserver;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.MultiSelectDiffAdapter;
-import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
-import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.Collection;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Displays all unread announcements, with the newest first.
@@ -46,9 +42,7 @@ public class AnnouncementsFragment extends LifecycleFragment implements MultiSel
 
     private static final String TAG = "AnnouncementsFragment";
 
-    private ResultStarter resultStarter;
     private ProgressBar progressBar;
-    private AnnouncementsViewModel model;
     private RecyclerView recyclerView;
     private AnnouncementsAdapter adapter;
     private ActionMode actionMode;
@@ -63,13 +57,7 @@ public class AnnouncementsFragment extends LifecycleFragment implements MultiSel
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getParentFragment() instanceof ResultStarter) {
-            resultStarter = (ResultStarter) getParentFragment();
-        } else {
-            resultStarter = (ResultStarter) getActivity();
-        }
-
-        adapter = new AnnouncementsAdapter(resultStarter);
+        adapter = new AnnouncementsAdapter();
         adapter.addCallback(this);
 
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -87,7 +75,7 @@ public class AnnouncementsFragment extends LifecycleFragment implements MultiSel
         super.onActivityCreated(savedInstanceState);
 
         progressBar.setVisibility(View.VISIBLE);
-        model = ViewModelProviders.of(getActivity()).get(AnnouncementsViewModel.class);
+        AnnouncementsViewModel model = ViewModelProviders.of(getActivity()).get(AnnouncementsViewModel.class);
         model.getData().observe(this, ErrorObserver.with(this::onError));
         model.getData().observe(this, new ProgressObserver<>(progressBar));
         model.getData().observe(this, new AdapterObserver<>(adapter));
@@ -108,15 +96,6 @@ public class AnnouncementsFragment extends LifecycleFragment implements MultiSel
         Log.e(TAG, "Error while getting data.", throwable);
         Snackbar.make(getView(), getString(R.string.failure), Snackbar.LENGTH_LONG)
                 .show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == resultStarter.getRequestCode() && resultCode == RESULT_OK) {
-            model.requestRefresh();
-        }
     }
 
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
@@ -181,24 +160,17 @@ public class AnnouncementsFragment extends LifecycleFragment implements MultiSel
     }
 
     private void markSelectedAsRead() {
-        AnnouncementDao dao = new AnnouncementDao(getContext());
+        AnnouncementRepository repository = RepositoryFactory.getAnnouncementDatabaseRepository(getContext());
         Collection<Announcement> announcements = adapter.getSelectedItems();
         ZonedDateTime read = ZonedDateTime.now();
         for (Announcement an : announcements) {
-            an.setRead(read);
+            an.setReadAt(read);
         }
-        dao.update(announcements);
+        repository.update(announcements);
         // Request a refresh of the data to update the list of announcements.
         Toast.makeText(getContext().getApplicationContext(),
                 getResources().getQuantityString(R.plurals.minerva_marked_announcements, announcements.size(), announcements.size()),
                 Toast.LENGTH_SHORT)
                 .show();
-
-        // Manually call set result. This should trigger an update.
-        // TODO: find if there is a better way.
-        Intent data = new Intent();
-        data.putExtra(CourseActivity.RESULT_ANNOUNCEMENT_UPDATED, true);
-        data.putExtra(AnnouncementActivity.RESULT_ANNOUNCEMENT_READ, true);
-        resultStarter.onActivityResult(resultStarter.getRequestCode(), RESULT_OK, data);
     }
 }

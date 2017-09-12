@@ -25,7 +25,7 @@ public class MinervaViewModel extends AndroidViewModel {
 
     public LiveData<Result<List<CourseUnread>>> getData() {
         if (data == null) {
-            CourseRepository repository = RepositoryFactory.getDatabaseRepository(getApplication());
+            CourseRepository repository = RepositoryFactory.getCourseDatabaseRepository(getApplication());
             data = Transformations.map(repository.getAllAndUnreadInOrder(), Result.Builder::fromData);
         }
 

@@ -16,5 +16,4 @@ public interface CourseRepository extends FullRepository<String, Course> {
     LiveData<List<Course>> getInLive(List<String> ids);
 
     LiveData<List<CourseUnread>> getAllAndUnreadInOrder();
-
 }
