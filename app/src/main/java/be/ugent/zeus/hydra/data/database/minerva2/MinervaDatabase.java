@@ -57,4 +57,16 @@ public abstract class MinervaDatabase extends RoomDatabase {
             supportSQLiteDatabase.endTransaction();
         }
     }
+
+    private static class Migration_9_10 extends Migration {
+
+        public Migration_9_10() {
+            super(9, 10);
+        }
+
+        @Override
+        public void migrate(SupportSQLiteDatabase supportSQLiteDatabase) {
+
+        }
+    }
 }

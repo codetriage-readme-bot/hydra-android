@@ -136,7 +136,7 @@ public class CourseDao extends Dao implements DiffDao<Course, String> {
         values.put(CourseTable.Columns.TITLE, course.getTitle());
         values.put(CourseTable.Columns.DESCRIPTION, course.getDescription());
         values.put(CourseTable.Columns.TUTOR, course.getTutorName());
-        values.put(CourseTable.Columns.STUDENT, course.getStudent());
+   //     values.put(CourseTable.Columns.STUDENT, course.getStudent());
         values.put(CourseTable.Columns.ACADEMIC_YEAR, course.getAcademicYear());
         values.put(CourseTable.Columns.ORDER, course.getOrder());
 

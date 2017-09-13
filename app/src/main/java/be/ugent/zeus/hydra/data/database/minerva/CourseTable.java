@@ -22,6 +22,7 @@ public final class CourseTable {
         String TITLE = "title";
         String DESCRIPTION = "description";
         String TUTOR = "tutor";
+        @Deprecated
         String STUDENT = "student";
         String ACADEMIC_YEAR = "academic_year";
         String ORDER = "ordering";

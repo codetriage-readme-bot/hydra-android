@@ -96,6 +96,19 @@
   licenseUrl: http://opensource.org/licenses/MIT
   url: https://github.com/captain-miao/OptionRoundCardview
 
+- artifact: com.google.dagger:dagger:+
+  name: Dagger
+  copyrightHolder: The Dagger Authors
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/dagger
+- artifact: javax.inject:javax.inject:+
+  name: javax.inject
+  copyrightHolder: Authors of Java
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://code.google.com/p/atinject/
+
 - artifact: com.android.support.constraint:+:+
   skip: true
 

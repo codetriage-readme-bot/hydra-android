@@ -30,6 +30,18 @@ android {
         buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "false"
         // Add a hard-coded special event card to access the SKO part of the app
         buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "false"
+
+        // used by Room, to test migrations
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    // used by Room, to test migrations
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     compileOptions {

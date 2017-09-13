@@ -16,16 +16,44 @@ import java.util.List;
 @Dao
 public interface AnnouncementDao {
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID + " WHERE " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.ID + " IS :id")
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.ID + " IS :id")
     LiveData<Result> getOneLive(int id);
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID + " WHERE " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.ID + " IS :id")
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.ID + " IS :id")
     Result getOne(int id);
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID)
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID)
     LiveData<List<Result>> getAllLive();
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID)
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID)
     List<Result> getAll();
 
     @Insert
@@ -52,16 +80,30 @@ public interface AnnouncementDao {
     @Query("DELETE FROM " + AnnouncementTable.TABLE_NAME + " WHERE " + AnnouncementTable.Columns.ID + " IS :id")
     void delete(int id);
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID + " WHERE " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.READ_DATE + " = -1 ORDER BY " + AnnouncementTable.TABLE_NAME + "." +AnnouncementTable.Columns.DATE + " DESC")
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.READ_DATE + " = -1 ORDER BY a." + AnnouncementTable.Columns.DATE + " DESC")
     LiveData<List<Result>> getLiveUnreadMostRecentFirst();
 
-    @Query("SELECT * FROM " + AnnouncementTable.TABLE_NAME + " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID + " WHERE " + AnnouncementTable.TABLE_NAME + "." +AnnouncementTable.Columns.READ_DATE + " = -1 ORDER BY " + AnnouncementTable.TABLE_NAME + "." +AnnouncementTable.Columns.DATE + " DESC")
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.READ_DATE + " = -1 ORDER BY a." + AnnouncementTable.Columns.DATE + " DESC")
     List<Result> getUnreadMostRecentFirst();
 
     class Result {
-        @Embedded(prefix = AnnouncementTable.TABLE_NAME)
-        public Announcement announcement;
         @Embedded
+        public Announcement announcement;
+        @Embedded(prefix = "c_")
         public Course course;
     }
 }

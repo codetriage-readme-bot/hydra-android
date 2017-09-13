@@ -16,26 +16,44 @@ import java.util.List;
 @Dao
 public interface AgendaDao {
 
-    @Query("SELECT * FROM " + AgendaTable.TABLE_NAME +
-            " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID +
-            " WHERE " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.ID + " IS :id"
-    )
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AgendaTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AgendaTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AgendaTable.Columns.ID + " IS :id")
     LiveData<Result> getOneLive(int id);
 
-    @Query("SELECT * FROM " + AgendaTable.TABLE_NAME +
-            " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID +
-            " WHERE " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.ID + " IS :id"
-    )
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AgendaTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AgendaTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AgendaTable.Columns.ID + " IS :id")
     Result getOne(int id);
 
-    @Query("SELECT * FROM " + AgendaTable.TABLE_NAME +
-            " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID
-    )
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AgendaTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AgendaTable.Columns.COURSE + " = c." + CourseTable.Columns.ID)
     LiveData<List<Result>> getAllLive();
 
-    @Query("SELECT * FROM " + AgendaTable.TABLE_NAME +
-            " LEFT JOIN " + CourseTable.TABLE_NAME + " ON " + AgendaTable.TABLE_NAME + "." + AgendaTable.Columns.COURSE + " = " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ID
-    )
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AgendaTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AgendaTable.Columns.COURSE + " = c." + CourseTable.Columns.ID)
     List<Result> getAll();
 
     @Insert
@@ -63,7 +81,9 @@ public interface AgendaDao {
     void delete(int id);
 
     class Result {
+        @Embedded
         public AgendaItem agendaItem;
+        @Embedded(prefix = "c_")
         public Course course;
     }
 }

@@ -108,7 +108,7 @@ class CourseExtractor {
             extractor.columnTitle = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.TITLE);
             extractor.columnDesc = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.DESCRIPTION);
             extractor.columnTutor = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.TUTOR);
-            extractor.columnStudent = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.STUDENT);
+          //  extractor.columnStudent = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.STUDENT);
             extractor.columnYear = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.ACADEMIC_YEAR);
             extractor.columnOrder = extractor.cursor.getColumnIndexOrThrow(CourseTable.Columns.ORDER);
 
@@ -145,7 +145,7 @@ class CourseExtractor {
         }
 
         public Builder columnStudent(String columnStudent) {
-            extractor.columnStudent = extract(columnStudent);
+//            extractor.columnStudent = extract(columnStudent);
             return this;
         }
 

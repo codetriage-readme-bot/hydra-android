@@ -105,7 +105,7 @@ class AnnouncementExtractor {
             extractor.columnTitle = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.TITLE);
             extractor.columnContent = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.CONTENT);
             extractor.columnEmailSent = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.EMAIL_SENT);
-            extractor.columnSticky = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.STICKY_UNTIL);
+            //extractor.columnSticky = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.STICKY_UNTIL);
             extractor.columnLecturer = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.LECTURER);
             extractor.columnDate = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.DATE);
             extractor.columnReadDate = extractor.cursor.getColumnIndexOrThrow(AnnouncementTable.Columns.READ_DATE);

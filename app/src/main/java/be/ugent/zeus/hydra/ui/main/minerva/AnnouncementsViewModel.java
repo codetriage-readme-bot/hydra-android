@@ -3,7 +3,7 @@ package be.ugent.zeus.hydra.ui.main.minerva;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
+import android.arch.lifecycle.MediatorLiveData;
 
 import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
 import be.ugent.zeus.hydra.domain.minerva.Announcement;
@@ -23,14 +23,11 @@ public class AnnouncementsViewModel extends AndroidViewModel {
         super(application);
     }
 
-    protected AnnouncementsLiveData constructDataInstance() {
-        return new AnnouncementsLiveData(getApplication());
-    }
-
     public LiveData<Result<List<Announcement>>> getData() {
         if (data == null) {
             AnnouncementRepository repository = RepositoryFactory.getAnnouncementDatabaseRepository(getApplication());
-            data = Transformations.map(repository.getLiveUnreadMostRecentFirst(), Result.Builder::fromData);
+            //data = Transformations.map(repository.getLiveUnreadMostRecentFirst(), Result.Builder::fromData);
+            data = new MediatorLiveData<>();
         }
 
         return data;

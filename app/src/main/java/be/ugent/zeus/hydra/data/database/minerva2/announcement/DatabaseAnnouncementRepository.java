@@ -38,6 +38,8 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
 
     @Override
     public LiveData<Announcement> getOneLive(Integer integer) {
+
+
         return Transformations.map(announcementDao.getOneLive(integer), result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course)));
     }
 

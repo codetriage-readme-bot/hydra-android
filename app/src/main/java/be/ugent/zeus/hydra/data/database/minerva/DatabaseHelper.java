@@ -69,17 +69,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Manually use table name, since the code might not be available.
-        if (oldVersion >= 8) {
-            db.execSQL("ALTER TABLE " + CourseTable.TABLE_NAME + " DROP COLUMN ordering");
-        }
-        if (oldVersion >= 7) {
-            db.execSQL("ALTER TABLE " + AgendaTable.TABLE_NAME + " DROP COLUMN calendar_id");
-        }
-    }
-
     /**
      * Upgrade the database from version 6 to version 7.
      *

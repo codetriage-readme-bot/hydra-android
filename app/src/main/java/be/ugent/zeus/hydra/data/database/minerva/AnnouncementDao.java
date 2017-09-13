@@ -208,7 +208,7 @@ public class AnnouncementDao extends Dao implements DiffDao<Announcement, Intege
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.TITLE,
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.CONTENT,
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.EMAIL_SENT,
-                AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.STICKY_UNTIL,
+             //   AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.STICKY_UNTIL,
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.LECTURER,
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.DATE,
                 AnnouncementTable.TABLE_NAME + "." + AnnouncementTable.Columns.READ_DATE,
@@ -217,7 +217,7 @@ public class AnnouncementDao extends Dao implements DiffDao<Announcement, Intege
                 CourseTable.TABLE_NAME + "." + CourseTable.Columns.TITLE + " AS " + courseTable + CourseTable.Columns.TITLE,
                 CourseTable.TABLE_NAME + "." + CourseTable.Columns.DESCRIPTION + " AS " + courseTable + CourseTable.Columns.DESCRIPTION,
                 CourseTable.TABLE_NAME + "." + CourseTable.Columns.TUTOR + " AS " + courseTable + CourseTable.Columns.TUTOR,
-                CourseTable.TABLE_NAME + "." + CourseTable.Columns.STUDENT + " AS " + courseTable + CourseTable.Columns.STUDENT,
+           //     CourseTable.TABLE_NAME + "." + CourseTable.Columns.STUDENT + " AS " + courseTable + CourseTable.Columns.STUDENT,
                 CourseTable.TABLE_NAME + "." + CourseTable.Columns.ACADEMIC_YEAR + " AS " + courseTable + CourseTable.Columns.ACADEMIC_YEAR,
                 CourseTable.TABLE_NAME + "." + CourseTable.Columns.ORDER + " AS " + courseTable + CourseTable.Columns.ORDER,
         };
