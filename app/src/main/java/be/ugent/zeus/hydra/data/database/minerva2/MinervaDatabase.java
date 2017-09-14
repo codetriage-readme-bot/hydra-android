@@ -34,6 +34,7 @@ public abstract class MinervaDatabase extends RoomDatabase {
     public static synchronized MinervaDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context, MinervaDatabase.class, NAME)
+                    .allowMainThreadQueries()
                     .addMigrations(new Migration_6_7(context), new Migration_7_8(), new Migration_8_9())
                     .build();
         }

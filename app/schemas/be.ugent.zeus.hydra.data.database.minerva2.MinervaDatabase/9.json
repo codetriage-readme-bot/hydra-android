@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "a80085ce3fb772261ef49b139919bb2d",
+    "identityHash": "fc19399accb367c36e2f6584c92a5e9d",
     "entities": [
       {
         "tableName": "minerva_courses",
@@ -150,7 +150,7 @@
             "columnNames": [
               "course"
             ],
-            "createSql": "CREATE  INDEX `index_minerva_calendar_course`\nON `${TABLE_NAME}` (`course`)"
+            "createSql": "CREATE  INDEX `index_minerva_calendar_course` ON `${TABLE_NAME}` (`course`)"
           }
         ],
         "foreignKeys": [
@@ -233,7 +233,7 @@
             "columnNames": [
               "course"
             ],
-            "createSql": "CREATE  INDEX `index_minerva_announcements_course`\nON `${TABLE_NAME}` (`course`)"
+            "createSql": "CREATE  INDEX `index_minerva_announcements_course` ON `${TABLE_NAME}` (`course`)"
           }
         ],
         "foreignKeys": [
@@ -253,7 +253,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a80085ce3fb772261ef49b139919bb2d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc19399accb367c36e2f6584c92a5e9d\")"
     ]
   }
 }
