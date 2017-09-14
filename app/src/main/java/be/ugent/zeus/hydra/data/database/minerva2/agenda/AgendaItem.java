@@ -5,8 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-import be.ugent.zeus.hydra.data.database.minerva.AgendaTable;
-import be.ugent.zeus.hydra.data.database.minerva.CourseTable;
+import be.ugent.zeus.hydra.data.database.minerva2.course.CourseTable;
 import be.ugent.zeus.hydra.data.database.minerva2.course.Course;
 import org.threeten.bp.ZonedDateTime;
 

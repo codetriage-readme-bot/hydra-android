@@ -3,8 +3,7 @@ package be.ugent.zeus.hydra.data.database.minerva2.agenda;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
 
-import be.ugent.zeus.hydra.data.database.minerva.AgendaTable;
-import be.ugent.zeus.hydra.data.database.minerva.CourseTable;
+import be.ugent.zeus.hydra.data.database.minerva2.course.CourseTable;
 import be.ugent.zeus.hydra.data.database.minerva2.course.Course;
 
 import java.util.Collection;

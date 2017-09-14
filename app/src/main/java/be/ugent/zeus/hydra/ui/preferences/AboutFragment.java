@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import be.ugent.zeus.hydra.BuildConfig;
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
+import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.ui.common.WebViewActivity;
 
 /**
@@ -26,6 +27,7 @@ public class AboutFragment extends PreferenceFragment {
                 getString(R.string.pref_about_version_summary),
                 BuildConfig.VERSION_NAME,
                 BuildConfig.VERSION_CODE,
+                MinervaDatabase.VERSION,
                 BuildConfig.DEBUG ? "debug" : "release"
         ));
 

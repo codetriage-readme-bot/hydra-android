@@ -3,8 +3,7 @@ package be.ugent.zeus.hydra.data.database.minerva2.course;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
 
-import be.ugent.zeus.hydra.data.database.minerva.AnnouncementTable;
-import be.ugent.zeus.hydra.data.database.minerva.CourseTable;
+import be.ugent.zeus.hydra.data.database.minerva2.announcement.AnnouncementTable;
 
 import java.util.Collection;
 import java.util.List;

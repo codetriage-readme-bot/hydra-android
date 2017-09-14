@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.data.database;
+package be.ugent.zeus.hydra.data.sync;
 
 import java.util.Collection;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @author Niko Strijbol
  */
-public interface DiffDao<E, ID> {
+public interface SyncCallback<E, ID> {
 
     /**
      * Remove all objects with the given ID's.

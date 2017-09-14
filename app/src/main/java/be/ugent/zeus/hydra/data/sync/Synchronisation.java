@@ -1,6 +1,5 @@
 package be.ugent.zeus.hydra.data.sync;
 
-import be.ugent.zeus.hydra.data.database.DiffDao;
 import java8.util.function.Function;
 
 import java.util.Collection;
@@ -132,7 +131,7 @@ public class Synchronisation<E, ID> {
          *
          * @param dao The
          */
-        public void apply(DiffDao<E, ID> dao) {
+        public void apply(SyncCallback<E, ID> dao) {
             dao.delete(getStaleIds());
             dao.update(getUpdated());
             dao.insert(getNew());

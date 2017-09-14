@@ -1,10 +1,6 @@
 package be.ugent.zeus.hydra.data.database;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import be.ugent.zeus.hydra.data.database.minerva.DatabaseBroadcaster;
-import be.ugent.zeus.hydra.data.database.minerva.DatabaseHelper;
 
 /**
  * An abstract DAO.
@@ -16,18 +12,15 @@ import be.ugent.zeus.hydra.data.database.minerva.DatabaseHelper;
  *
  * @author Niko Strijbol
  */
-public abstract class Dao<E> {
+@Deprecated
+public abstract class Dao {
 
-    protected final SQLiteOpenHelper helper;
     protected final Context context;
-    protected final DatabaseBroadcaster broadcaster;
 
     /**
      * @param context The application context.
      */
     public Dao(Context context) {
         this.context = context.getApplicationContext();
-        this.helper = DatabaseHelper.getInstance(context);
-        this.broadcaster = new DatabaseBroadcaster(context);
     }
 }

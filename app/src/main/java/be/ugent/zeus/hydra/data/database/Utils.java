@@ -14,6 +14,7 @@ import java.util.Collection;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public class Utils {
 
     /**

@@ -8,7 +8,7 @@ import android.arch.persistence.room.Embedded;
  *
  * @author Niko Strijbol
  */
-public class CourseUnread {
+public final class CourseUnread {
 
     @Embedded
     private Course course;
