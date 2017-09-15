@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Pair;
 import android.view.View;
@@ -9,6 +10,7 @@ import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.MultiSelectDiffAdapter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
+import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**
@@ -47,9 +49,9 @@ public class AnnouncementsViewHolder extends DataViewHolder<Pair<Announcement, B
             if (adapter.hasSelected()) {
                 toggleSelected();
             } else {
-                //Intent intent = new Intent(resultStarter.getContext(), AnnouncementActivity.class);
-                //intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
-                //resultStarter.startActivityForResult(intent, resultStarter.getRequestCode());
+                Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
+                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getId());
+                v.getContext().startActivity(intent);
             }
         });
 

@@ -1,6 +1,7 @@
 package be.ugent.zeus.hydra.ui.minerva;
 
 import android.app.TaskStackBuilder;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,9 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.database.minerva.AnnouncementDao;
-import be.ugent.zeus.hydra.data.models.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.usecases.minerva.MarkAnnouncementAsRead;
 import be.ugent.zeus.hydra.ui.common.BaseActivity;
 import be.ugent.zeus.hydra.ui.common.html.PicassoImageGetter;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
@@ -22,7 +24,6 @@ import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 import be.ugent.zeus.hydra.ui.preferences.MinervaFragment;
 import be.ugent.zeus.hydra.utils.DateUtils;
 import be.ugent.zeus.hydra.utils.NetworkUtils;
-import org.threeten.bp.ZonedDateTime;
 
 /**
  * Show a Minerva announcement.
@@ -36,18 +37,14 @@ import org.threeten.bp.ZonedDateTime;
  */
 public class AnnouncementActivity extends BaseActivity {
 
-    public static final String ARG_ANNOUNCEMENT = "announcement_view";
+    public static final String ARG_ANNOUNCEMENT_ID = "announcement_view_id";
 
     public static final String RESULT_ANNOUNCEMENT_READ = "be.ugent.zeus.hydra.result.minerva.announcement.read";
-
-    private static final String STATE_MARKED = "state_marked";
 
     private static final String ONLINE_URL_MOBILE = "https://minerva.ugent.be/mobile/courses/%s/announcement";
     private static final String ONLINE_URL_DESKTOP = "http://minerva.ugent.be/main/announcements/announcements.php?cidReq=%s";
 
     private Announcement announcement;
-    private AnnouncementDao dao;
-    private boolean marked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +52,7 @@ public class AnnouncementActivity extends BaseActivity {
         setContentView(R.layout.activity_minerva_announcement);
 
         Intent intent = getIntent();
-        announcement = intent.getParcelableExtra(ARG_ANNOUNCEMENT);
-
-        dao = new AnnouncementDao(getApplicationContext());
+        int announcementId = intent.getIntExtra(ARG_ANNOUNCEMENT_ID, 0);
 
         TextView title = findViewById(R.id.title);
         TextView date = findViewById(R.id.date);
@@ -65,50 +60,67 @@ public class AnnouncementActivity extends BaseActivity {
         TextView author = findViewById(R.id.author);
         TextView course = findViewById(R.id.course);
 
-        course.setText(announcement.getCourse().getTitle());
+        AnnouncementViewModel viewModel = ViewModelProviders.of(this).get(AnnouncementViewModel.class);
+        viewModel.setId(announcementId);
+        viewModel.getData().observe(this, announcement -> {
+            AnnouncementActivity.this.announcement = announcement;
 
-        if (announcement.getLecturer() != null) {
-            author.setText(announcement.getLecturer());
-        }
+            course.setText(announcement.getCourse().getTitle());
 
-        if (announcement.getDate() != null) {
-            date.setText(DateUtils.relativeDateTimeString(announcement.getDate(), this));
-        }
+            if (announcement.getLecturer() != null) {
+                author.setText(announcement.getLecturer().getName());
+            }
 
-        if (announcement.getContent() != null) {
-            text.setText(Utils.fromHtml(announcement.getContent(), new PicassoImageGetter(text, getResources(), this)));
-            text.setMovementMethod(LinkMovementMethod.getInstance());
-        }
+            if (announcement.getLastEditedAt() != null) {
+                date.setText(DateUtils.relativeDateTimeString(announcement.getLastEditedAt(), getApplicationContext()));
+            }
 
-        if (announcement.getTitle() != null) {
-            title.setText(announcement.getTitle());
-        }
+            if (announcement.getContent() != null) {
+                text.setText(Utils.fromHtml(announcement.getContent(), new PicassoImageGetter(text, getResources(), getApplicationContext())));
+                text.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+
+            if (announcement.getTitle() != null) {
+                title.setText(announcement.getTitle());
+            }
+
+            if (!announcement.isRead()) {
+                AsyncTask.execute(() -> {
+                    MarkAnnouncementAsRead useCase = HydraApplication.getComponent(getApplication()).markAnnouncementAsRead();
+                    useCase.execute(announcement);
+                });
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.minerva_announcement_link:
-                NetworkUtils.maybeLaunchBrowser(this, getOnlineUrl());
-                return true;
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                upIntent.putExtra(CourseActivity.ARG_COURSE_ID, announcement.getCourse().getId());
-                if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                            // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // To make sure we go to the correct activity, we add the flag.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (announcement == null) {
+            return super.onOptionsItemSelected(item);
+        } else {
+            switch (item.getItemId()) {
+                case R.id.minerva_announcement_link:
+                    NetworkUtils.maybeLaunchBrowser(this, getOnlineUrl());
+                    return true;
+                case android.R.id.home:
+                    Intent upIntent = NavUtils.getParentActivityIntent(this);
+                    upIntent.putExtra(CourseActivity.ARG_COURSE_ID, announcement.getCourse().getId());
+                    if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
+                        // This activity is NOT part of this app's task, so create a new task
+                        // when navigating up, with a synthesized back stack.
+                        TaskStackBuilder.create(this)
+                                // Add all of this activity's parents to the back stack
+                                .addNextIntentWithParentStack(upIntent)
+                                // Navigate up to the closest parent
+                                .startActivities();
+                    } else {
+                        // To make sure we go to the correct activity, we add the flag.
+                        NavUtils.navigateUpTo(this, upIntent);
+                    }
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
     }
 
@@ -125,39 +137,6 @@ public class AnnouncementActivity extends BaseActivity {
             return String.format(ONLINE_URL_MOBILE, announcement.getCourse().getId());
         } else {
             return String.format(ONLINE_URL_DESKTOP, announcement.getCourse().getId());
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Set the read date if needed
-        if (!announcement.isRead()) {
-            announcement.setRead(ZonedDateTime.now());
-            setResult();
-            AsyncTask.execute(() -> dao.update(announcement));
-        }
-    }
-
-    private void setResult() {
-        Intent intent = new Intent();
-        intent.putExtra(RESULT_ANNOUNCEMENT_READ, true);
-        setResult(RESULT_OK, intent);
-        marked = true;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_MARKED, marked);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState.getBoolean(STATE_MARKED, false)) {
-            setResult();
         }
     }
 }

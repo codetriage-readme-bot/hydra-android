@@ -1,13 +1,13 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.announcement;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.models.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
@@ -63,7 +63,7 @@ public class MinervaAnnouncementViewHolder extends FeedViewHolder {
 
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(starter.getContext(), AnnouncementActivity.class);
-                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
+                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getItemId());
                 starter.startActivityForResult(intent, starter.getRequestCode());
             });
             layout.addView(view);

@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.ui.minerva.overview;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
+import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**
@@ -40,10 +42,9 @@ public class AnnouncementViewHolder extends DataViewHolder<Announcement> {
         }
 
         clickingView.setOnClickListener(v -> {
-            //TODO
-            //Intent intent = new Intent(resultStarter.getContext(), AnnouncementActivity.class);
-            //intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) data);
-            //resultStarter.startActivityForResult(intent, resultStarter.getRequestCode());
+            Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
+            intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, data.getId());
+            v.getContext().startActivity(intent);
         });
     }
 }

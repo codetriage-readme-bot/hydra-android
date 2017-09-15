@@ -3,22 +3,19 @@ package be.ugent.zeus.hydra.ui.minerva;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+
 import be.ugent.zeus.hydra.data.database.minerva.AgendaDao;
 import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
-import be.ugent.zeus.hydra.data.sync.SyncBroadcast;
-import be.ugent.zeus.hydra.repository.requests.Result;
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
+import be.ugent.zeus.hydra.repository.requests.Result;
 
 /**
  * @author Niko Strijbol
  */
 public class AgendaLiveData extends BaseLiveData<Result<AgendaItem>> {
 
-    private final Context applicationContext;
     private final AgendaDao dao;
     private final int id;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -29,7 +26,6 @@ public class AgendaLiveData extends BaseLiveData<Result<AgendaItem>> {
     };
 
     public AgendaLiveData(Context context, int id) {
-        this.applicationContext = context;
         this.dao = new AgendaDao(context);
         this.id = id;
         loadData(Bundle.EMPTY);
@@ -56,19 +52,5 @@ public class AgendaLiveData extends BaseLiveData<Result<AgendaItem>> {
                 setValue(agendaItemResult);
             }
         }.execute();
-    }
-
-    @Override
-    protected void onActive() {
-        super.onActive();
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(applicationContext);
-        manager.registerReceiver(receiver, new IntentFilter(SyncBroadcast.SYNC_AGENDA));
-    }
-
-    @Override
-    protected void onInactive() {
-        super.onInactive();
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(applicationContext);
-        manager.unregisterReceiver(receiver);
     }
 }

@@ -21,5 +21,6 @@ public interface UseCaseComponent {
     GetAnnouncementsForCourse getUnreadAnnouncementsForCourse();
     GetCalendarForCourse getCalendarForCourse();
     GetSingleCalendarItem getSingleCalendarItem();
-
+    GetSingleAnnouncement getSingleAnnouncement();
+    MarkAnnouncementAsRead markAnnouncementAsRead();
 }

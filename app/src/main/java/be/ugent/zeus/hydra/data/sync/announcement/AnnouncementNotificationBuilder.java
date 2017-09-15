@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -167,7 +166,7 @@ public class AnnouncementNotificationBuilder {
 
     private PendingIntent upIntentOne(Announcement announcement) {
         Intent resultIntent = new Intent(context, AnnouncementActivity.class);
-        resultIntent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
+        resultIntent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getItemId());
 
         Intent parentIntent = new Intent(context, CourseActivity.class);
         parentIntent.putExtra(CourseActivity.ARG_COURSE_ID, announcement.getCourse().getId());
