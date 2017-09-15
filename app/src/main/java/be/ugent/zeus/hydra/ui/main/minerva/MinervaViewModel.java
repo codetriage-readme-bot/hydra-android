@@ -5,9 +5,9 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 
-import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
-import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
+import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.usecases.minerva.GetCoursesWithUnreadCount;
 import be.ugent.zeus.hydra.repository.requests.Result;
 
 import java.util.List;
@@ -17,16 +17,17 @@ import java.util.List;
  */
 public class MinervaViewModel extends AndroidViewModel {
 
+    private final GetCoursesWithUnreadCount useCase;
     private LiveData<Result<List<CourseUnread>>> data;
 
     public MinervaViewModel(Application application) {
         super(application);
+        this.useCase = HydraApplication.getComponent(application).getCoursesWithUnreadCount();
     }
 
     public LiveData<Result<List<CourseUnread>>> getData() {
         if (data == null) {
-            CourseRepository repository = RepositoryFactory.getCourseDatabaseRepository(getApplication());
-            data = Transformations.map(repository.getAllAndUnreadInOrder(), Result.Builder::fromData);
+            data = Transformations.map(useCase.execute(null), Result.Builder::fromData);
         }
 
         return data;

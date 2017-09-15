@@ -22,8 +22,7 @@ public class AnnouncementsViewModel extends AndroidViewModel {
 
     public AnnouncementsViewModel(Application application) {
         super(application);
-        HydraApplication app = (HydraApplication) application;
-        this.useCase = app.getUseCaseComponent().getUnreadAnnouncement();
+        this.useCase = HydraApplication.getComponent(application).getUnreadAnnouncement();
     }
 
     public LiveData<Result<List<Announcement>>> getData() {

@@ -10,7 +10,6 @@ import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
-import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ordering.OnStartDragListener;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
 
@@ -22,12 +21,10 @@ class MinervaCourseViewHolder extends DataViewHolder<CourseUnread> implements Se
     private final TextView name;
     private final TextView subtitle;
     private final ImageView unreadCount;
-    private final ResultStarter resultStarter;
     private final ImageView dragHandle;
 
-    MinervaCourseViewHolder(View itemView, OnStartDragListener listener, SearchHelper searchHelper, ResultStarter starter) {
+    MinervaCourseViewHolder(View itemView, OnStartDragListener listener, SearchHelper searchHelper) {
         super(itemView);
-        this.resultStarter = starter;
         name = itemView.findViewById(R.id.name);
         subtitle = itemView.findViewById(R.id.subtitle);
         dragHandle = itemView.findViewById(R.id.drag_handle);

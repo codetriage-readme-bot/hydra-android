@@ -105,4 +105,8 @@ public class HydraApplication extends Application {
     public UseCaseComponent getUseCaseComponent() {
         return useCaseComponent;
     }
+
+    public static UseCaseComponent getComponent(Application application) {
+        return ((HydraApplication) application).getUseCaseComponent();
+    }
 }

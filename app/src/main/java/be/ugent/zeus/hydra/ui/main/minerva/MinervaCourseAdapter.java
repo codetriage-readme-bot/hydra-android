@@ -45,7 +45,7 @@ class MinervaCourseAdapter extends SearchableDiffAdapter<CourseUnread, MinervaCo
 
     @Override
     public MinervaCourseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MinervaCourseViewHolder(ViewUtils.inflate(parent, R.layout.item_minerva_course), startDragListener, this, resultStarter);
+        return new MinervaCourseViewHolder(ViewUtils.inflate(parent, R.layout.item_minerva_course), startDragListener, this);
     }
 
     @Override
