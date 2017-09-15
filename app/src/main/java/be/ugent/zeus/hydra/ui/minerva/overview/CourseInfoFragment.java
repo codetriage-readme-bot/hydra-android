@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.ui.minerva.overview;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
-import be.ugent.zeus.hydra.utils.NetworkUtils;
+import be.ugent.zeus.hydra.domain.entities.minerva.AcademicYear;
+import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
-import org.threeten.bp.LocalDate;
+import be.ugent.zeus.hydra.utils.NetworkUtils;
 
 import java.util.Locale;
 
@@ -24,17 +25,16 @@ import java.util.Locale;
  */
 public class CourseInfoFragment extends Fragment {
 
-    private static final String ARG_COURSE = "argCourse";
+    private static final String ARG_COURSE_ID = "argCourseId";
 
     private static final String URL = "https://studiegids.ugent.be/%d/NL/studiefiches/%s.pdf";
-    private static final int DEFAULT_YEAR = LocalDate.now().getYear();
 
-    private Course course;
+    private String courseId;
 
-    public static CourseInfoFragment newInstance(Course course) {
+    public static CourseInfoFragment newInstance(String courseId) {
         CourseInfoFragment fragment = new CourseInfoFragment();
         Bundle data = new Bundle();
-        data.putParcelable(ARG_COURSE, course);
+        data.putString(ARG_COURSE_ID, courseId);
         fragment.setArguments(data);
         return fragment;
     }
@@ -42,7 +42,7 @@ public class CourseInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        course = getArguments().getParcelable(ARG_COURSE);
+        courseId = getArguments().getString(ARG_COURSE_ID);
     }
 
     @Override
@@ -60,45 +60,48 @@ public class CourseInfoFragment extends Fragment {
         TextView courseDescription = v.findViewById(R.id.course_description);
         TextView courseFiche = v.findViewById(R.id.course_fiche);
 
-        courseTitle.setText(course.getTitle());
-        courseCode.setText(course.getCode());
-        courseTutor.setText(Utils.fromHtml(course.getTutorName()));
-        courseYear.setText(getAcademicYear());
+        View contentWrapper = v.findViewById(R.id.content_wrapper);
+        View progressBar = v.findViewById(R.id.progress_bar);
 
-        if (TextUtils.isEmpty(course.getDescription())) {
-            v.findViewById(R.id.course_description_header).setVisibility(View.GONE);
-        } else {
-            courseDescription.setText(Utils.fromHtml(course.getDescription()));
-        }
+        CourseViewModel viewModel = ViewModelProviders.of(getActivity()).get(CourseViewModel.class);
+        viewModel.getData(courseId).observe(this, course -> {
+            progressBar.setVisibility(View.GONE);
+            contentWrapper.setVisibility(View.VISIBLE);
+            courseTitle.setText(course.getTitle());
+            courseCode.setText(course.getCode());
+            courseTutor.setText(Utils.fromHtml(course.getTutor().getName()));
+            courseYear.setText(getAcademicYear(course));
 
-        final String url = getUrl();
-        if (url == null) {
-            v.findViewById(R.id.course_fiche_header).setVisibility(View.GONE);
-            courseFiche.setVisibility(View.GONE);
-        } else {
-            courseFiche.setOnClickListener(view -> NetworkUtils.maybeLaunchBrowser(view.getContext(), url));
-        }
+            if (TextUtils.isEmpty(course.getDescription())) {
+                v.findViewById(R.id.course_description_header).setVisibility(View.GONE);
+            } else {
+                courseDescription.setText(Utils.fromHtml(course.getDescription()));
+            }
+
+            final String url = getUrl(course);
+            if (url == null) {
+                v.findViewById(R.id.course_fiche_header).setVisibility(View.GONE);
+                courseFiche.setVisibility(View.GONE);
+            } else {
+                courseFiche.setOnClickListener(view -> NetworkUtils.maybeLaunchBrowser(view.getContext(), url));
+            }
+        });
     }
 
-    private String getAcademicYear() {
-        if (course.getAcademicYear() == 0) {
+    private String getAcademicYear(Course course) {
+        if (course.getYear() == null || course.getYear().equals(AcademicYear.ZERO)) {
             return getContext().getString(R.string.minerva_course_unknown_year);
         } else {
-            return String.valueOf(course.getAcademicYear());
+            return course.getYear().toString();
         }
     }
 
-    private String getUrl() {
-        int year = course.getAcademicYear();
-        if (year == 0) {
-            year = DEFAULT_YEAR;
-        }
-
-        if (course.getCode() == null) {
+    private String getUrl(Course course) {
+        if (course.getCode() == null || course.getYear() == null || course.getYear().equals(AcademicYear.ZERO)) {
             return null;
         }
 
         // We use the US locale since we are just formatting number without anything special.
-        return String.format(Locale.US, URL, year, course.getCode());
+        return String.format(Locale.US, URL, course.getYear().getStartYear().getValue(), course.getCode());
     }
 }

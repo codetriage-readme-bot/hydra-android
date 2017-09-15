@@ -29,7 +29,6 @@ public class AnnouncementsViewModel extends AndroidViewModel {
         if (data == null) {
             data = Transformations.map(useCase.execute(null), Result.Builder::fromData);
         }
-
         return data;
     }
 }

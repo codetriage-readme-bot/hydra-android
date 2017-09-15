@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
@@ -14,8 +13,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
 import be.ugent.zeus.hydra.repository.observers.SuccessObserver;
@@ -143,7 +143,7 @@ public class AgendaActivity extends BaseActivity {
         }
 
         TextView edit = findViewById(R.id.agenda_organiser);
-        edit.setText(item.getLastEditUser());
+        edit.setText(item.getLastEditedUser().getName());
     }
 
     private void onError(Throwable error) {
@@ -161,7 +161,7 @@ public class AgendaActivity extends BaseActivity {
                 if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
                     // Intent for the course activity
                     upIntent.putExtra(CourseActivity.ARG_TAB, CourseActivity.Tab.AGENDA);
-                    upIntent.putExtra(CourseActivity.ARG_COURSE, (Parcelable) this.item.getCourse());
+                    upIntent.putExtra(CourseActivity.ARG_COURSE_ID, this.item.getCourse().getId());
                     TaskStackBuilder builder = TaskStackBuilder.create(this)
                             .addNextIntentWithParentStack(upIntent);
                     // The first intent is the home intent, so edit that one.

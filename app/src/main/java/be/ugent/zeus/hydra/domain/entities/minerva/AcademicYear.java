@@ -16,6 +16,8 @@ import org.threeten.bp.Year;
  */
 public final class AcademicYear implements Comparable<AcademicYear> {
 
+    public static final AcademicYear ZERO = new AcademicYear(0);
+
     private final Year startYear;
 
     public AcademicYear(Year startYear) {

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
 import be.ugent.zeus.hydra.data.sync.announcement.AnnouncementNotificationBuilder;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
@@ -38,17 +37,16 @@ import static android.app.Activity.RESULT_OK;
 public class AnnouncementFragment extends Fragment implements ResultStarter {
 
     private static final String TAG = "AnnouncementFragment";
-    private static final String ARG_COURSE = "argCourse";
+    private static final String ARG_COURSE_ID = "argCourseId";
 
     private static final int ANNOUNCEMENT_RESULT_CODE = 5555;
 
-    private AnnouncementViewModel viewModel;
-    private Course course;
+    private String courseId;
 
-    public static AnnouncementFragment newInstance(Course course) {
+    public static AnnouncementFragment newInstance(String courseId) {
         AnnouncementFragment fragment = new AnnouncementFragment();
         Bundle data = new Bundle();
-        data.putParcelable(ARG_COURSE, course);
+        data.putString(ARG_COURSE_ID, courseId);
         fragment.setArguments(data);
         return fragment;
     }
@@ -56,7 +54,7 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        course = getArguments().getParcelable(ARG_COURSE);
+        courseId = getArguments().getString(ARG_COURSE_ID);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
         super.onStart();
         // Check for notification we want to remove.
         NotificationManager manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(course.getId(), AnnouncementNotificationBuilder.NOTIFICATION_ID);
+        manager.cancel(courseId, AnnouncementNotificationBuilder.NOTIFICATION_ID);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AnnouncementAdapter adapter = new AnnouncementAdapter(this);
+        AnnouncementAdapter adapter = new AnnouncementAdapter();
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -87,9 +85,8 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
         RecyclerFastScroller scroller = view.findViewById(R.id.fast_scroller);
         scroller.attachRecyclerView(recyclerView);
 
-        Course course = getArguments().getParcelable(ARG_COURSE);
-        viewModel = ViewModelProviders.of(this).get(AnnouncementViewModel.class);
-        viewModel.setCourse(course);
+        AnnouncementViewModel viewModel = ViewModelProviders.of(this).get(AnnouncementViewModel.class);
+        viewModel.setCourse(courseId);
         viewModel.getData().observe(this, ErrorObserver.with(this::onError));
         viewModel.getData().observe(this, new AdapterObserver<>(adapter));
         viewModel.getData().observe(this, new ProgressObserver<>(view.findViewById(R.id.progress_bar)));
@@ -107,11 +104,11 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
 
         if (requestCode == ANNOUNCEMENT_RESULT_CODE && resultCode == RESULT_OK) {
             // One of the announcements was marked as read, so update the UI.
-            viewModel.requestRefresh();
-            Intent intent = new Intent();
-            // TODO: prevent the fragment from depending on the activity.
-            intent.putExtra(CourseActivity.RESULT_ANNOUNCEMENT_UPDATED, true);
-            getActivity().setResult(RESULT_OK, intent);
+//            viewModel.requestRefresh();
+//            Intent intent = new Intent();
+//            // TODO: prevent the fragment from depending on the activity.
+//            intent.putExtra(CourseActivity.RESULT_ANNOUNCEMENT_UPDATED, true);
+//            getActivity().setResult(RESULT_OK, intent);
         }
     }
 

@@ -12,6 +12,7 @@ public final class AgendaItem {
      * Constant indicating this agenda item does not have an ID for the Android calendar.
      */
     public static final long NO_CALENDAR_ID = -1;
+    public static final String AGENDA_URI = "hydra://minerva/calendar/";
 
     private int id;
     private String title;
@@ -120,6 +121,10 @@ public final class AgendaItem {
 
     public void setCalendarId(long calendarId) {
         this.calendarId = calendarId;
+    }
+
+    public String getUri() {
+        return AGENDA_URI + getId();
     }
 
     @Override

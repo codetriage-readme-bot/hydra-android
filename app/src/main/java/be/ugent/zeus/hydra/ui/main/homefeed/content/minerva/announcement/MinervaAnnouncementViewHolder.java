@@ -79,6 +79,6 @@ public class MinervaAnnouncementViewHolder extends FeedViewHolder {
             layout.addView(textView);
         }
 
-        cardView.setOnClickListener(v -> CourseActivity.startForResult(adapter.getCompanion(), mCard.getCourse(), CourseActivity.Tab.ANNOUNCEMENTS));
+        cardView.setOnClickListener(v -> CourseActivity.startForResult(adapter.getCompanion(), mCard.getCourse().getId(), CourseActivity.Tab.ANNOUNCEMENTS));
     }
 }

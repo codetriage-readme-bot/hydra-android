@@ -5,140 +5,149 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/vertical_padding"
-        android:paddingRight="@dimen/vertical_padding">
+        android:layout_height="wrap_content">
 
-        <TableLayout
+        <LinearLayout
+            android:id="@+id/content_wrapper"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="0,1"
-            android:shrinkColumns="0,1"
-            android:paddingTop="@dimen/content_spacing"
-            android:paddingBottom="@dimen/content_spacing"
-            android:divider="?android:attr/dividerHorizontal"
-            android:showDividers="middle"
-            >
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vertical_padding"
+            android:paddingRight="@dimen/vertical_padding">
 
-            <TableRow
-                android:minHeight="@dimen/table_row_height"
-                android:gravity="center_vertical"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/minerva_course_info_name"
-                    android:paddingRight="@dimen/table_col_spacing"
-                    />
-                <TextView
-                    android:id="@+id/course_title"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    tools:text="Naam van het vak"
-                    />
-            </TableRow>
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1"
+                android:shrinkColumns="0,1"
+                android:paddingTop="@dimen/content_spacing"
+                android:paddingBottom="@dimen/content_spacing"
+                android:divider="?android:attr/dividerHorizontal"
+                android:showDividers="middle"
+                >
 
-            <TableRow
-                android:minHeight="@dimen/table_row_height"
-                android:gravity="center_vertical"
+                <TableRow
+                    android:minHeight="@dimen/table_row_height"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/minerva_course_info_name"
+                        android:paddingRight="@dimen/table_col_spacing"
+                        />
+                    <TextView
+                        android:id="@+id/course_title"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        tools:text="Naam van het vak"
+                        />
+                </TableRow>
+
+                <TableRow
+                    android:minHeight="@dimen/table_row_height"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/minerva_course_info_code"
+                        android:paddingRight="@dimen/table_col_spacing"
+                        />
+                    <TextView
+                        android:id="@+id/course_code"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        tools:text="Code van het vak"
+                        />
+                </TableRow>
+
+                <TableRow
+                    android:minHeight="@dimen/table_row_height"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/minerva_course_info_professor"
+                        android:paddingRight="@dimen/table_col_spacing"
+                        />
+                    <TextView
+                        android:id="@+id/course_tutor"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        tools:text="Lesgever van het vak"
+                        />
+                </TableRow>
+
+                <TableRow
+                    android:minHeight="@dimen/table_row_height"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/minerva_course_info_year"
+                        android:paddingRight="@dimen/table_col_spacing"
+                        />
+                    <TextView
+                        android:id="@+id/course_year"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        tools:text="Jaar van het vak"
+                        />
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/course_fiche_header"
+                android:height="48dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/minerva_course_info_code"
-                    android:paddingRight="@dimen/table_col_spacing"
-                    />
-                <TextView
-                    android:id="@+id/course_code"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    tools:text="Code van het vak"
-                    />
-            </TableRow>
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:text="@string/minerva_course_info_course_fiche"
+                android:textColor="?attr/colorAccent"
+                android:gravity="center_vertical" />
 
-            <TableRow
-                android:minHeight="@dimen/table_row_height"
-                android:gravity="center_vertical"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/minerva_course_info_professor"
-                    android:paddingRight="@dimen/table_col_spacing"
-                    />
-                <TextView
-                    android:id="@+id/course_tutor"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    tools:text="Lesgever van het vak"
-                    />
-            </TableRow>
+                android:layout_height="wrap_content"
+                android:text="@string/minerva_course_info_course_fiche_warning"/>
 
-            <TableRow
-                android:minHeight="@dimen/table_row_height"
-                android:gravity="center_vertical"
+            <Button
+                android:id="@+id/course_fiche"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_pdf"/>
+
+            <TextView
+                android:id="@+id/course_description_header"
+                android:height="48dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/minerva_course_info_year"
-                    android:paddingRight="@dimen/table_col_spacing"
-                    />
-                <TextView
-                    android:id="@+id/course_year"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    tools:text="Jaar van het vak"
-                    />
-            </TableRow>
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:text="@string/minerva_course_info_description"
+                android:textColor="?attr/colorAccent"
+                android:gravity="center_vertical" />
 
-        </TableLayout>
+            <TextView
+                android:id="@+id/course_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Beschrijving van het vak"/>
 
-        <TextView
-            android:id="@+id/course_fiche_header"
-            android:height="48dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:text="@string/minerva_course_info_course_fiche"
-            android:textColor="?attr/colorAccent"
-            android:gravity="center_vertical" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/minerva_course_info_course_fiche_warning"/>
+        <include layout="@layout/x_progress_bar" />
 
-        <Button
-            android:id="@+id/course_fiche"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/view_pdf"/>
-
-        <TextView
-            android:id="@+id/course_description_header"
-            android:height="48dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:text="@string/minerva_course_info_description"
-            android:textColor="?attr/colorAccent"
-            android:gravity="center_vertical" />
-
-        <TextView
-            android:id="@+id/course_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Beschrijving van het vak"/>
-
-    </LinearLayout>
-
+    </FrameLayout>
 
 </android.support.v4.widget.NestedScrollView>

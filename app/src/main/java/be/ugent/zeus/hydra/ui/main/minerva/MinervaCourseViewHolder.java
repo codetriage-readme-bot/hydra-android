@@ -12,6 +12,7 @@ import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ordering.OnStartDragListener;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
+import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 
 /**
  * @author Niko Strijbol
@@ -57,7 +58,7 @@ class MinervaCourseViewHolder extends DataViewHolder<CourseUnread> implements Se
         // TODO
         // TODO
         //Set onclick listener
-        //itemView.setOnClickListener(view -> CourseActivity.startForResult(resultStarter, course, CourseActivity.Tab.ANNOUNCEMENTS));
+        itemView.setOnClickListener(view -> CourseActivity.start(view.getContext(), course, CourseActivity.Tab.ANNOUNCEMENTS));
 
         if (data.getUnreadAnnouncements() > 0) {
             unreadCount.setVisibility(View.VISIBLE);

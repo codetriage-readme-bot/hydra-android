@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva.AnnouncementDao;
 import be.ugent.zeus.hydra.data.models.minerva.Announcement;
@@ -93,7 +93,7 @@ public class AnnouncementActivity extends BaseActivity {
                 return true;
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
-                upIntent.putExtra(CourseActivity.ARG_COURSE, (Parcelable) announcement.getCourse());
+                upIntent.putExtra(CourseActivity.ARG_COURSE_ID, announcement.getCourse().getId());
                 if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
                     // This activity is NOT part of this app's task, so create a new task
                     // when navigating up, with a synthesized back stack.

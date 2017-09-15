@@ -1,8 +1,6 @@
 package be.ugent.zeus.hydra.di;
 
-import be.ugent.zeus.hydra.domain.usecases.minerva.ChangeCourseOrder;
-import be.ugent.zeus.hydra.domain.usecases.minerva.GetCoursesWithUnreadCount;
-import be.ugent.zeus.hydra.domain.usecases.minerva.GetUnreadAnnouncements;
+import be.ugent.zeus.hydra.domain.usecases.minerva.*;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -19,5 +17,9 @@ public interface UseCaseComponent {
     GetUnreadAnnouncements getUnreadAnnouncement();
     GetCoursesWithUnreadCount getCoursesWithUnreadCount();
     ChangeCourseOrder changeCourseOrder();
+    GetSingleCourse getSingleCourse();
+    GetAnnouncementsForCourse getUnreadAnnouncementsForCourse();
+    GetCalendarForCourse getCalendarForCourse();
+    GetSingleCalendarItem getSingleCalendarItem();
 
 }

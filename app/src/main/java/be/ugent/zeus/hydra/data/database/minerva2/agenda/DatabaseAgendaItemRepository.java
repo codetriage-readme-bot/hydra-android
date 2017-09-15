@@ -6,7 +6,9 @@ import android.arch.lifecycle.Transformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
 import be.ugent.zeus.hydra.domain.usecases.minerva.AgendaItemRepository;
+import org.threeten.bp.ZonedDateTime;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
     private final CourseMapper courseMapper;
     private final AgendaMapper agendaMapper;
 
+    @Inject
     public DatabaseAgendaItemRepository(AgendaDao agendaDao, CourseMapper courseMapper, AgendaMapper agendaMapper) {
         this.agendaDao = agendaDao;
         this.courseMapper = courseMapper;
@@ -81,5 +84,16 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
     @Override
     public void delete(Collection<AgendaItem> objects) {
         agendaDao.delete(transform(objects, agendaMapper::convert));
+    }
+
+    @Override
+    public LiveData<List<AgendaItem>> getAllForCourse(String courseId, boolean onlyFuture) {
+        if (onlyFuture) {
+            ZonedDateTime now = ZonedDateTime.now();
+            return Transformations.map(agendaDao.getAllFutureForCourse(courseId, now), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+        } else {
+            return Transformations.map(agendaDao.getAllForCourse(courseId), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+
+        }
     }
 }

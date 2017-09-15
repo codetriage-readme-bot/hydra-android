@@ -1,11 +1,14 @@
 package be.ugent.zeus.hydra.ui.minerva.overview;
 
 import android.app.Application;
-import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
+
+import be.ugent.zeus.hydra.HydraApplication;
+import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.usecases.minerva.GetCalendarForCourse;
 import be.ugent.zeus.hydra.repository.requests.Result;
-import be.ugent.zeus.hydra.repository.data.BaseLiveData;
-import be.ugent.zeus.hydra.ui.common.RefreshViewModel;
 import java8.util.Objects;
 
 import java.util.List;
@@ -13,21 +16,26 @@ import java.util.List;
 /**
  * @author Niko Strijbol
  */
-public class AgendaViewModel extends RefreshViewModel<List<AgendaItem>> {
+public class AgendaViewModel extends AndroidViewModel {
 
-    private Course course;
+    private String courseId;
+    private LiveData<Result<List<AgendaItem>>> data;
+    private final GetCalendarForCourse useCase;
 
     public AgendaViewModel(Application application) {
         super(application);
+        this.useCase = HydraApplication.getComponent(application).getCalendarForCourse();
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourse(String courseId) {
+        this.courseId = courseId;
     }
 
-    @Override
-    protected BaseLiveData<Result<List<AgendaItem>>> constructDataInstance() {
-        Objects.requireNonNull(course, "You must set the course before using the view model.");
-        return new AgendaLiveData(getApplication() , course);
+    public LiveData<Result<List<AgendaItem>>> getData() {
+        Objects.requireNonNull(courseId, "You must set the course before using the view model.");
+        if (data == null) {
+            data = Transformations.map(useCase.execute(new GetCalendarForCourse.Params(courseId, true)), Result.Builder::fromData);
+        }
+        return data;
     }
 }

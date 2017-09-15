@@ -14,5 +14,7 @@ public interface AnnouncementRepository extends FullRepository<Integer, Announce
 
     LiveData<List<Announcement>> getLiveUnreadMostRecentFirst();
 
+    LiveData<List<Announcement>> getLiveMostRecentFirst(String courseId);
+
     List<Announcement> getUnreadMostRecentFirst();
 }

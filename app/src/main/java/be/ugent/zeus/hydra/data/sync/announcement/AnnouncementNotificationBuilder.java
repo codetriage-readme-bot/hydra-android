@@ -145,7 +145,7 @@ public class AnnouncementNotificationBuilder {
 
         //Click intent
         Intent intent = new Intent(context, CourseActivity.class);
-        intent.putExtra(CourseActivity.ARG_COURSE, (Parcelable) course);
+        intent.putExtra(CourseActivity.ARG_COURSE_ID, course.getId());
 
         builder.setContentIntent(upIntentMore());
 
@@ -170,7 +170,7 @@ public class AnnouncementNotificationBuilder {
         resultIntent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT, (Parcelable) announcement);
 
         Intent parentIntent = new Intent(context, CourseActivity.class);
-        parentIntent.putExtra(CourseActivity.ARG_COURSE, (Parcelable) announcement.getCourse());
+        parentIntent.putExtra(CourseActivity.ARG_COURSE_ID, announcement.getCourse().getId());
 
         return TaskStackBuilder.create(context)
                 .addNextIntent(mainActivity())
@@ -181,7 +181,7 @@ public class AnnouncementNotificationBuilder {
 
     private PendingIntent upIntentMore() {
         Intent resultIntent = new Intent(context, CourseActivity.class);
-        resultIntent.putExtra(CourseActivity.ARG_COURSE, (Parcelable) course);
+        resultIntent.putExtra(CourseActivity.ARG_COURSE_ID, course.getId());
 
         return TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(mainActivity())

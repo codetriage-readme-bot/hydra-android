@@ -4,12 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.ui.minerva.AgendaActivity;
+import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
-import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**
@@ -48,7 +48,8 @@ public class MinervaAgendaViewHolder extends FeedViewHolder {
 
             layout.addView(view);
 
-            view.setOnClickListener(v -> AgendaActivity.start(v.getContext(), item));
+            //TODO
+            //view.setOnClickListener(v -> AgendaActivity.start(v.getContext(), item));
         }
     }
 }

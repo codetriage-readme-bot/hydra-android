@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import be.ugent.zeus.hydra.data.models.minerva.Course;
 import be.ugent.zeus.hydra.ui.common.AdapterOutOfBoundsException;
 
 /**
@@ -14,22 +13,22 @@ import be.ugent.zeus.hydra.ui.common.AdapterOutOfBoundsException;
  */
 public class MinervaCoursePagerAdapter extends FragmentPagerAdapter {
 
-    private final Course course;
+    private final String courseId;
 
-    public MinervaCoursePagerAdapter(FragmentManager fm, Course course) {
+    public MinervaCoursePagerAdapter(FragmentManager fm, String courseId) {
         super(fm);
-        this.course = course;
+        this.courseId = courseId;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return CourseInfoFragment.newInstance(course);
+                return CourseInfoFragment.newInstance(courseId);
             case 1:
-                return AnnouncementFragment.newInstance(course);
+                return AnnouncementFragment.newInstance(courseId);
             case 2:
-                return AgendaFragment.newInstance(course);
+                return AgendaFragment.newInstance(courseId);
         }
 
         throw new AdapterOutOfBoundsException(position, getCount());

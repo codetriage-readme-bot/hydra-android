@@ -96,6 +96,16 @@ public interface AnnouncementDao {
             ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
             ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
             ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
+            " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.COURSE + " = :courseId ORDER BY a." + AnnouncementTable.Columns.DATE + " DESC")
+    LiveData<List<Result>> getLiveMostRecentFirst(String courseId);
+
+    @Query("SELECT a.*, c." + CourseTable.Columns.ID + " AS c_" + CourseTable.Columns.ID +
+            ", c." + CourseTable.Columns.CODE + " AS c_" + CourseTable.Columns.CODE +
+            ", c." + CourseTable.Columns.TITLE + " AS c_" + CourseTable.Columns.TITLE +
+            ", c." + CourseTable.Columns.DESCRIPTION + " AS c_" + CourseTable.Columns.DESCRIPTION +
+            ", c." + CourseTable.Columns.TUTOR + " AS c_" + CourseTable.Columns.TUTOR +
+            ", c." + CourseTable.Columns.ACADEMIC_YEAR + " AS c_" + CourseTable.Columns.ACADEMIC_YEAR +
+            ", c." + CourseTable.Columns.ORDER + " AS c_" + CourseTable.Columns.ORDER +
             " FROM " + AnnouncementTable.TABLE_NAME + " a LEFT JOIN " + CourseTable.TABLE_NAME + " c ON a." + AnnouncementTable.Columns.COURSE + " = c." + CourseTable.Columns.ID + " WHERE a." + AnnouncementTable.Columns.READ_DATE + " = -1 ORDER BY a." + AnnouncementTable.Columns.DATE + " DESC")
     List<Result> getUnreadMostRecentFirst();
 
