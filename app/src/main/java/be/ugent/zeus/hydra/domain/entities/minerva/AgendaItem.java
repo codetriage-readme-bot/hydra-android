@@ -123,6 +123,11 @@ public final class AgendaItem {
         this.calendarId = calendarId;
     }
 
+    /**
+     * Get the URI for this item. The URI consists of {@link #AGENDA_URI} with the id ({@link #getId()} appended to it.
+     *
+     * @return The URI.
+     */
     public String getUri() {
         return AGENDA_URI + getId();
     }

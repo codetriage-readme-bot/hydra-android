@@ -43,19 +43,28 @@ public class AgendaActivity extends BaseActivity {
     private static final DateTimeFormatter HOUR_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     private AgendaItem item;
-
     private View errorView;
     private View normalView;
 
     /**
      * Start this activity.
      *
-     * @param context The context to start it with.
+     * @param context The context to start with.
      * @param agenda The item to show.
      */
     public static void start(Context context, AgendaItem agenda) {
+        start(context, agenda.getUri());
+    }
+
+    /**
+     * Start this activity.
+     *
+     * @param context The context to start with.
+     * @param calendarItemUri The uri of the item, as returned by {@link AgendaItem#getUri()}.
+     */
+    public static void start(Context context, String calendarItemUri) {
         Intent intent = new Intent(context, AgendaActivity.class);
-        intent.putExtra(CalendarContract.Events.CUSTOM_APP_URI, agenda.getUri());
+        intent.putExtra(CalendarContract.Events.CUSTOM_APP_URI, calendarItemUri);
         context.startActivity(intent);
     }
 
@@ -82,7 +91,6 @@ public class AgendaActivity extends BaseActivity {
         setResult(RESULT_OK);
         errorView.setVisibility(GONE);
         normalView.setVisibility(VISIBLE);
-        invalidateOptionsMenu();
         item = result;
 
         TextView title = findViewById(R.id.title);
@@ -147,7 +155,6 @@ public class AgendaActivity extends BaseActivity {
     }
 
     private void onError(Throwable error) {
-        invalidateOptionsMenu();
         errorView.setVisibility(VISIBLE);
         normalView.setVisibility(GONE);
     }
@@ -156,6 +163,10 @@ public class AgendaActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                // If there is no valid item, we cannot re-create the stack.
+                if (this.item == null) {
+                    return super.onOptionsItemSelected(item);
+                }
                 // Provide up navigation if opened from outside Hydra.
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {

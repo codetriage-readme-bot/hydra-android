@@ -30,7 +30,7 @@ public class AgendaViewModel extends AndroidViewModel {
 
     public LiveData<Result<AgendaItem>> getData() {
         if (data == null) {
-            data = Transformations.map(useCase.execute(id), Result.Builder::fromData);
+            data = Transformations.map(useCase.execute(id), agendaItem -> Result.Builder.fromNullable(agendaItem, new NotFoundException("There is no agenda item with id: " + id)));
         }
         return data;
     }

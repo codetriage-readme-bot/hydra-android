@@ -1,6 +1,8 @@
 package be.ugent.zeus.hydra.repository.requests;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java8.util.Objects;
 import java8.util.function.Consumer;
 import java8.util.function.Function;
@@ -287,6 +289,23 @@ public class Result<D> {
          */
         public static <D> Result<D> fromException(@NonNull RequestException e) {
             return new Result<>(Objects.requireNonNull(e), null, true);
+        }
+
+        /**
+         * Shortcut for a completed result, where null represents an error.
+         *
+         * @param data The data. Can be null.
+         * @param ifNullException The exception if the data is null. Cannot be null.
+         * @param <D> The type of the data if there would have been data.
+         *
+         * @return The result.
+         */
+        public static <D> Result<D> fromNullable(@Nullable D data, @NonNull RequestException ifNullException) {
+            if (data == null) {
+                return fromException(ifNullException);
+            } else {
+                return fromData(data);
+            }
         }
 
         public Builder<D> withData(@NonNull D data) {

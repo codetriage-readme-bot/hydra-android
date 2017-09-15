@@ -1,8 +1,8 @@
 package be.ugent.zeus.hydra.data.database.minerva2.agenda;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 
+import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
 import be.ugent.zeus.hydra.domain.usecases.minerva.AgendaItemRepository;
@@ -32,7 +32,7 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
 
     @Override
     public LiveData<AgendaItem> getOneLive(Integer integer) {
-        return Transformations.map(agendaDao.getOneLive(integer), result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course)));
+        return NullAwareTransformations.map(agendaDao.getOneLive(integer), result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course)));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
 
     @Override
     public LiveData<List<AgendaItem>> getAllLive() {
-        return Transformations.map(agendaDao.getAllLive(), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+        return NullAwareTransformations.map(agendaDao.getAllLive(), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
     }
 
     @Override
@@ -90,9 +90,9 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
     public LiveData<List<AgendaItem>> getAllForCourse(String courseId, boolean onlyFuture) {
         if (onlyFuture) {
             ZonedDateTime now = ZonedDateTime.now();
-            return Transformations.map(agendaDao.getAllFutureForCourse(courseId, now), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+            return NullAwareTransformations.map(agendaDao.getAllFutureForCourse(courseId, now), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
         } else {
-            return Transformations.map(agendaDao.getAllForCourse(courseId), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+            return NullAwareTransformations.map(agendaDao.getAllForCourse(courseId), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
 
         }
     }

@@ -1,10 +1,10 @@
 package be.ugent.zeus.hydra.data.database.minerva2.course;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
+import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
@@ -38,7 +38,7 @@ public class DatabaseCourseRepository implements CourseRepository {
 
     @Override
     public LiveData<Course> getOneLive(String id) {
-        return Transformations.map(courseDao.getOneLive(id), courseMapper::courseToCourse);
+        return NullAwareTransformations.map(courseDao.getOneLive(id), courseMapper::courseToCourse);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DatabaseCourseRepository implements CourseRepository {
 
     @Override
     public LiveData<List<Course>> getAllLive() {
-        return Transformations.map(courseDao.getAllLive(), i -> transform(i, courseMapper::courseToCourse));
+        return NullAwareTransformations.map(courseDao.getAllLive(), i -> transform(i, courseMapper::courseToCourse));
     }
 
     @Override
@@ -98,11 +98,11 @@ public class DatabaseCourseRepository implements CourseRepository {
 
     @Override
     public LiveData<List<Course>> getInLive(List<String> ids) {
-        return Transformations.map(courseDao.getInLive(ids), l -> transform(l, courseMapper::courseToCourse));
+        return NullAwareTransformations.map(courseDao.getInLive(ids), l -> transform(l, courseMapper::courseToCourse));
     }
 
     @Override
     public LiveData<List<CourseUnread>> getAllAndUnreadInOrder() {
-        return Transformations.map(courseDao.getAllAndUnreadInOrder(), l -> transform(l, courseMapper::convert));
+        return NullAwareTransformations.map(courseDao.getAllAndUnreadInOrder(), l -> transform(l, courseMapper::convert));
     }
 }

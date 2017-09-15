@@ -1,6 +1,5 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.Pair;
 import android.view.View;
@@ -49,9 +48,7 @@ public class AnnouncementsViewHolder extends DataViewHolder<Pair<Announcement, B
             if (adapter.hasSelected()) {
                 toggleSelected();
             } else {
-                Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
-                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getId());
-                v.getContext().startActivity(intent);
+                AnnouncementActivity.start(v.getContext(), announcement);
             }
         });
 

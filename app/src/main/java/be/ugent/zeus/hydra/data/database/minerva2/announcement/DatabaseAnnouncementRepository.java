@@ -1,10 +1,10 @@
 package be.ugent.zeus.hydra.data.database.minerva2.announcement;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
+import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseDao;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
@@ -46,9 +46,7 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
 
     @Override
     public LiveData<Announcement> getOneLive(Integer integer) {
-
-
-        return Transformations.map(announcementDao.getOneLive(integer), result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course)));
+        return NullAwareTransformations.map(announcementDao.getOneLive(integer), result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course)));
     }
 
     @Override
@@ -59,7 +57,7 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
 
     @Override
     public LiveData<List<Announcement>> getAllLive() {
-        return Transformations.map(announcementDao.getAllLive(), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
+        return NullAwareTransformations.map(announcementDao.getAllLive(), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
     }
 
     @Override
@@ -104,12 +102,12 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
 
     @Override
     public LiveData<List<Announcement>> getLiveUnreadMostRecentFirst() {
-        return Transformations.map(announcementDao.getLiveUnreadMostRecentFirst(), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
+        return NullAwareTransformations.map(announcementDao.getLiveUnreadMostRecentFirst(), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
     }
 
     @Override
     public LiveData<List<Announcement>> getLiveMostRecentFirst(String courseId) {
-        return Transformations.map(announcementDao.getLiveMostRecentFirst(courseId), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
+        return NullAwareTransformations.map(announcementDao.getLiveMostRecentFirst(courseId), results -> transform(results, result -> announcementMapper.convert(result.announcement, courseMapper.courseToCourse(result.course))));
     }
 
     @Override
