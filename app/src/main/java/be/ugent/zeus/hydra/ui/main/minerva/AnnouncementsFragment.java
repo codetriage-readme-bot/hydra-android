@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
-import android.arch.lifecycle.LifecycleFragment;
+import android.support.v4.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Niko Strijbol
  */
-public class AnnouncementsFragment extends LifecycleFragment implements MultiSelectDiffAdapter.Callback<Announcement> {
+public class AnnouncementsFragment extends Fragment implements MultiSelectDiffAdapter.Callback<Announcement> {
 
     private static final String TAG = "AnnouncementsFragment";
 

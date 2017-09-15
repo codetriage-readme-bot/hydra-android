@@ -1,11 +1,11 @@
 package be.ugent.zeus.hydra.ui.sko.overview;
 
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +29,7 @@ import java.util.*;
  *
  * @author Niko Strijbol
  */
-public class LineupFragment extends LifecycleFragment {
+public class LineupFragment extends Fragment {
 
     private static final String TAG = "LineupFragment";
 

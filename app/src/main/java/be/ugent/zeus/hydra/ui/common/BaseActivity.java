@@ -1,7 +1,5 @@
 package be.ugent.zeus.hydra.ui.common;
 
-import android.arch.lifecycle.LifecycleRegistry;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
@@ -26,9 +24,7 @@ import be.ugent.zeus.hydra.R;
  *
  * @author Niko Strijbol
  */
-public abstract class BaseActivity extends AppCompatActivity implements LifecycleRegistryOwner {
-
-    private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Get the toolbar. Don't call it when there is no toolbar, as it may crash.
@@ -113,10 +109,5 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
      */
     protected boolean hasParent() {
         return true;
-    }
-
-    @Override
-    public LifecycleRegistry getLifecycle() {
-        return lifecycleRegistry;
     }
 }
