@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
-import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;

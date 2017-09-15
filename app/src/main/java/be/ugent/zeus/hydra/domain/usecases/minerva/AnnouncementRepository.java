@@ -1,8 +1,9 @@
-package be.ugent.zeus.hydra.domain.minerva;
+package be.ugent.zeus.hydra.domain.usecases.minerva;
 
 import android.arch.lifecycle.LiveData;
 
-import be.ugent.zeus.hydra.domain.FullRepository;
+import be.ugent.zeus.hydra.domain.usecases.FullRepository;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 
 import java.util.List;
 
@@ -14,5 +15,4 @@ public interface AnnouncementRepository extends FullRepository<Integer, Announce
     LiveData<List<Announcement>> getLiveUnreadMostRecentFirst();
 
     List<Announcement> getUnreadMostRecentFirst();
-
 }

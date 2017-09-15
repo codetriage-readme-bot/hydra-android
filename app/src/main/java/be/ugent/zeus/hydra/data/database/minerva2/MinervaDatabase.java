@@ -17,6 +17,8 @@ import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_7_8;
 import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_8_9;
 import be.ugent.zeus.hydra.utils.TtbUtils;
 
+import javax.inject.Singleton;
+
 import static be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase.VERSION;
 
 /**
@@ -24,6 +26,7 @@ import static be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase.VERSION
  */
 @Database(entities = {Course.class, AgendaItem.class, Announcement.class}, version = VERSION)
 @TypeConverters(TtbUtils.class)
+@Singleton
 public abstract class MinervaDatabase extends RoomDatabase {
 
     public static final String NAME = "minervaDatabase.db";

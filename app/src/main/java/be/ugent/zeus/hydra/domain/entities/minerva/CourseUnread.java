@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.domain.minerva;
+package be.ugent.zeus.hydra.domain.entities.minerva;
 
 import java8.util.Objects;
 

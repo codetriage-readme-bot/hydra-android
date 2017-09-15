@@ -4,8 +4,8 @@ import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva2.announcement.DatabaseAnnouncementRepository;
 import be.ugent.zeus.hydra.data.database.minerva2.course.DatabaseCourseRepository;
-import be.ugent.zeus.hydra.domain.minerva.AnnouncementRepository;
-import be.ugent.zeus.hydra.domain.minerva.CourseRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.AnnouncementRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
 
 /**
  * @author Niko Strijbol

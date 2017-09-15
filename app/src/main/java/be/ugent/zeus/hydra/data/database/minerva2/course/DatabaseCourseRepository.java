@@ -5,11 +5,13 @@ import android.arch.lifecycle.Transformations;
 import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
-import be.ugent.zeus.hydra.domain.minerva.Course;
-import be.ugent.zeus.hydra.domain.minerva.CourseRepository;
-import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.entities.minerva.Course;
+import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
 import org.mapstruct.factory.Mappers;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,13 +20,20 @@ import static be.ugent.zeus.hydra.utils.IterableUtils.transform;
 /**
  * @author Niko Strijbol
  */
+@Singleton
 public class DatabaseCourseRepository implements CourseRepository {
 
     private final CourseDao courseDao;
-    private final CourseMapper courseMapper = Mappers.getMapper(CourseMapper.class);
+    private final CourseMapper courseMapper;
 
     public DatabaseCourseRepository(Context context) {
-        this.courseDao = MinervaDatabase.getInstance(context).getCourseDao();
+        this(MinervaDatabase.getInstance(context).getCourseDao(), Mappers.getMapper(CourseMapper.class));
+    }
+
+    @Inject
+    public DatabaseCourseRepository(CourseDao courseDao, CourseMapper courseMapper) {
+        this.courseDao = courseDao;
+        this.courseMapper = courseMapper;
     }
 
     @Override

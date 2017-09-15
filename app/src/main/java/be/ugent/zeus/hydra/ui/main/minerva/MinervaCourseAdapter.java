@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
-import be.ugent.zeus.hydra.domain.minerva.Course;
-import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.entities.minerva.Course;
+import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.ui.common.ViewUtils;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.SearchableDiffAdapter;

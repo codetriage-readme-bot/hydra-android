@@ -6,10 +6,12 @@ import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
-import be.ugent.zeus.hydra.domain.minerva.Announcement;
-import be.ugent.zeus.hydra.domain.minerva.AnnouncementRepository;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.usecases.minerva.AnnouncementRepository;
 import org.mapstruct.factory.Mappers;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,12 +20,14 @@ import static be.ugent.zeus.hydra.utils.IterableUtils.transform;
 /**
  * @author Niko Strijbol
  */
+@Singleton
 public class DatabaseAnnouncementRepository implements AnnouncementRepository {
 
     private final AnnouncementDao announcementDao;
     private final CourseMapper courseMapper;
     private final AnnouncementMapper announcementMapper;
 
+    @Inject
     public DatabaseAnnouncementRepository(AnnouncementDao announcementDao, CourseMapper courseMapper, AnnouncementMapper announcementMapper) {
         this.announcementDao = announcementDao;
         this.courseMapper = courseMapper;

@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.data.database.minerva2;
 
-import be.ugent.zeus.hydra.domain.minerva.Tutor;
+import be.ugent.zeus.hydra.domain.entities.minerva.Tutor;
 
 /**
  * @author Niko Strijbol

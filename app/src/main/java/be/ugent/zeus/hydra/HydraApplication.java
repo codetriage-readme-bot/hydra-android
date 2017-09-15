@@ -3,7 +3,11 @@ package be.ugent.zeus.hydra;
 import android.app.Activity;
 import android.app.Application;
 import android.support.annotation.NonNull;
+
 import be.ugent.zeus.hydra.data.ChannelCreator;
+import be.ugent.zeus.hydra.di.DaggerUseCaseComponent;
+import be.ugent.zeus.hydra.di.UseCaseComponent;
+import be.ugent.zeus.hydra.di.AppModule;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -21,6 +25,7 @@ import jonathanfinerty.once.Once;
 public class HydraApplication extends Application {
 
     private Tracker tracker;
+    private UseCaseComponent useCaseComponent;
 
     @Override
     public void onCreate() {
@@ -33,6 +38,8 @@ public class HydraApplication extends Application {
         AndroidThreeTen.init(this);
         LeakCanary.install(this);
         Once.initialise(this);
+
+        useCaseComponent = initDagger();
 
         // Initialize the channels that are needed in the whole app. The channels for Minerva are created when needed.
         createChannels();
@@ -87,5 +94,15 @@ public class HydraApplication extends Application {
         ChannelCreator channelCreator = ChannelCreator.getInstance(this);
         channelCreator.createSkoChannel();
         channelCreator.createUrgentChannel();
+    }
+
+    protected UseCaseComponent initDagger() {
+        return DaggerUseCaseComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
+    }
+
+    public UseCaseComponent getUseCaseComponent() {
+        return useCaseComponent;
     }
 }

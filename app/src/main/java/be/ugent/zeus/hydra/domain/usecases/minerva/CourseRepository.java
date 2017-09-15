@@ -1,8 +1,10 @@
-package be.ugent.zeus.hydra.domain.minerva;
+package be.ugent.zeus.hydra.domain.usecases.minerva;
 
 import android.arch.lifecycle.LiveData;
 
-import be.ugent.zeus.hydra.domain.FullRepository;
+import be.ugent.zeus.hydra.domain.usecases.FullRepository;
+import be.ugent.zeus.hydra.domain.entities.minerva.Course;
+import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 
 import java.util.List;
 

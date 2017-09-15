@@ -9,7 +9,7 @@ import be.ugent.zeus.hydra.data.database.minerva2.course.CourseTable;
 import be.ugent.zeus.hydra.data.database.minerva2.course.Course;
 import org.threeten.bp.ZonedDateTime;
 
-import static be.ugent.zeus.hydra.domain.minerva.AgendaItem.NO_CALENDAR_ID;
+import static be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem.NO_CALENDAR_ID;
 
 /**
  * Represents an agenda item as it is saved in the database.

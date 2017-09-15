@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
-import be.ugent.zeus.hydra.domain.minerva.AgendaItem;
-import be.ugent.zeus.hydra.domain.minerva.AgendaItemRepository;
+import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.usecases.minerva.AgendaItemRepository;
 
 import java.util.Collection;
 import java.util.List;

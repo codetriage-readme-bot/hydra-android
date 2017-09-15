@@ -6,8 +6,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 
 import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
-import be.ugent.zeus.hydra.domain.minerva.CourseRepository;
-import be.ugent.zeus.hydra.domain.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
+import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.repository.requests.Result;
 
 import java.util.List;

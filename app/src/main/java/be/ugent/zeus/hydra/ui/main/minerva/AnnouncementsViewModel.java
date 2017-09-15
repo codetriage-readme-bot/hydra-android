@@ -5,9 +5,9 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 
-import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
-import be.ugent.zeus.hydra.domain.minerva.Announcement;
-import be.ugent.zeus.hydra.domain.minerva.AnnouncementRepository;
+import be.ugent.zeus.hydra.HydraApplication;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.usecases.minerva.GetUnreadAnnouncements;
 import be.ugent.zeus.hydra.repository.requests.Result;
 
 import java.util.List;
@@ -17,16 +17,18 @@ import java.util.List;
  */
 public class AnnouncementsViewModel extends AndroidViewModel {
 
+    private final GetUnreadAnnouncements useCase;
     private LiveData<Result<List<Announcement>>> data;
 
     public AnnouncementsViewModel(Application application) {
         super(application);
+        HydraApplication app = (HydraApplication) application;
+        this.useCase = app.getUseCaseComponent().getUnreadAnnouncement();
     }
 
     public LiveData<Result<List<Announcement>>> getData() {
         if (data == null) {
-            AnnouncementRepository repository = RepositoryFactory.getAnnouncementDatabaseRepository(getApplication());
-            data = Transformations.map(repository.getLiveUnreadMostRecentFirst(), Result.Builder::fromData);
+            data = Transformations.map(useCase.execute(null), Result.Builder::fromData);
         }
 
         return data;
