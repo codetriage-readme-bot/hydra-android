@@ -1,22 +1,21 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
+import android.app.Application;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
-import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
+import be.ugent.zeus.hydra.domain.usecases.minerva.ChangeCourseOrder;
 import be.ugent.zeus.hydra.ui.common.ViewUtils;
-import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.SearchableDiffAdapter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ordering.ItemDragHelperAdapter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ordering.OnStartDragListener;
 import java8.util.stream.Collectors;
-import java8.util.stream.IntStreams;
+import java8.util.stream.StreamSupport;
 
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -26,21 +25,13 @@ import java.util.Collections;
  */
 class MinervaCourseAdapter extends SearchableDiffAdapter<CourseUnread, MinervaCourseViewHolder> implements ItemDragHelperAdapter {
 
-    private CourseDao courseDao;
+    private final Application application;
     private final OnStartDragListener startDragListener;
-    private final ResultStarter resultStarter;
 
-    MinervaCourseAdapter(OnStartDragListener startDragListener, ResultStarter resultStarter) {
+    MinervaCourseAdapter(Application application, OnStartDragListener startDragListener) {
         super(c -> c.getCourse().getTitle().toLowerCase());
         this.startDragListener = startDragListener;
-        this.resultStarter = resultStarter;
-    }
-
-    /**
-     * @param courseDao The course dao.
-     */
-    public void setCourseDao(CourseDao courseDao) {
-        this.courseDao = courseDao;
+        this.application = application;
     }
 
     @Override
@@ -57,22 +48,8 @@ class MinervaCourseAdapter extends SearchableDiffAdapter<CourseUnread, MinervaCo
 
     @Override
     public void onMoveCompleted(RecyclerView.ViewHolder viewHolder) {
-        if (courseDao == null) {
-            throw new IllegalStateException("The course DAO cannot be null!");
-        }
-        // TODO
-        // TODO
-        // TODO
-        AsyncTask.execute(() -> {
-            Collection<Course> courses = IntStreams.range(0, getItemCount())
-                    .mapToObj(value -> {
-                        Course course1 = items.get(value).getCourse();
-                        course1.setOrder(value);
-                        return course1;
-                    })
-                    .collect(Collectors.toList());
-            //courseDao.update(courses, true);
-        });
+        ChangeCourseOrder changeCourseOrder = HydraApplication.getComponent(application).changeCourseOrder();
+        AsyncTask.execute(() -> changeCourseOrder.execute(StreamSupport.stream(items).map(CourseUnread::getCourse).collect(Collectors.toList())));
     }
 
     @Override

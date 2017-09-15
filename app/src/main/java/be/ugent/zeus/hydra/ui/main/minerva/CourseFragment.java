@@ -1,11 +1,11 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
-import android.support.v4.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -15,7 +15,6 @@ import android.view.*;
 import android.widget.ProgressBar;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.database.minerva.CourseDao;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
@@ -46,7 +45,6 @@ public class CourseFragment extends Fragment implements OnStartDragListener {
     private ItemTouchHelper helper;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
-    private MinervaViewModel model;
     private ResultStarter resultStarter;
 
     @Override
@@ -70,9 +68,7 @@ public class CourseFragment extends Fragment implements OnStartDragListener {
             resultStarter = (ResultStarter) getActivity();
         }
 
-        CourseDao courseDao = new CourseDao(getContext());
-        adapter = new MinervaCourseAdapter(this, resultStarter);
-        adapter.setCourseDao(courseDao);
+        adapter = new MinervaCourseAdapter(getActivity().getApplication(), this);
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -97,7 +93,7 @@ public class CourseFragment extends Fragment implements OnStartDragListener {
         super.onActivityCreated(savedInstanceState);
 
         progressBar.setVisibility(View.VISIBLE);
-        model = ViewModelProviders.of(getActivity()).get(MinervaViewModel.class);
+        MinervaViewModel model = ViewModelProviders.of(getActivity()).get(MinervaViewModel.class);
         model.getData().observe(this, ErrorObserver.with(this::onError));
         model.getData().observe(this, new ProgressObserver<>(progressBar));
         model.getData().observe(this, new AdapterObserver<>(adapter));
