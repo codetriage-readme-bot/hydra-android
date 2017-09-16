@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.ImageView;
 
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.preferences.HomeFragment;
 import be.ugent.zeus.hydra.utils.NetworkUtils;
 import com.squareup.picasso.NetworkPolicy;
@@ -23,11 +24,13 @@ public class FeedUtils {
     /**
      * The special shift.
      */
+    @Deprecated
     public static int FEED_SPECIAL_SHIFT = 10;
 
     /**
      * The upper limit on the feed.
      */
+    @Deprecated
     public static int FEED_MAX_VALUE = 1000 + FEED_SPECIAL_SHIFT;
 
     /**
@@ -43,6 +46,7 @@ public class FeedUtils {
      *
      * @return The interpolated value in [y,z].
      */
+    @Deprecated
     public static int lerp(int x, int a, int b) {
         return Math.min((int) ((x - a) * (double) FEED_MAX_VALUE / (b - a)), FEED_MAX_VALUE) + FEED_SPECIAL_SHIFT;
     }

@@ -5,7 +5,7 @@ import android.arch.lifecycle.LiveData;
 import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
-import be.ugent.zeus.hydra.domain.usecases.minerva.AgendaItemRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AgendaItemRepository;
 import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Inject;
@@ -88,6 +88,7 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
 
     @Override
     public LiveData<List<AgendaItem>> getAllForCourse(String courseId, boolean onlyFuture) {
+        // TODO: make this more performant by not get a separate Course instance per item.
         if (onlyFuture) {
             ZonedDateTime now = ZonedDateTime.now();
             return NullAwareTransformations.map(agendaDao.getAllFutureForCourse(courseId, now), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));

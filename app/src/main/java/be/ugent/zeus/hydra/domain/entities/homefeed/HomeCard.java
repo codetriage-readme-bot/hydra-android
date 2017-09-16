@@ -1,12 +1,13 @@
-package be.ugent.zeus.hydra.ui.main.homefeed.content;
+package be.ugent.zeus.hydra.domain.entities.homefeed;
 
 import android.support.annotation.IntDef;
+
 import java8.lang.Integers;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard.CardType.*;
+import static be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard.CardType.*;
 
 /**
  * Base model for the cards in the home feed.
@@ -17,7 +18,7 @@ import static be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard.CardType.*;
  * card with the highest priority, 1000 has the lowest priority. Cards should generally strive to produce unique
  * priorities for a certain card type, as the order of two cards with the same priority is not defined.
  *
- * An easy way to calculate a correct priority is using {@link FeedUtils}, which can calculate a priority for a
+ * An easy way to calculate a correct priority is using {@link PriorityUtils}, which can calculate a priority for a
  * card that has a score in an interval, e.g. the days between the card's date and today.
  *
  * The implementation shifts the priority to [10,1010]. The first interval [0,10[ should be used very sparingly for

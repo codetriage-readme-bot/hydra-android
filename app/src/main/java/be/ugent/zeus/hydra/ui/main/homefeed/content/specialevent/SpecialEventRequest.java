@@ -12,7 +12,7 @@ import be.ugent.zeus.hydra.repository.requests.Requests;
 import be.ugent.zeus.hydra.repository.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedFragment;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.utils.PreferencesUtils;
 import java8.util.stream.Stream;
 import java8.util.stream.StreamSupport;

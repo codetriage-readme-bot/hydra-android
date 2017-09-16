@@ -7,7 +7,7 @@ import android.view.View;
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.ui.resto.menu.MenuActivity;
 import be.ugent.zeus.hydra.ui.preferences.RestoPreferenceFragment;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
 import be.ugent.zeus.hydra.data.models.resto.RestoMenu;

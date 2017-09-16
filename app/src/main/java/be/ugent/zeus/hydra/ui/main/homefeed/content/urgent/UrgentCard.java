@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.content.urgent;
 
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import java8.util.Objects;
 
 /**

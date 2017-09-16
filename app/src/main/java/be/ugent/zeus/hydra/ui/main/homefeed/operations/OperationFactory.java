@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.operations;
 
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import java8.util.function.IntPredicate;
 import java8.util.function.Supplier;
 

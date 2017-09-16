@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.domain.usecases.minerva;
 
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.CourseRepository;
 
 import javax.inject.Inject;
 import java.util.List;

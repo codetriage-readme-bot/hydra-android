@@ -13,7 +13,7 @@ import be.ugent.zeus.hydra.data.models.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
 import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 import be.ugent.zeus.hydra.utils.DateUtils;

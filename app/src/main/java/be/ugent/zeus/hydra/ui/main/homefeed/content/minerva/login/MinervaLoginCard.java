@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.login;
 
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 
 /**
  * Home card to prompt the user to log in.

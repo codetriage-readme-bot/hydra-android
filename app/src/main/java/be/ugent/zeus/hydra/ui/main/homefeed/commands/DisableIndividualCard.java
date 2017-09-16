@@ -3,7 +3,7 @@ package be.ugent.zeus.hydra.ui.main.homefeed.commands;
 import android.content.Context;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.utils.PreferencesUtils;
 
 /**

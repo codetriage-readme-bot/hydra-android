@@ -6,13 +6,13 @@ import android.util.Log;
 import be.ugent.zeus.hydra.repository.requests.RequestException;
 import be.ugent.zeus.hydra.repository.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import java8.util.stream.Stream;
 import java8.util.stream.StreamSupport;
 
 import java.util.Collections;
 
-import static be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard.CardType.DEBUG;
+import static be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard.CardType.DEBUG;
 
 /**
  * @author Niko Strijbol

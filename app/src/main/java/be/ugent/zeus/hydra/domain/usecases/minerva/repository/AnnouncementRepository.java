@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.domain.usecases.minerva;
+package be.ugent.zeus.hydra.domain.usecases.minerva.repository;
 
 import android.arch.lifecycle.LiveData;
 

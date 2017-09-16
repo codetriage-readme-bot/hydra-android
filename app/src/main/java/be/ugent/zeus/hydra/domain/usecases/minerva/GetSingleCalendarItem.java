@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AgendaItemRepository;
 
 import javax.inject.Inject;
 

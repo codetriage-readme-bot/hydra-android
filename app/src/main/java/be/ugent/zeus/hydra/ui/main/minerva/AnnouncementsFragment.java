@@ -18,7 +18,7 @@ import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
-import be.ugent.zeus.hydra.domain.usecases.minerva.AnnouncementRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;

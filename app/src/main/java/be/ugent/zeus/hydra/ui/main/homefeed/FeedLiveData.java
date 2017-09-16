@@ -13,7 +13,7 @@ import be.ugent.zeus.hydra.data.auth.AccountUtils;
 import be.ugent.zeus.hydra.data.sync.SyncBroadcast;
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
 import be.ugent.zeus.hydra.repository.requests.Result;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.debug.WaitRequest;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.event.EventRequest;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.agenda.MinervaAgendaRequest;

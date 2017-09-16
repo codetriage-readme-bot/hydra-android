@@ -8,7 +8,7 @@ import be.ugent.zeus.hydra.data.models.association.UgentNewsItem;
 import be.ugent.zeus.hydra.ui.NewsArticleActivity;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**

@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.domain.usecases.minerva;
 
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
 import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Inject;

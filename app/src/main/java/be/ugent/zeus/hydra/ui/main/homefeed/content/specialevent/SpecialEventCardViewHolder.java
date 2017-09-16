@@ -11,7 +11,7 @@ import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedFragment;
 import be.ugent.zeus.hydra.ui.main.homefeed.SwipeDismissableViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.commands.DisableIndividualCard;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 

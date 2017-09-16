@@ -7,7 +7,7 @@ import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
-import be.ugent.zeus.hydra.domain.usecases.minerva.CourseRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.CourseRepository;
 import org.mapstruct.factory.Mappers;
 
 import javax.inject.Inject;

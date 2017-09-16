@@ -5,11 +5,11 @@ import android.support.annotation.StringRes;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedFragment;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.utils.PreferencesUtils;
 
 /**
- * This will add a certain {@link be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard.CardType} to the list of hidden
+ * This will add a certain {@link HomeCard.CardType} to the list of hidden
  * types.
  *
  * @author Niko Strijbol

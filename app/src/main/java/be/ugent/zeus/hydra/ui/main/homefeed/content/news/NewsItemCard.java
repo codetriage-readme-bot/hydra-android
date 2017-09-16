@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.content.news;
 
 import be.ugent.zeus.hydra.data.models.association.UgentNewsItem;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
 import be.ugent.zeus.hydra.data.models.association.NewsItem;
 import java8.util.Objects;

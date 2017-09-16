@@ -12,7 +12,7 @@ import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.ItemDiffAdapter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.commands.DisableTypeCommand;
 import be.ugent.zeus.hydra.ui.main.homefeed.commands.FeedCommand;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.event.EventCardViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.agenda.MinervaAgendaViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.announcement.MinervaAnnouncementViewHolder;
@@ -23,7 +23,7 @@ import be.ugent.zeus.hydra.ui.main.homefeed.content.schamper.SchamperViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.specialevent.SpecialEventCardViewHolder;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.urgent.UrgentViewHolder;
 
-import static be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard.CardType.*;
+import static be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard.CardType.*;
 
 /**
  * Adapter for {@link HomeFeedFragment}.

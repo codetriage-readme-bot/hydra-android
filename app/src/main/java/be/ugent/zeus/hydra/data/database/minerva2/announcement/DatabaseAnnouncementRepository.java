@@ -8,7 +8,7 @@ import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseDao;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
-import be.ugent.zeus.hydra.domain.usecases.minerva.AnnouncementRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
 import org.mapstruct.factory.Mappers;
 
 import javax.inject.Inject;

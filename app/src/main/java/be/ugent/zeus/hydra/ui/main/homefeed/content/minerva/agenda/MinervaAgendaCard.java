@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.agenda;
 
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
 import java8.util.Objects;
 import org.threeten.bp.LocalDate;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author Niko Strijbol
  */
-class MinervaAgendaCard extends HomeCard {
+public class MinervaAgendaCard extends HomeCard {
 
     // From 11 h to 15 h we are more interested in the menu.
     private static final LocalDateTime disInterestStart = LocalDateTime.now().withHour(11).withMinute(0);
@@ -24,16 +24,16 @@ class MinervaAgendaCard extends HomeCard {
     private final LocalDate date;
     private final List<AgendaItem> agenda;
 
-    MinervaAgendaCard(LocalDate date, List<AgendaItem> agendaItems) {
+    public MinervaAgendaCard(LocalDate date, List<AgendaItem> agendaItems) {
         this.date = date;
         this.agenda = agendaItems;
     }
 
-    List<AgendaItem> getAgendaItems() {
+    public List<AgendaItem> getAgendaItems() {
         return agenda;
     }
 
-    LocalDate getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
