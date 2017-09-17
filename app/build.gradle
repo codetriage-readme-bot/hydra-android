@@ -61,7 +61,7 @@ android {
             manifestPlaceholders = [disableAnalytics: true]
             // Set these to true when debugging the home feed.
             buildConfigField "boolean", "DEBUG_HOME_STREAM_PRIORITY", "false"
-            buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "false"
+            buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "true"
             buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "true"
         }
     }

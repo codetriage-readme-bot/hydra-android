@@ -9,11 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.minerva.Announcement;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.cards.MinervaAnnouncementsCard;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
-import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;
 import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 import be.ugent.zeus.hydra.utils.DateUtils;
@@ -57,13 +58,13 @@ public class MinervaAnnouncementViewHolder extends FeedViewHolder {
 
             title.setText(announcement.getTitle());
             String infoText = itemView.getContext().getString(R.string.agenda_subtitle,
-                    DateUtils.relativeDateTimeString(announcement.getDate(), itemView.getContext(), false),
-                    announcement.getLecturer());
+                    DateUtils.relativeDateTimeString(announcement.getLastEditedAt(), itemView.getContext(), false),
+                    announcement.getLecturer().getName());
             subtitle.setText(infoText);
 
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(starter.getContext(), AnnouncementActivity.class);
-                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getItemId());
+                intent.putExtra(AnnouncementActivity.ARG_ANNOUNCEMENT_ID, announcement.getId());
                 starter.startActivityForResult(intent, starter.getRequestCode());
             });
             layout.addView(view);

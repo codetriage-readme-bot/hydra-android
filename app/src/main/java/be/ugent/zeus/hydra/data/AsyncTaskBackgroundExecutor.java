@@ -6,12 +6,10 @@ import be.ugent.zeus.hydra.domain.usecases.BackgroundExecutor;
 import java8.util.function.Function;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * @author Niko Strijbol
  */
-@Singleton
 public class AsyncTaskBackgroundExecutor implements BackgroundExecutor {
 
     @Inject
@@ -40,5 +38,10 @@ public class AsyncTaskBackgroundExecutor implements BackgroundExecutor {
                 callback.onCompleted(r);
             }
         }.execute();
+    }
+
+    @Override
+    public void execute(Runnable runnable) {
+        AsyncTask.execute(runnable);
     }
 }

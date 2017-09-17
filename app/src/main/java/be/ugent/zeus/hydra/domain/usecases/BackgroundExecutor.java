@@ -18,6 +18,8 @@ public interface BackgroundExecutor {
      */
     <R> void execute(Function<TaskControl<R>, R> runnable, Callback<R> callback);
 
+    void execute(Runnable runnable);
+
     interface Callback<R> {
 
         void onCompleted(R result);

@@ -94,6 +94,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DismissCallback());
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        swipeRefreshLayout.setRefreshing(true);
         model = ViewModelProviders.of(this).get(FeedViewModel.class);
         model.getData().observe(this, ErrorObserver.with(this::onError));
         model.getData().observe(this, new AdapterObserver<>(adapter));
@@ -110,7 +111,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         });
 
-        model.getRefreshing().observe(this, swipeRefreshLayout::setRefreshing);
+        // TODO
+        //model.getRefreshing().observe(this, swipeRefreshLayout::setRefreshing);
 
         firstRun = true;
     }
@@ -157,7 +159,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        model.requestRefresh();
+        //TODO
+        //model.requestRefresh();
     }
 
     private void onError(Throwable throwable) {
@@ -180,7 +183,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                     || data.getBooleanExtra(AnnouncementActivity.RESULT_ANNOUNCEMENT_READ, false)) {
                 Bundle extras = new Bundle();
                 extras.putInt(REFRESH_HOMECARD_TYPE, HomeCard.CardType.MINERVA_ANNOUNCEMENT);
-                model.requestRefresh(extras);
+                // TODO
+                // model.requestRefresh(extras);
             }
         }
     }
@@ -198,7 +202,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         int cardType = command.execute(getContext());
         Bundle extras = new Bundle();
         extras.putInt(REFRESH_HOMECARD_TYPE, cardType);
-        model.requestRefresh(extras);
+        // TODO
+        //model.requestRefresh(extras);
 
         Snackbar.make(getView(), command.getCompleteMessage(), BaseTransientBottomBar.LENGTH_LONG)
                 .setAction(R.string.home_feed_undo, view -> undoCommand(command))
@@ -209,8 +214,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         int cardType = command.undo(getContext());
         Bundle extras = new Bundle();
         extras.putInt(REFRESH_HOMECARD_TYPE, cardType);
-        model.requestRefresh(extras);
+        // TODO
+        //model.requestRefresh(extras);
     }
-
-
 }
