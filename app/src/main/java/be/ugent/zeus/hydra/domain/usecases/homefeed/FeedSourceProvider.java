@@ -1,9 +1,11 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.os.Looper;
 import android.util.Log;
 
+import be.ugent.zeus.hydra.domain.LiveDataUtils;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.usecases.EmptyResult;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.sources.GetMinervaAgenda;
@@ -51,7 +53,7 @@ public class FeedSourceProvider {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                return new EmptyResult<>();
+                return LiveDataUtils.threadSafeMap(EmptyResult.emptyList(), (Function<List<HomeCard>, Result<List<HomeCard>>>) Result.Builder::fromData);
             }
         };
     }
