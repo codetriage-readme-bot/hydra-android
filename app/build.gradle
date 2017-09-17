@@ -114,7 +114,7 @@ dependencies {
     compile "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
 
     // Lifecycle components
-    compile "android.arch.lifecycle:runtime:1.0.0-alpha9-1"
+    compile "android.arch.lifecycle:runtime:1.0.0"
     compile "android.arch.lifecycle:extensions:1.0.0-alpha9-1"
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
     compile "android.arch.persistence.room:runtime:1.0.0-alpha9-1"

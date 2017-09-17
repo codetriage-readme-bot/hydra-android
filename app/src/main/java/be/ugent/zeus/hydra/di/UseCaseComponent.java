@@ -12,7 +12,7 @@ import javax.inject.Singleton;
  * @author Niko Strijbol
  */
 @Singleton
-@Component(modules = {AppModule.class, DatabaseModule.class, DatabaseRepoModule.class, ImplementationModule.class, SimpleImplemenationModule.class})
+@Component(modules = {AppModule.class, DatabaseModule.class, DatabaseRepoModule.class, ImplementationModule.class, SimpleImplementationModule.class})
 public interface UseCaseComponent {
 
     GetUnreadAnnouncements getUnreadAnnouncement();

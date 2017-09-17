@@ -1,8 +1,8 @@
-package be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.agenda;
+package be.ugent.zeus.hydra.domain.entities.homefeed.cards;
 
-import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.entities.homefeed.PriorityUtils;
+import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
 import java8.util.Objects;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -42,9 +42,9 @@ public class MinervaAgendaCard extends HomeCard {
         LocalDateTime now = LocalDateTime.now();
         int duration = (int) ChronoUnit.DAYS.between(now.toLocalDate(), date);
         if (!(now.isAfter(disInterestStart) && now.isBefore(disInterestEnd))) {
-            return FeedUtils.lerp(duration, 0, 21) - 5;
+            return PriorityUtils.lerp(duration, 0, 21) - 5;
         } else {
-            return FeedUtils.lerp(duration, 0, 21);
+            return PriorityUtils.lerp(duration, 0, 21);
         }
     }
 

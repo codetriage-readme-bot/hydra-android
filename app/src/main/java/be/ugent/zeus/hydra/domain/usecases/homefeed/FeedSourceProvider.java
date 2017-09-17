@@ -6,6 +6,7 @@ import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.usecases.EmptyResult;
+import be.ugent.zeus.hydra.domain.usecases.homefeed.sources.GetMinervaAgenda;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.sources.GetMinervaAnnouncements;
 import be.ugent.zeus.hydra.repository.requests.Result;
 
@@ -21,18 +22,16 @@ import java.util.List;
 public class FeedSourceProvider {
 
     private final GetMinervaAnnouncements minervaAnnouncements;
+    private final GetMinervaAgenda minervaAgenda;
 
     @Inject
-    public FeedSourceProvider(GetMinervaAnnouncements minervaAnnouncements) {
+    public FeedSourceProvider(GetMinervaAnnouncements minervaAnnouncements, GetMinervaAgenda agenda) {
         this.minervaAnnouncements = minervaAnnouncements;
+        this.minervaAgenda = agenda;
     }
 
-    public FeedSource getMinervaAnnouncementsSource() {
-        return minervaAnnouncements;
-    }
-
-    public int getCount(HomeFeedOptions options) {
-        return 2;
+    public int getCount() {
+        return 3;
     }
 
     private FeedSource waitingSource() {
@@ -58,6 +57,6 @@ public class FeedSourceProvider {
     }
 
     public List<FeedSource> getAll() {
-        return Arrays.asList(waitingSource(), getMinervaAnnouncementsSource());
+        return Arrays.asList(waitingSource(), minervaAnnouncements, minervaAgenda);
     }
 }

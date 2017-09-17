@@ -97,4 +97,9 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
 
         }
     }
+
+    @Override
+    public LiveData<List<AgendaItem>> getBetween(ZonedDateTime lower, ZonedDateTime higher) {
+        return NullAwareTransformations.map(agendaDao.getBetween(lower, higher), results -> transform(results, result -> agendaMapper.convert(result.agendaItem, courseMapper.courseToCourse(result.course))));
+    }
 }

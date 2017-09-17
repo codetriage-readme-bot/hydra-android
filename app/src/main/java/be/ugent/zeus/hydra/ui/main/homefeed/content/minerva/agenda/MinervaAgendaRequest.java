@@ -3,14 +3,15 @@ package be.ugent.zeus.hydra.ui.main.homefeed.content.minerva.agenda;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
 import be.ugent.zeus.hydra.data.database.minerva.AgendaDao;
 import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.repository.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
-import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import java8.util.stream.Collectors;
+import java8.util.stream.RefStreams;
 import java8.util.stream.Stream;
-import java8.util.stream.StreamSupport;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
@@ -43,8 +44,7 @@ public class MinervaAgendaRequest implements HomeFeedRequest {
                         .collect(Collectors.groupingBy(AgendaItem::getLocalStartDate));
 
         //Convert it to a view
-        return Result.Builder.fromData(StreamSupport.stream(perDay.entrySet())
-                .map(e -> new MinervaAgendaCard(e.getKey(), e.getValue())));
+        return Result.Builder.fromData(RefStreams.empty());
     }
 
     @Override

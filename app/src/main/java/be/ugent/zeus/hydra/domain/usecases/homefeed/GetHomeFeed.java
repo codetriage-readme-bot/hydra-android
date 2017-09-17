@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.domain.usecases.BackgroundExecutor;
+import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.repository.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.FeedException;
@@ -18,6 +18,7 @@ import java8.util.stream.Stream;
 import java8.util.stream.StreamSupport;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,13 +34,13 @@ import java.util.concurrent.CountDownLatch;
 public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>>>> {
 
     private final HomeFeedOptions options;
-    private final BackgroundExecutor backgroundExecutor;
+    private final Executor executor;
     private final FeedSourceProvider sourceProvider;
 
     @Inject
-    public GetHomeFeed(HomeFeedOptions options, BackgroundExecutor backgroundExecutor, FeedSourceProvider provider) {
+    public GetHomeFeed(HomeFeedOptions options, @Named(Executor.BACKGROUND) Executor executor, FeedSourceProvider provider) {
         this.options = options;
-        this.backgroundExecutor = backgroundExecutor;
+        this.executor = executor;
         this.sourceProvider = provider;
     }
 
@@ -48,7 +49,7 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
 
         FeedLiveData data = new FeedLiveData();
         Set<Integer> errors = Collections.newSetFromMap(new ConcurrentHashMap<>());
-        CountDownLatch latch = new CountDownLatch(sourceProvider.getCount(options));
+        CountDownLatch latch = new CountDownLatch(sourceProvider.getCount());
 
         Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
         Log.i("TEMP-FEED", "thread is:" + Thread.currentThread());
@@ -58,11 +59,11 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
                 .buildPartial();
         data.postValue(begin);
 
-        backgroundExecutor.execute(() -> {
+        executor.execute(() -> {
             Log.i("TEMP-FEED", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
             Log.i("TEMP-FEED", "thread is:" + Thread.currentThread());
             for (FeedSource source : getSources()) {
-                data.addSource(source.getCardType(), source.execute(options), new FeedObserver(data, source.getCardType(), errors, latch, backgroundExecutor));
+                data.addSource(source.getCardType(), source.execute(options), new FeedObserver(data, source.getCardType(), errors, latch, executor));
             }
         });
         return data;
@@ -75,19 +76,19 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
         private final int cardType;
         private final Set<Integer> errors;
         private final CountDownLatch latch;
-        private final BackgroundExecutor backgroundExecutor;
+        private final Executor executor;
 
-        private FeedObserver(MutableLiveData<Result<List<HomeCard>>> existing, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, BackgroundExecutor backgroundExecutor) {
+        private FeedObserver(MutableLiveData<Result<List<HomeCard>>> existing, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor) {
             this.existing = existing;
             this.cardType = cardType;
             this.errors = errors;
             this.latch = latch;
-            this.backgroundExecutor = backgroundExecutor;
+            this.executor = executor;
         }
 
         @Override
         public void onChanged(@Nullable Result<List<HomeCard>> listResult) {
-            backgroundExecutor.execute(() -> doInBackground(listResult));
+            executor.execute(() -> doInBackground(listResult));
         }
 
         private void doInBackground(Result<List<HomeCard>> listResult) {
