@@ -24,13 +24,13 @@ import java.util.Map;
 /**
  * @author Niko Strijbol
  */
-public class GetMinervaAnnouncements extends OptionalFeedSource {
+public class MinervaAnnouncementsSource extends OptionalFeedSource {
 
     private final AnnouncementRepository repository;
     private final Executor executor;
 
     @Inject
-    public GetMinervaAnnouncements(AnnouncementRepository repository, @Named(Executor.BACKGROUND) Executor executor) {
+    public MinervaAnnouncementsSource(AnnouncementRepository repository, @Named(Executor.BACKGROUND) Executor executor) {
         this.repository = repository;
         this.executor = executor;
     }

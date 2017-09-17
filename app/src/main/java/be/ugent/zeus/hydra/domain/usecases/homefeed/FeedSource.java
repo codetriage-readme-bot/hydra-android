@@ -14,6 +14,15 @@ import java.util.List;
 public interface FeedSource extends UseCase<HomeFeedOptions, LiveData<Result<List<HomeCard>>>> {
 
     /**
+     * {@inheritDoc}
+     *
+     * Note: this method will be run on the main thread, so long-running tasks should move to the background using
+     * {@link be.ugent.zeus.hydra.domain.usecases.Executor} or similar.
+     */
+    @Override
+    LiveData<Result<List<HomeCard>>> execute(HomeFeedOptions arguments);
+
+    /**
      * The type of card that will be added/removed by this operation.
      *
      * @return The type.

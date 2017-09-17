@@ -26,13 +26,13 @@ import java.util.Map;
 /**
  * @author Niko Strijbol
  */
-public class GetMinervaAgenda extends OptionalFeedSource {
+public class MinervaAgendaSource extends OptionalFeedSource {
 
     private final AgendaItemRepository repository;
     private final Executor executor;
 
     @Inject
-    public GetMinervaAgenda(AgendaItemRepository repository, @Named(Executor.BACKGROUND) Executor executor) {
+    public MinervaAgendaSource(AgendaItemRepository repository, @Named(Executor.BACKGROUND) Executor executor) {
         this.repository = repository;
         this.executor = executor;
     }

@@ -1,9 +1,9 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.os.Looper;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -31,11 +31,19 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author Niko Strijbol
  */
-public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>>>> {
+public class GetHomeFeed implements UseCase<Void, FeedLiveData> {
 
     private final HomeFeedOptions options;
     private final Executor executor;
     private final FeedSourceProvider sourceProvider;
+
+    private final transient Object feedLock = new Object();
+
+    /**
+     * The current data. Is null if there is no data yet.
+     */
+    @Nullable
+    private FeedLiveData data;
 
     @Inject
     public GetHomeFeed(HomeFeedOptions options, @Named(Executor.BACKGROUND) Executor executor, FeedSourceProvider provider) {
@@ -45,28 +53,39 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
     }
 
     @Override
-    public LiveData<Result<List<HomeCard>>> execute(Void ignored) {
+    public FeedLiveData execute(Void ignored) {
+        invalidate();
+        return data;
+    }
 
-        FeedLiveData data = new FeedLiveData();
+    private void requestRefresh() {
+        invalidate();
+    }
+
+    @MainThread
+    private void invalidate() {
+        if (data == null) {
+            constructNewData();
+        }
+
+        Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
+
         Set<Integer> errors = Collections.newSetFromMap(new ConcurrentHashMap<>());
         CountDownLatch latch = new CountDownLatch(sourceProvider.getCount());
 
-        Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
-        Log.i("TEMP-FEED", "thread is:" + Thread.currentThread());
+        Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
+        for (FeedSource source : getSources()) {
+            data.addSource(source.getCardType(), source.execute(options), new FeedObserver(data, source.getCardType(), errors, latch, executor, feedLock));
+        }
+    }
 
+    @MainThread
+    private void constructNewData() {
+        data = new FeedLiveData(this::requestRefresh);
         Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
                 .withData(Collections.emptyList())
                 .buildPartial();
-        data.postValue(begin);
-
-        executor.execute(() -> {
-            Log.i("TEMP-FEED", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
-            Log.i("TEMP-FEED", "thread is:" + Thread.currentThread());
-            for (FeedSource source : getSources()) {
-                data.addSource(source.getCardType(), source.execute(options), new FeedObserver(data, source.getCardType(), errors, latch, executor));
-            }
-        });
-        return data;
+        data.setValue(begin);
     }
 
     private static class FeedObserver implements Observer<Result<List<HomeCard>>> {
@@ -77,13 +96,15 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
         private final Set<Integer> errors;
         private final CountDownLatch latch;
         private final Executor executor;
+        private final Object lock;
 
-        private FeedObserver(MutableLiveData<Result<List<HomeCard>>> existing, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor) {
+        private FeedObserver(MutableLiveData<Result<List<HomeCard>>> existing, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor, Object lock) {
             this.existing = existing;
             this.cardType = cardType;
             this.errors = errors;
             this.latch = latch;
             this.executor = executor;
+            this.lock = lock;
         }
 
         @Override
@@ -94,39 +115,42 @@ public class GetHomeFeed implements UseCase<Void, LiveData<Result<List<HomeCard>
         private void doInBackground(Result<List<HomeCard>> listResult) {
             Log.i("TEMP-FEED", "Observer: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
 
-            // Get the existing data
-            Result<List<HomeCard>> data = existing.getValue();
-            // This should not be null.
-            assert data != null;
-            assert listResult != null;
+            // Only one thread can access the feed
+            synchronized (lock) {
+                // Get the existing data
+                Result<List<HomeCard>> data = existing.getValue();
+                // This should not be null.
+                assert data != null;
+                assert listResult != null;
 
-            Result.Builder<List<HomeCard>> builder = new Result.Builder<>();
+                Result.Builder<List<HomeCard>> builder = new Result.Builder<>();
 
-            if (data.hasException() || listResult.hasException()) {
-                if (listResult.hasException()) {
-                    errors.add(cardType);
+                if (data.hasException() || listResult.hasException()) {
+                    if (listResult.hasException()) {
+                        errors.add(cardType);
+                    }
+                    builder.withError(new FeedException(errors));
                 }
-                builder.withError(new FeedException(errors));
-            }
 
-            // There should always be data in the existing result, even if the data is an empty list.
-            List<HomeCard> existingData = data.orElse(new ArrayList<>());
-            // Remove existing cards for this type.
-            Stream<HomeCard> temp = StreamSupport.stream(existingData)
-                    .filter(c -> c.getCardType() != cardType);
+                // There should always be data in the existing result, even if the data is an empty list.
+                List<HomeCard> existingData = data.orElse(new ArrayList<>());
+                // Remove existing cards for this type.
+                Stream<HomeCard> temp = StreamSupport.stream(existingData)
+                        .filter(c -> c.getCardType() != cardType);
 
-            Stream<HomeCard> newData = StreamSupport.stream(listResult.orElse(Collections.emptyList()));
+                Stream<HomeCard> newData = StreamSupport.stream(listResult.orElse(Collections.emptyList()));
 
-            builder.withData(RefStreams.concat(temp, newData)
-                    .sorted()
-                    .collect(Collectors.toList()));
+                builder.withData(RefStreams.concat(temp, newData)
+                        .sorted()
+                        .collect(Collectors.toList()));
 
 
-            // If this is the last source to complete, set it to final.
-            if (latch.getCount() == 1) {
-                existing.postValue(builder.build());
-            } else {
-                existing.postValue(builder.buildPartial());
+                // If this is the last source to complete, set it to final.
+                if (latch.getCount() == 1) {
+                    existing.postValue(builder.build());
+                } else {
+                    existing.postValue(builder.buildPartial());
+                }
             }
 
             // Indicate this source has completed.
