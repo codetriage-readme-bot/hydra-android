@@ -1,14 +1,11 @@
 package be.ugent.zeus.hydra.data.database.minerva2.course;
 
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 
-import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.CourseRepository;
-import org.mapstruct.factory.Mappers;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,10 +22,6 @@ public class DatabaseCourseRepository implements CourseRepository {
 
     private final CourseDao courseDao;
     private final CourseMapper courseMapper;
-
-    public DatabaseCourseRepository(Context context) {
-        this(MinervaDatabase.getInstance(context).getCourseDao(), Mappers.getMapper(CourseMapper.class));
-    }
 
     @Inject
     public DatabaseCourseRepository(CourseDao courseDao, CourseMapper courseMapper) {
