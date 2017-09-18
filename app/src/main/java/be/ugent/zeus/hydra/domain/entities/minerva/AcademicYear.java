@@ -16,8 +16,6 @@ import org.threeten.bp.Year;
  */
 public final class AcademicYear implements Comparable<AcademicYear> {
 
-    public static final AcademicYear ZERO = new AcademicYear(0);
-
     private final Year startYear;
 
     public AcademicYear(Year startYear) {
@@ -55,7 +53,10 @@ public final class AcademicYear implements Comparable<AcademicYear> {
     }
 
     /**
-     * @return A string representation of the academic year. The format is not specified.
+     * A logical string representation of this year. Assume {@code %1} and {@code %2} the start and end year respectively, the output
+     * will be {@code "%1 - %2"}.
+     *
+     * @return A string representation of the academic year.
      */
     @Override
     public String toString() {

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.domain.entities.minerva.AcademicYear;
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
 import be.ugent.zeus.hydra.utils.NetworkUtils;
@@ -89,7 +88,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private String getAcademicYear(Course course) {
-        if (course.getYear() == null || course.getYear().equals(AcademicYear.ZERO)) {
+        if (course.getYear() == null) {
             return getContext().getString(R.string.minerva_course_unknown_year);
         } else {
             return course.getYear().toString();
@@ -97,7 +96,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private String getUrl(Course course) {
-        if (course.getCode() == null || course.getYear() == null || course.getYear().equals(AcademicYear.ZERO)) {
+        if (course.getCode() == null || course.getYear() == null) {
             return null;
         }
 
