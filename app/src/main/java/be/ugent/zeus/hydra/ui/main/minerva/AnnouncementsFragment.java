@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,8 @@ import android.widget.Toast;
 
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.database.minerva2.RepositoryFactory;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
-import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.MarkAnnouncementAsRead;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
@@ -27,7 +27,6 @@ import be.ugent.zeus.hydra.ui.common.BaseActivity;
 import be.ugent.zeus.hydra.ui.common.recyclerview.EmptyViewObserver;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.ui.common.recyclerview.adapters.MultiSelectDiffAdapter;
-import org.threeten.bp.ZonedDateTime;
 
 import java.util.Collection;
 import java.util.List;
@@ -168,16 +167,15 @@ public class AnnouncementsFragment extends Fragment implements MultiSelectDiffAd
     }
 
     private void markSelectedAsRead() {
-        AnnouncementRepository repository = RepositoryFactory.getAnnouncementDatabaseRepository(getContext());
-        Collection<Announcement> announcements = adapter.getSelectedItems();
-        ZonedDateTime read = ZonedDateTime.now();
-        for (Announcement an : announcements) {
-            an.setReadAt(read);
-        }
-        repository.update(announcements);
+        MarkAnnouncementAsRead useCase = HydraApplication.getComponent(getActivity().getApplication()).markAnnouncementAsRead();
+        Collection<Announcement> toMark = adapter.getSelectedItems();
+        AsyncTask.execute(() -> useCase.execute(toMark));
+
         // Request a refresh of the data to update the list of announcements.
+        // It is theoretically possible that the items have not yet been marked when this is shown, but we assume the
+        // database is fast enough.
         Toast.makeText(getContext().getApplicationContext(),
-                getResources().getQuantityString(R.plurals.minerva_marked_announcements, announcements.size(), announcements.size()),
+                getResources().getQuantityString(R.plurals.minerva_marked_announcements, toMark.size(), toMark.size()),
                 Toast.LENGTH_SHORT)
                 .show();
     }

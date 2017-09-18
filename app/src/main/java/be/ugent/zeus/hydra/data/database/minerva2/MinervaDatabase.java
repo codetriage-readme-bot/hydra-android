@@ -43,18 +43,6 @@ public abstract class MinervaDatabase extends RoomDatabase {
      */
     public static final int VERSION = 9;
 
-    private static MinervaDatabase instance;
-
-    public static synchronized MinervaDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(context, MinervaDatabase.class, NAME)
-                    .allowMainThreadQueries()
-                    .addMigrations(new Migration_6_7(context), new Migration_7_8(), new Migration_8_9())
-                    .build();
-        }
-        return instance;
-    }
-
     /**
      * Create a new instance of the database.
      *

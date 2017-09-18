@@ -1,15 +1,12 @@
 package be.ugent.zeus.hydra.data.database.minerva2.announcement;
 
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 
-import be.ugent.zeus.hydra.data.database.minerva2.MinervaDatabase;
 import be.ugent.zeus.hydra.data.database.minerva2.NullAwareTransformations;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseDao;
 import be.ugent.zeus.hydra.data.database.minerva2.course.CourseMapper;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
-import org.mapstruct.factory.Mappers;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,13 +32,6 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
         this.courseMapper = courseMapper;
         this.announcementMapper = announcementMapper;
         this.courseDao = courseDao;
-    }
-
-    public DatabaseAnnouncementRepository(Context context) {
-        this.announcementDao = MinervaDatabase.getInstance(context).getAnnouncementDao();
-        this.courseMapper = Mappers.getMapper(CourseMapper.class);
-        this.announcementMapper = Mappers.getMapper(AnnouncementMapper.class);
-        this.courseDao = MinervaDatabase.getInstance(context).getCourseDao();
     }
 
     @Override
