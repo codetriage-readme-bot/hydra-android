@@ -12,6 +12,8 @@ import org.threeten.bp.Year;
  * This class uses {@link Year}, which uses ISO-8601. It might not be suitable
  * for historic years.
  *
+ * The natural ordering is ascending (on the start year).
+ *
  * @author Niko Strijbol
  */
 public final class AcademicYear implements Comparable<AcademicYear> {

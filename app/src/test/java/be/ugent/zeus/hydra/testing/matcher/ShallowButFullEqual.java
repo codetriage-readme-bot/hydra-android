@@ -1,6 +1,8 @@
 package be.ugent.zeus.hydra.testing.matcher;
 
-import android.annotation.SuppressLint;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -25,7 +27,7 @@ import java.util.function.Function;
  *
  * @author Niko Strijbol
  */
-@SuppressLint("NewApi")
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ShallowButFullEqual<T> extends TypeSafeDiagnosingMatcher<T> {
 
     private final T expectedBean;

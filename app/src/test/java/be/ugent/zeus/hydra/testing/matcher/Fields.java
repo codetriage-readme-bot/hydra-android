@@ -23,7 +23,6 @@ class Fields<T> {
     private final Class<T> clazz;
 
     private final Collection<String> ignoredFields;
-    private List<Field> results;
 
     Fields(Class<T> clazz) {
         this.clazz = clazz;

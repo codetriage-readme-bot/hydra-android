@@ -26,7 +26,7 @@ import org.threeten.bp.ZonedDateTime;
  */
 public class TtbUtils {
 
-    private static final ZoneOffset ZONE = ZoneOffset.UTC;
+    protected static final ZoneOffset ZONE = ZoneOffset.UTC;
 
     /**
      * Serialize a ZonedDateTime to an epoch milli. The result of this function should be unserialized using
