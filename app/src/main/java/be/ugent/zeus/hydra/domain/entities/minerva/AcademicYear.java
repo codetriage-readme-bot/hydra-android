@@ -4,13 +4,12 @@ import java8.util.Objects;
 import org.threeten.bp.Year;
 
 /**
- * Represents an academic year, but only in the strict sense: it only supports the year,
- * not the actual start and end date.
+ * Represents an academic year, but only in the strict sense: it only supports the year, not the actual start and end
+ * date.
  *
  * An example would be year 2016-2017.
  *
- * This class uses {@link Year}, which uses ISO-8601. It might not be suitable
- * for historic years.
+ * This class uses {@link Year}, which uses ISO-8601. It might not be suitable for historic years.
  *
  * The natural ordering is ascending (on the start year).
  *
@@ -55,8 +54,9 @@ public final class AcademicYear implements Comparable<AcademicYear> {
     }
 
     /**
-     * A logical string representation of this year. Assume {@code %1} and {@code %2} the start and end year respectively, the output
-     * will be {@code "%1 - %2"}.
+     * A logical string representation of this year. Assume {@code %1} and {@code %2} the start and end year
+     * respectively, the output will be {@code "%1 - %2"}. The format of the years depends on the format of {@link
+     * Year#toString()}.
      *
      * @return A string representation of the academic year.
      */

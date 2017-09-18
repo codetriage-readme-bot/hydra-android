@@ -3,13 +3,10 @@ package be.ugent.zeus.hydra.domain.entities.minerva;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import be.ugent.zeus.hydra.testing.ComparableAsserts;
 import be.ugent.zeus.hydra.testing.Utils;
 import org.junit.Test;
 import org.threeten.bp.Year;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,15 +32,26 @@ public class AcademicYearTest {
     }
 
     @Test
-    public void testOrder() {
-        // Get random years.
-        List<AcademicYear> randomYears = Utils.generate(AcademicYear.class, 20)
-                .collect(Collectors.toList());
+    public void testNaturalOrder() {
 
-        // Sort them.
-        Collections.sort(randomYears);
+        AcademicYear object = new AcademicYear(2012);
+        AcademicYear smaller = new AcademicYear(2000);
+        AcademicYear bigger = new AcademicYear(2150);
+        AcademicYear equal = new AcademicYear(2012);
 
-        // Assert they are sorted correctly.
+        ComparableAsserts.testComparator(object, smaller, equal, bigger);
+    }
 
+    @Test
+    public void testEquivalentConstructors() {
+        assertEquals(new AcademicYear(2012), new AcademicYear(Year.of(2012)));
+    }
+
+    @Test
+    public void testToString() {
+        Year start = Year.of(2012);
+        String expected = start.toString() + " - " + start.plusYears(1).toString();
+        AcademicYear academicYear = new AcademicYear(start);
+        assertEquals(expected, academicYear.toString());
     }
 }

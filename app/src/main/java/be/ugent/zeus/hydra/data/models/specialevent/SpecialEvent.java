@@ -50,6 +50,9 @@ public final class SpecialEvent implements Serializable {
      */
     @NonNull
     public Intent getViewIntent(Context context) {
+        if (inApp == null) {
+            return new Intent(Intent.ACTION_VIEW, Uri.parse(getLink()));
+        }
         switch (inApp) {
             case SKO_IN_APP:
                 return new Intent(context, OverviewActivity.class);
