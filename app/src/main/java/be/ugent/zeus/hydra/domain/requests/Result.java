@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.repository.requests;
+package be.ugent.zeus.hydra.domain.requests;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

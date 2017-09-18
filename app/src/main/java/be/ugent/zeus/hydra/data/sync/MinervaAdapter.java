@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import be.ugent.zeus.hydra.data.auth.AuthenticatorActionException;
 import be.ugent.zeus.hydra.data.network.exceptions.IOFailureException;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 /**

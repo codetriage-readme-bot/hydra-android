@@ -10,7 +10,7 @@ import android.util.Log;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.FeedException;
 import java8.util.stream.Collectors;
 import java8.util.stream.RefStreams;

@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import be.ugent.zeus.hydra.data.database.minerva.AgendaDao;
 import be.ugent.zeus.hydra.data.models.minerva.AgendaItem;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
 import java8.util.stream.Collectors;
 import java8.util.stream.RefStreams;

@@ -2,6 +2,8 @@ package be.ugent.zeus.hydra.repository.requests;
 
 import android.content.Context;
 
+import be.ugent.zeus.hydra.domain.requests.Request;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
 import be.ugent.zeus.hydra.repository.data.RequestLiveData;
 

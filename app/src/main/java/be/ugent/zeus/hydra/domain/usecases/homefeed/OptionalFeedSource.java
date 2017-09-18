@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.usecases.EmptyResult;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 import java.util.List;
 

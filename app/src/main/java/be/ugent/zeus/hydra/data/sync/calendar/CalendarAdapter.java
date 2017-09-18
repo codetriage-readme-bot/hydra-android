@@ -32,7 +32,7 @@ import be.ugent.zeus.hydra.data.sync.SyncBroadcast;
 import be.ugent.zeus.hydra.data.sync.SyncUtils;
 import be.ugent.zeus.hydra.data.sync.Synchronisation;
 import be.ugent.zeus.hydra.data.sync.course.CourseAdapter;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
 import be.ugent.zeus.hydra.ui.minerva.CalendarPermissionActivity;
 import java8.util.function.Functions;
 import java8.util.stream.Collectors;

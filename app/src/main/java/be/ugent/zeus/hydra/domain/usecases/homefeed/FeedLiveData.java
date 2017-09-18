@@ -7,7 +7,7 @@ import android.support.annotation.MainThread;
 import android.util.SparseArray;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 import java.util.List;
 

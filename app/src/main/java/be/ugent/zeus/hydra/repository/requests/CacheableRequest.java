@@ -1,6 +1,8 @@
 package be.ugent.zeus.hydra.repository.requests;
 
 import android.support.annotation.NonNull;
+
+import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.Cache;
 
 /**

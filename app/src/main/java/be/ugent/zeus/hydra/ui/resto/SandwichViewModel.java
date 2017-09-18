@@ -2,7 +2,7 @@ package be.ugent.zeus.hydra.ui.resto;
 
 import android.app.Application;
 import be.ugent.zeus.hydra.data.models.resto.Sandwich;
-import be.ugent.zeus.hydra.repository.requests.Request;
+import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.Requests;
 import be.ugent.zeus.hydra.data.network.requests.resto.SandwichRequest;
 import be.ugent.zeus.hydra.ui.common.RequestViewModel;

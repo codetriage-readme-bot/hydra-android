@@ -2,8 +2,8 @@ package be.ugent.zeus.hydra.data.network.caching;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.repository.Cache;
 import be.ugent.zeus.hydra.repository.requests.CacheableRequest;
 

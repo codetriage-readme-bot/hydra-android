@@ -18,7 +18,7 @@ import be.ugent.zeus.hydra.data.models.minerva.Announcement;
 import be.ugent.zeus.hydra.data.models.minerva.Announcements;
 import be.ugent.zeus.hydra.data.models.minerva.Course;
 import be.ugent.zeus.hydra.data.models.minerva.WhatsNew;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
 import be.ugent.zeus.hydra.data.network.requests.minerva.AnnouncementsRequest;
 import be.ugent.zeus.hydra.data.network.requests.minerva.WhatsNewRequest;
 import be.ugent.zeus.hydra.data.sync.MinervaAdapter;

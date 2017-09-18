@@ -8,7 +8,7 @@ import android.util.Log;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 import javax.inject.Inject;
 import javax.inject.Named;

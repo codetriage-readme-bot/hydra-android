@@ -2,7 +2,7 @@ package be.ugent.zeus.hydra.data.network;
 
 import be.ugent.zeus.hydra.BuildConfig;
 import be.ugent.zeus.hydra.data.network.exceptions.RestTemplateException;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;

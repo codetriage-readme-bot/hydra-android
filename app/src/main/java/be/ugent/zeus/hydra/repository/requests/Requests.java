@@ -5,6 +5,9 @@ import android.util.Log;
 
 import be.ugent.zeus.hydra.data.network.caching.CacheManager;
 import be.ugent.zeus.hydra.data.network.exceptions.IOFailureException;
+import be.ugent.zeus.hydra.domain.requests.Request;
+import be.ugent.zeus.hydra.domain.requests.RequestFunction;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.repository.Cache;
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
 import java8.util.function.Function;

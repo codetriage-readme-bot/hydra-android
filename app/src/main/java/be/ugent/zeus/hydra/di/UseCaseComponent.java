@@ -9,10 +9,12 @@ import javax.inject.Singleton;
 /**
  * The component.
  *
+ * TODO: split and scope this component
+ *
  * @author Niko Strijbol
  */
 @Singleton
-@Component(modules = {AppModule.class, DatabaseModule.class, DatabaseRepoModule.class, ImplementationModule.class, SimpleImplementationModule.class})
+@Component(modules = {AppModule.class, DatabaseModule.class, DatabaseRepoModule.class, ImplementationModule.class, SimpleImplementationModule.class, RequestModule.class})
 public interface UseCaseComponent {
 
     GetUnreadAnnouncements getUnreadAnnouncement();
@@ -27,4 +29,7 @@ public interface UseCaseComponent {
 
     // Home feed use cases
     GetHomeFeed getHomeFeed();
+
+    // Request-related stuff
+
 }

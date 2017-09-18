@@ -4,7 +4,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import be.ugent.zeus.hydra.data.models.resto.RestoMenu;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
 import org.junit.Test;
 
 import java.util.Collections;

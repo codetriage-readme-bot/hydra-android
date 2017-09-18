@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.data.network;
 
 import be.ugent.zeus.hydra.data.network.exceptions.RestTemplateException;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import com.google.gson.Gson;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.junit.Assert;

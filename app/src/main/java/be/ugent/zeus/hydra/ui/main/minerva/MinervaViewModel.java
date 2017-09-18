@@ -8,7 +8,7 @@ import android.arch.lifecycle.Transformations;
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.minerva.CourseUnread;
 import be.ugent.zeus.hydra.domain.usecases.minerva.GetCoursesWithUnreadCount;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 import java.util.List;
 

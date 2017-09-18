@@ -2,7 +2,7 @@ package be.ugent.zeus.hydra.ui.sko.overview;
 
 import android.app.Application;
 import be.ugent.zeus.hydra.data.models.sko.TimelinePost;
-import be.ugent.zeus.hydra.repository.requests.Request;
+import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.Requests;
 import be.ugent.zeus.hydra.data.network.requests.sko.TimelineRequest;
 import be.ugent.zeus.hydra.ui.common.RequestViewModel;

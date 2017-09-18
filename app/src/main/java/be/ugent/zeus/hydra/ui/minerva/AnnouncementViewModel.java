@@ -8,7 +8,7 @@ import android.arch.lifecycle.Transformations;
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.domain.usecases.minerva.GetSingleAnnouncement;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 /**
  * View model for a single announcement.

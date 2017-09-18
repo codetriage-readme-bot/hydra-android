@@ -1,10 +1,10 @@
 package be.ugent.zeus.hydra.ui.common;
 
 import android.app.Application;
-import be.ugent.zeus.hydra.repository.requests.Request;
+import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
 import be.ugent.zeus.hydra.repository.requests.RequestRepository;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 /**
  * Generic view model with boiler plate for using a {@link Request} as data.

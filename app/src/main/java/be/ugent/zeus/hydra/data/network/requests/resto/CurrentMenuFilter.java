@@ -1,8 +1,8 @@
 package be.ugent.zeus.hydra.data.network.requests.resto;
 
 import be.ugent.zeus.hydra.data.models.resto.RestoMenu;
-import be.ugent.zeus.hydra.repository.requests.RequestFunction;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.RequestFunction;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
 
 import java.util.List;
 

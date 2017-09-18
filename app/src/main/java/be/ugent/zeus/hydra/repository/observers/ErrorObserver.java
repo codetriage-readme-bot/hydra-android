@@ -2,8 +2,8 @@ package be.ugent.zeus.hydra.repository.observers;
 
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
-import be.ugent.zeus.hydra.repository.requests.RequestException;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.RequestException;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import java8.util.function.Consumer;
 
 /**

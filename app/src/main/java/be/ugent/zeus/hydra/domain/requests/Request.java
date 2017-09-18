@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.repository.requests;
+package be.ugent.zeus.hydra.domain.requests;
 
 import android.content.Intent;
 import android.os.Bundle;

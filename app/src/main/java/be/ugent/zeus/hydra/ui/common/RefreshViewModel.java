@@ -10,7 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.repository.data.BaseLiveData;
-import be.ugent.zeus.hydra.repository.requests.Result;
+import be.ugent.zeus.hydra.domain.requests.Result;
 
 /**
  * @author Niko Strijbol
