@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -31,7 +32,7 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author Niko Strijbol
  */
-public class GetHomeFeed implements UseCase<Void, FeedLiveData> {
+public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.OnRefreshListener {
 
     private final HomeFeedOptions options;
     private final Executor executor;
@@ -54,16 +55,12 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData> {
 
     @Override
     public FeedLiveData execute(Void ignored) {
-        invalidate();
+        invalidate(Bundle.EMPTY);
         return data;
     }
 
-    private void requestRefresh() {
-        invalidate();
-    }
-
     @MainThread
-    private void invalidate() {
+    private void invalidate(Bundle args) {
         if (data == null) {
             constructNewData();
         }
@@ -73,19 +70,26 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData> {
         Set<Integer> errors = Collections.newSetFromMap(new ConcurrentHashMap<>());
         CountDownLatch latch = new CountDownLatch(sourceProvider.getCount());
 
+        FeedSource.Args arguments = new FeedSource.Args(options, args);
+
         Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
         for (FeedSource source : getSources()) {
-            data.addSource(source.getCardType(), source.execute(options), new FeedObserver(data, source.getCardType(), errors, latch, executor, feedLock));
+            data.addSource(source.getCardType(), source.execute(arguments), new FeedObserver(data, source.getCardType(), errors, latch, executor, feedLock));
         }
     }
 
     @MainThread
     private void constructNewData() {
-        data = new FeedLiveData(this::requestRefresh);
+        data = new FeedLiveData(this);
         Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
                 .withData(Collections.emptyList())
                 .buildPartial();
         data.setValue(begin);
+    }
+
+    @Override
+    public void requestRefresh(Bundle args) {
+        invalidate(args);
     }
 
     private static class FeedObserver implements Observer<Result<List<HomeCard>>> {

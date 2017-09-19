@@ -2,7 +2,7 @@ package be.ugent.zeus.hydra.data.network.requests;
 
 import android.support.annotation.NonNull;
 
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.data.network.Endpoints;
 import be.ugent.zeus.hydra.data.network.JsonSpringRequest;
 import be.ugent.zeus.hydra.repository.Cache;
@@ -13,10 +13,10 @@ import be.ugent.zeus.hydra.repository.requests.CacheableRequest;
  *
  * @author feliciaan
  */
-public class SchamperArticlesRequest extends JsonSpringRequest<Article[]> implements CacheableRequest<Article[]> {
+public class SchamperArticlesRequest extends JsonSpringRequest<SchamperArticle[]> implements CacheableRequest<SchamperArticle[]> {
 
     public SchamperArticlesRequest() {
-        super(Article[].class);
+        super(SchamperArticle[].class);
     }
 
     @NonNull

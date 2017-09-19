@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.di;
 
-import be.ugent.zeus.hydra.data.AsyncTaskExecutor;
+import be.ugent.zeus.hydra.device.AsyncTaskExecutor;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import dagger.Binds;
 import dagger.Module;

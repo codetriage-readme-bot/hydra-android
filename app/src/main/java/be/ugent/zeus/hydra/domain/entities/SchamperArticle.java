@@ -1,7 +1,8 @@
-package be.ugent.zeus.hydra.data.models.schamper;
+package be.ugent.zeus.hydra.domain.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import be.ugent.zeus.hydra.data.gson.ZonedThreeTenAdapter;
 import be.ugent.zeus.hydra.utils.DateUtils;
 import be.ugent.zeus.hydra.utils.TtbUtils;
@@ -11,13 +12,13 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
+ * TODO: this still depends on Serializable and more importantly Parcelable. Must we stop this?
+ *
  * Created by feliciaan on 16/06/16.
  */
-public final class Article implements Serializable, Parcelable {
+public final class SchamperArticle implements Serializable, Parcelable {
 
     private String title;
     private String link;
@@ -29,7 +30,6 @@ public final class Article implements Serializable, Parcelable {
     private String image;
     private String category;
     private String intro;
-    private ArrayList<ArticleImage> images;
 
     public String getTitle() {
         return title;
@@ -63,10 +63,6 @@ public final class Article implements Serializable, Parcelable {
         return intro;
     }
 
-    public List<ArticleImage> getImages() {
-        return images;
-    }
-
     public String getImage() {
         return image;
     }
@@ -98,13 +94,12 @@ public final class Article implements Serializable, Parcelable {
         dest.writeString(this.image);
         dest.writeString(this.category);
         dest.writeString(this.intro);
-        dest.writeTypedList(this.images);
     }
 
-    public Article() {
+    public SchamperArticle() {
     }
 
-    private Article(Parcel in) {
+    private SchamperArticle(Parcel in) {
         this.title = in.readString();
         this.link = in.readString();
         this.pubDate = TtbUtils.unserialize(in.readLong());
@@ -113,18 +108,17 @@ public final class Article implements Serializable, Parcelable {
         this.image = in.readString();
         this.category = in.readString();
         this.intro = in.readString();
-        this.images = in.createTypedArrayList(ArticleImage.CREATOR);
     }
 
-    public static final Creator<Article> CREATOR = new Creator<Article>() {
+    public static final Creator<SchamperArticle> CREATOR = new Creator<SchamperArticle>() {
         @Override
-        public Article createFromParcel(Parcel source) {
-            return new Article(source);
+        public SchamperArticle createFromParcel(Parcel source) {
+            return new SchamperArticle(source);
         }
 
         @Override
-        public Article[] newArray(int size) {
-            return new Article[size];
+        public SchamperArticle[] newArray(int size) {
+            return new SchamperArticle[size];
         }
     };
 
@@ -132,7 +126,7 @@ public final class Article implements Serializable, Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
+        SchamperArticle article = (SchamperArticle) o;
         return java8.util.Objects.equals(link, article.link) &&
                 java8.util.Objects.equals(pubDate, article.pubDate);
     }

@@ -12,17 +12,21 @@ import be.ugent.zeus.hydra.utils.NetworkUtils;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.Set;
 
 /**
  * @author Niko Strijbol
  */
+@Singleton
 public class HomeFeedPreferences implements HomeFeedOptions {
 
     private final SharedPreferences preferences;
     private final Context context;
 
+    @Inject
     public HomeFeedPreferences(Context context) {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.context = context;

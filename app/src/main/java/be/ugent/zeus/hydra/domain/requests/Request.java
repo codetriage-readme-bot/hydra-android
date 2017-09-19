@@ -23,4 +23,13 @@ public interface Request<T> {
      */
     @NonNull
     Result<T> performRequest(@Nullable Bundle args);
+
+    /**
+     * Interface to reduce problems due to Java's weak type system. We often need a request that is also cacheable.
+     *
+     * @param <T>
+     */
+    interface Cacheable<T> extends Request<T>, be.ugent.zeus.hydra.domain.cache.Cacheable<T> {
+
+    }
 }

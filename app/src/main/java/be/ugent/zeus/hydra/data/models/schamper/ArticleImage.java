@@ -3,6 +3,7 @@ package be.ugent.zeus.hydra.data.models.schamper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import java8.util.Objects;
 
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public final class ArticleImage implements Parcelable, Serializable {
     }
 
     public String getLargeUrl() {
-        return Article.getLargeImage(getUrl());
+        return SchamperArticle.getLargeImage(getUrl());
     }
 
     @Override

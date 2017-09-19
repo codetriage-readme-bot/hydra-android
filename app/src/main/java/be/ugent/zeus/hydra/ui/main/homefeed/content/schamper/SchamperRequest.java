@@ -3,7 +3,8 @@ package be.ugent.zeus.hydra.ui.main.homefeed.content.schamper;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
+import be.ugent.zeus.hydra.domain.entities.homefeed.cards.SchamperCard;
 import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.Requests;
 import be.ugent.zeus.hydra.data.network.requests.SchamperArticlesRequest;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class SchamperRequest implements HomeFeedRequest {
 
-    private final Request<List<Article>> request;
+    private final Request<List<SchamperArticle>> request;
 
     public SchamperRequest(Context context) {
         this.request = Requests.map(Requests.cache(context, new SchamperArticlesRequest()), Arrays::asList);

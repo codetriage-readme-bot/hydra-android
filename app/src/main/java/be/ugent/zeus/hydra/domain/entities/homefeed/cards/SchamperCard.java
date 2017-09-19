@@ -1,28 +1,28 @@
-package be.ugent.zeus.hydra.ui.main.homefeed.content.schamper;
+package be.ugent.zeus.hydra.domain.entities.homefeed.cards;
 
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
+import be.ugent.zeus.hydra.domain.entities.homefeed.PriorityUtils;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
 
 import static be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard.CardType.SCHAMPER;
 
 /**
- * Home card for {@link Article}.
+ * Home card for {@link SchamperArticle}.
  *
  * @author Niko Strijbol
  * @author feliciaan
  */
-class SchamperCard extends HomeCard {
+public class SchamperCard extends HomeCard {
 
-    private final Article article;
+    private final SchamperArticle article;
 
-    SchamperCard(Article article) {
+    public SchamperCard(SchamperArticle article) {
         this.article = article;
     }
 
-    Article getArticle() {
+    public SchamperArticle getArticle() {
         return article;
     }
 
@@ -31,7 +31,7 @@ class SchamperCard extends HomeCard {
         ZonedDateTime date = article.getPubDate();
         Duration duration = Duration.between(date, ZonedDateTime.now());
         // We only show the last month of schamper articles.
-        return FeedUtils.lerp((int) duration.toDays(), 0, 30);
+        return PriorityUtils.lerp((int) duration.toDays(), 0, 30);
     }
 
     @Override

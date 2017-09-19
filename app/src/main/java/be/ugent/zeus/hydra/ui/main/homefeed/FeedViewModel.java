@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.ui.main.homefeed;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.os.Bundle;
 
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.FeedLiveData;
@@ -30,7 +31,7 @@ public class FeedViewModel extends AndroidViewModel {
 
     public void requestRefresh() {
         if (data != null) {
-            data.flagForRefresh();
+            data.flagForRefresh(Bundle.EMPTY);
         }
     }
 }

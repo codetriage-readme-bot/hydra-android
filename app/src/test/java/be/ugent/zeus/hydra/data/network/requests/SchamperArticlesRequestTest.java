@@ -1,7 +1,7 @@
 package be.ugent.zeus.hydra.data.network.requests;
 
 import be.ugent.zeus.hydra.BuildConfig;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.data.network.ArrayJsonSpringRequestTest;
 import be.ugent.zeus.hydra.data.network.JsonSpringRequest;
 import org.junit.runner.RunWith;
@@ -15,10 +15,10 @@ import org.springframework.core.io.Resource;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class SchamperArticlesRequestTest extends ArrayJsonSpringRequestTest<Article> {
+public class SchamperArticlesRequestTest extends ArrayJsonSpringRequestTest<SchamperArticle> {
 
     public SchamperArticlesRequestTest() {
-        super(Article[].class);
+        super(SchamperArticle[].class);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SchamperArticlesRequestTest extends ArrayJsonSpringRequestTest<Arti
     }
 
     @Override
-    protected JsonSpringRequest<Article[]> getRequest() {
+    protected JsonSpringRequest<SchamperArticle[]> getRequest() {
         return new SchamperArticlesRequest();
     }
 }

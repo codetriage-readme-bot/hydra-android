@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.ui.common.BaseActivity;
 import be.ugent.zeus.hydra.ui.common.customtabs.ActivityHelper;
 import be.ugent.zeus.hydra.ui.common.html.PicassoImageGetter;
@@ -38,7 +38,7 @@ public class SchamperArticleActivity extends BaseActivity {
 
     private static final String PARCEL_ARTICLE = "article";
 
-    private Article article;
+    private SchamperArticle article;
 
     /**
      * Launch this activity with a transition.
@@ -157,7 +157,7 @@ public class SchamperArticleActivity extends BaseActivity {
         }
     }
 
-    public static void viewArticle(Context context, Article article, ActivityHelper helper, View image) {
+    public static void viewArticle(Context context, SchamperArticle article, ActivityHelper helper, View image) {
 
         // Log viewing the article
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(context);

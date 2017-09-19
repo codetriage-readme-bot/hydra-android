@@ -8,9 +8,9 @@ import org.junit.Test;
 /**
  * @author Niko Strijbol
  */
-public class ArticleImageTest extends ModelTest<ArticleImage> {
+public class SchamperArticleImageTest extends ModelTest<ArticleImage> {
 
-    public ArticleImageTest() {
+    public SchamperArticleImageTest() {
         super(ArticleImage.class);
     }
 

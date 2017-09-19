@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.data;
+package be.ugent.zeus.hydra.device;
 
 import android.os.AsyncTask;
 
@@ -16,7 +16,8 @@ import javax.inject.Singleton;
 public class AsyncTaskExecutor implements Executor {
 
     @Inject
-    AsyncTaskExecutor() {
+    public AsyncTaskExecutor() {
+        // Nothing to do here.
     }
 
     /**

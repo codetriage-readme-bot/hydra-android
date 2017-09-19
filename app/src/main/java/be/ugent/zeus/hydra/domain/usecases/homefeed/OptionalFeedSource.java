@@ -3,8 +3,8 @@ package be.ugent.zeus.hydra.domain.usecases.homefeed;
 import android.arch.lifecycle.LiveData;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.domain.usecases.EmptyResult;
 import be.ugent.zeus.hydra.domain.requests.Result;
+import be.ugent.zeus.hydra.domain.usecases.EmptyResult;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ import java.util.List;
 public abstract class OptionalFeedSource implements FeedSource {
 
     @Override
-    public LiveData<Result<List<HomeCard>>> execute(HomeFeedOptions options) {
-        if (options.isEnabled(getCardType())) {
-            return getActualData();
+    public LiveData<Result<List<HomeCard>>> execute(Args arguments) {
+        if (arguments.options.isEnabled(getCardType())) {
+            return getActualData(arguments);
         } else {
             return new EmptyResult<>();
         }
@@ -29,5 +29,5 @@ public abstract class OptionalFeedSource implements FeedSource {
      *
      * @return The data.
      */
-    protected abstract LiveData<Result<List<HomeCard>>> getActualData();
+    protected abstract LiveData<Result<List<HomeCard>>> getActualData(Args args);
 }

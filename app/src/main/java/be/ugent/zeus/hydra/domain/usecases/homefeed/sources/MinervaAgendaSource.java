@@ -38,7 +38,7 @@ public class MinervaAgendaSource extends OptionalFeedSource {
     }
 
     @Override
-    protected LiveData<Result<List<HomeCard>>> getActualData() {
+    protected LiveData<Result<List<HomeCard>>> getActualData(Args ignored) {
 
         ZonedDateTime lower = ZonedDateTime.now();
         ZonedDateTime upper = lower.plusWeeks(3); // Only display things up to 3 weeks from now.

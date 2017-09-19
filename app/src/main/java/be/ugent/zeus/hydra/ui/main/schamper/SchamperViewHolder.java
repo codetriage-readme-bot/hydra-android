@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.ui.SchamperArticleActivity;
 import be.ugent.zeus.hydra.ui.common.customtabs.ActivityHelper;
 import be.ugent.zeus.hydra.ui.common.recyclerview.viewholders.DataViewHolder;
@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
  *
  * @author Niko Strijbol
  */
-class SchamperViewHolder extends DataViewHolder<Article> {
+class SchamperViewHolder extends DataViewHolder<SchamperArticle> {
 
     private final TextView title;
     private final TextView date;
@@ -39,7 +39,7 @@ class SchamperViewHolder extends DataViewHolder<Article> {
         this.helper = helper;
     }
 
-    public void populate(final Article article) {
+    public void populate(final SchamperArticle article) {
         title.setText(article.getTitle());
         date.setText(DateUtils.relativeDateTimeString(article.getPubDate(), itemView.getContext()));
         author.setText(article.getAuthor());

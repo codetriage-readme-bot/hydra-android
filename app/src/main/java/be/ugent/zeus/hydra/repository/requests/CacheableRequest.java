@@ -20,7 +20,7 @@ import be.ugent.zeus.hydra.repository.Cache;
  *
  * @author Niko Strijbol
  */
-public interface CacheableRequest<D> extends Request<D> {
+public interface CacheableRequest<D> extends Request<D>, Request.Cacheable<D> {
 
     /**
      * Provide a suggestion to the caller under which name this data can be saved.

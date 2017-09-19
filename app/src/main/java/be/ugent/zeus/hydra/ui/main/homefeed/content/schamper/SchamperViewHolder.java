@@ -5,7 +5,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.models.schamper.Article;
+import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
+import be.ugent.zeus.hydra.domain.entities.homefeed.cards.SchamperCard;
 import be.ugent.zeus.hydra.ui.SchamperArticleActivity;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedAdapter;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
@@ -40,7 +41,7 @@ public class SchamperViewHolder extends FeedViewHolder {
     public void populate(HomeCard card) {
         super.populate(card);
 
-        Article article = card.<SchamperCard>checkCard(HomeCard.CardType.SCHAMPER).getArticle();
+        SchamperArticle article = card.<SchamperCard>checkCard(HomeCard.CardType.SCHAMPER).getArticle();
 
         title.setText(article.getTitle());
         date.setText(DateUtils.relativeDateTimeString(article.getPubDate(), itemView.getContext()));
