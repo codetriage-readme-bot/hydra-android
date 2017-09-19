@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.Looper;
 import android.util.Log;
 
-import be.ugent.zeus.hydra.domain.LiveDataUtils;
+import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.entities.homefeed.cards.MinervaAnnouncementsCard;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;

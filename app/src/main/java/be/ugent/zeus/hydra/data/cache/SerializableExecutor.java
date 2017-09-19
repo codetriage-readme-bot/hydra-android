@@ -55,16 +55,16 @@ class SerializableExecutor implements CacheExecutor {
     @NonNull
     @Override
     public <D extends Serializable> Optional<CacheObject<D>> read(String key) throws CacheException {
-        //TODO try with resources
         ObjectInputStream stream = null;
         try {
             // Where the cache should be.
             File file = new File(directory, key);
-            if (file.exists()) {
+            if (!file.exists()) {
                 // There is no entry for this key.
-                Log.i(TAG, "No cache entry exists for key " + key);
+                Log.i(TAG, "No cache entry exists for key " + key + ", or existing cache is ignored.");
                 return Optional.empty();
             }
+            Log.d(TAG, "Cache entry was found for key " + key);
             stream = new ObjectInputStream(new FileInputStream(file));
             //noinspection unchecked - this is normal
             return Optional.of((CacheObject<D>) stream.readObject());

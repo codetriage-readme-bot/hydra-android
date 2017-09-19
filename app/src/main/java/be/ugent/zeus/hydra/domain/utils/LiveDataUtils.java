@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.domain;
+package be.ugent.zeus.hydra.domain.utils;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;

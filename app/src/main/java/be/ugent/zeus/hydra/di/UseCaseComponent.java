@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.di;
 
 import be.ugent.zeus.hydra.domain.usecases.homefeed.GetHomeFeed;
 import be.ugent.zeus.hydra.domain.usecases.minerva.*;
+import be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -26,10 +27,9 @@ public interface UseCaseComponent {
     GetSingleCalendarItem getSingleCalendarItem();
     GetSingleAnnouncement getSingleAnnouncement();
     MarkAnnouncementAsRead markAnnouncementAsRead();
+    GetSchamperArticles getSchamperArticles();
 
     // Home feed use cases
     GetHomeFeed getHomeFeed();
-
-    // Request-related stuff
 
 }

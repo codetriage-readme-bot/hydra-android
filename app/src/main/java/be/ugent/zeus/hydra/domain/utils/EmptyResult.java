@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.domain.usecases;
+package be.ugent.zeus.hydra.domain.utils;
 
 import android.arch.lifecycle.LiveData;
 

@@ -49,6 +49,7 @@ public class GenericCache implements Cache {
     public <R extends Serializable> void put(Cacheable<R> cacheable, R data) {
         CacheObject<R> newData = new CacheObject<>(data);
         try {
+            Log.d(TAG, "Saving cache for key " + cacheable.getCacheKey());
             executor.save(cacheable.getCacheKey(), newData);
         } catch (CacheException e) {
             Log.w(TAG, "Could not cache request " + cacheable.getCacheKey(), e);

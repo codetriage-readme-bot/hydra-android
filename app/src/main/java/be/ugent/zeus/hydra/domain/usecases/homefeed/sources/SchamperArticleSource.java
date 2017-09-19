@@ -22,6 +22,9 @@ import javax.inject.Named;
 import java.util.List;
 
 /**
+ * TODO: we currently do not use {@link be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles} here, because
+ * we have no way of mapping things on the same background thread.
+ *
  * @author Niko Strijbol
  */
 public class SchamperArticleSource extends OptionalFeedSource {
