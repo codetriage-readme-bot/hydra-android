@@ -17,10 +17,10 @@ public abstract class OptionalFeedSource implements FeedSource {
 
     @Override
     public LiveData<Result<List<HomeCard>>> execute(Args arguments) {
-        if (arguments.options.isEnabled(getCardType())) {
+        if (isEnabled(arguments)) {
             return getActualData(arguments);
         } else {
-            return new EmptyResult<>();
+            return EmptyResult.emptyResultList();
         }
     }
 
@@ -30,4 +30,15 @@ public abstract class OptionalFeedSource implements FeedSource {
      * @return The data.
      */
     protected abstract LiveData<Result<List<HomeCard>>> getActualData(Args args);
+
+    /**
+     * Check if this card type is enabled or not.
+     *
+     * @param args The card type.
+     *
+     * @return True if the source is active, false otherwise.
+     */
+    protected boolean isEnabled(Args args) {
+        return args.options.isEnabled(getCardType());
+    }
 }

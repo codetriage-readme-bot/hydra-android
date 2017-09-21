@@ -2,6 +2,8 @@ package be.ugent.zeus.hydra.domain.utils;
 
 import android.arch.lifecycle.LiveData;
 
+import be.ugent.zeus.hydra.domain.requests.Result;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,6 +11,15 @@ import java.util.List;
  * @author Niko Strijbol
  */
 public class EmptyResult<R> extends LiveData<R> {
+
+    /**
+     * Construct an empty instance that will pass empty data.
+     *
+     * @param emptyInstance The empty instance.
+     */
+    private EmptyResult(R emptyInstance) {
+        postValue(emptyInstance);
+    }
 
     /**
      * Get a LiveData with an empty list as value. The empty list will be set using {@link LiveData#postValue(Object)},
@@ -21,10 +32,10 @@ public class EmptyResult<R> extends LiveData<R> {
      * @return A LiveData with an empty list.
      */
     public static <E> LiveData<List<E>> emptyList() {
-        return new LiveData<List<E>>() {
-            {
-                postValue(Collections.emptyList());
-            }
-        };
+        return new EmptyResult<>(Collections.emptyList());
+    }
+
+    public static <E> LiveData<Result<List<E>>> emptyResultList() {
+        return new EmptyResult<>(Result.Builder.fromData(Collections.emptyList()));
     }
 }

@@ -4,14 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.os.Looper;
 import android.util.Log;
 
-import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.entities.homefeed.cards.MinervaAgendaCard;
 import be.ugent.zeus.hydra.domain.entities.minerva.AgendaItem;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AgendaItemRepository;
-import be.ugent.zeus.hydra.domain.requests.Result;
+import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import be.ugent.zeus.hydra.utils.DateUtils;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -60,5 +60,10 @@ public class MinervaAgendaSource extends OptionalFeedSource {
     @Override
     public int getCardType() {
         return HomeCard.CardType.MINERVA_AGENDA;
+    }
+
+    @Override
+    protected boolean isEnabled(Args args) {
+        return super.isEnabled(args) && args.options.hasMinervaAccount();
     }
 }

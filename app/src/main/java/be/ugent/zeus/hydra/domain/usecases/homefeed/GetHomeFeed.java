@@ -40,6 +40,8 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
     private final transient Object feedLock = new Object();
 
+    private Wrapper<Result<List<HomeCard>>> currentData;
+
     /**
      * The current data. Is null if there is no data yet.
      */
@@ -74,7 +76,7 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
         Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
         for (FeedSource source : getSources()) {
-            data.addSource(source.getCardType(), source.execute(arguments), new FeedObserver(data, source.getCardType(), errors, latch, executor, feedLock));
+            data.addSource(source.getCardType(), source.execute(arguments), new FeedObserver(currentData, data, source.getCardType(), errors, latch, executor, feedLock));
         }
     }
 
@@ -84,6 +86,8 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
         Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
                 .withData(Collections.emptyList())
                 .buildPartial();
+        currentData = new Wrapper<>();
+        currentData.object = begin;
         data.setValue(begin);
     }
 
@@ -94,21 +98,23 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
     private static class FeedObserver implements Observer<Result<List<HomeCard>>> {
 
-        private final MutableLiveData<Result<List<HomeCard>>> existing;
+        private final Wrapper<Result<List<HomeCard>>> existing;
         @HomeCard.CardType
         private final int cardType;
         private final Set<Integer> errors;
         private final CountDownLatch latch;
         private final Executor executor;
         private final Object lock;
+        private final MutableLiveData<Result<List<HomeCard>>> publisher;
 
-        private FeedObserver(MutableLiveData<Result<List<HomeCard>>> existing, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor, Object lock) {
+        private FeedObserver(Wrapper<Result<List<HomeCard>>> existing, MutableLiveData<Result<List<HomeCard>>> publisher, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor, Object lock) {
             this.existing = existing;
             this.cardType = cardType;
             this.errors = errors;
             this.latch = latch;
             this.executor = executor;
             this.lock = lock;
+            this.publisher = publisher;
         }
 
         @Override
@@ -122,7 +128,7 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
             // Only one thread can access the feed
             synchronized (lock) {
                 // Get the existing data
-                Result<List<HomeCard>> data = existing.getValue();
+                Result<List<HomeCard>> data = existing.object;
                 // This should not be null.
                 assert data != null;
                 assert listResult != null;
@@ -151,10 +157,12 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
                 // If this is the last source to complete, set it to final.
                 if (latch.getCount() == 1) {
-                    existing.postValue(builder.build());
+                    existing.object = builder.build();
                 } else {
-                    existing.postValue(builder.buildPartial());
+                    existing.object = builder.buildPartial();
                 }
+
+                publisher.postValue(existing.object);
             }
 
             // Indicate this source has completed.
@@ -164,5 +172,9 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
     private List<FeedSource> getSources() {
         return sourceProvider.getAll();
+    }
+
+    private static class Wrapper<E> {
+        public transient E object;
     }
 }

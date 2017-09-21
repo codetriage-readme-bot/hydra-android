@@ -19,4 +19,14 @@ public interface HomeFeedOptions {
     boolean isEnabled(@HomeCard.CardType int cardType);
 
     Set<Integer> getIgnoredCards();
+
+    /**
+     * @return True if there is a network connection, false otherwise.
+     */
+    boolean isConnectedToNetwork();
+
+    /**
+     * @return True if there currently is a Minerva account, false otherwise.
+     */
+    boolean hasMinervaAccount();
 }

@@ -57,4 +57,14 @@ public class HomeFeedPreferences implements HomeFeedOptions {
 
         return s;
     }
+
+    @Override
+    public boolean isConnectedToNetwork() {
+        return NetworkUtils.isConnected(context);
+    }
+
+    @Override
+    public boolean hasMinervaAccount() {
+        return AccountUtils.hasAccount(context);
+    }
 }
