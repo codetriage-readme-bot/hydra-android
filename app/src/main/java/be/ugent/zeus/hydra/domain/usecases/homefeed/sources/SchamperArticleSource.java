@@ -1,7 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
 import be.ugent.zeus.hydra.domain.cache.Cache;
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
@@ -12,6 +11,7 @@ import be.ugent.zeus.hydra.domain.requests.Requests;
 import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
+import be.ugent.zeus.hydra.domain.utils.CancelableRefreshLiveDataImpl;
 import java8.util.stream.Collectors;
 import java8.util.stream.RefStreams;
 import org.threeten.bp.Duration;
@@ -43,19 +43,13 @@ public class SchamperArticleSource extends OptionalFeedSource {
 
     @Override
     protected LiveData<Result<List<HomeCard>>> getActualData(Args args) {
-
-        MutableLiveData<Result<List<HomeCard>>> result = new MutableLiveData<>();
-
-        // Get the data.
-        executor.execute(() -> result.postValue(request.performRequest(args.args).map(schamperArticles -> {
+        return new CancelableRefreshLiveDataImpl<>(executor, (companion, bundle) -> CancelableRefreshLiveDataImpl.CancelableResult.completed(request.performRequest(args.args).map(schamperArticles -> {
             LocalDateTime oldestAllowedData = LocalDateTime.now().minus(MAX_ARTICLE_AGE);
             return RefStreams.of(schamperArticles)
                     .filter(a -> a.getLocalPubDate().isAfter(oldestAllowedData))
                     .map(SchamperCard::new)
                     .collect(Collectors.toList());
         })));
-
-        return result;
     }
 
     @Override

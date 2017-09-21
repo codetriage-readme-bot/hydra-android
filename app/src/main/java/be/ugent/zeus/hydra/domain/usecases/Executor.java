@@ -1,5 +1,7 @@
 package be.ugent.zeus.hydra.domain.usecases;
 
+import java8.util.function.Consumer;
+
 /**
  * Executes {@link Runnable}s. How and when is up to the implementations.
  * <br/>
@@ -8,7 +10,6 @@ package be.ugent.zeus.hydra.domain.usecases;
  *
  * @author Niko Strijbol
  */
-@FunctionalInterface
 public interface Executor {
 
     /**
@@ -27,4 +28,41 @@ public interface Executor {
      * @param runnable The runnable to execute.
      */
     void execute(Runnable runnable);
+
+    /**
+     * Execute a function on a thread. This function is very similar to {@link #execute(Runnable)}, but provides more
+     * control to the caller.
+     *
+     * The function to execute receives a {@link Companion} object to query if the request should be cancelled or not.
+     * The function should periodically check this value and terminate early if possible.
+     *
+     * @param companionConsumer The function to execute.
+     *
+     * @return A cancelable task.
+     */
+    Cancelable execute(Consumer<Companion> companionConsumer);
+
+    /**
+     * Companion object for functions executed by the Executor.
+     */
+    @FunctionalInterface
+    interface Companion {
+
+        /**
+         * @return True if this task should be cancelled.
+         */
+        boolean isCancelled();
+    }
+
+    @FunctionalInterface
+    interface Cancelable {
+
+        /**
+         * Attempt to cancel the task. Note that the executing function itself is responsible for stopping execution.
+         * As such there is no guarantee this will actually do anything.
+         *
+         * @return True if it was cancelled.
+         */
+        boolean cancel();
+    }
 }

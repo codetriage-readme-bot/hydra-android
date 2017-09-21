@@ -8,7 +8,7 @@ import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.domain.utils.RefreshLiveData;
-import be.ugent.zeus.hydra.domain.utils.RefreshLiveDataImpl;
+import be.ugent.zeus.hydra.domain.utils.SimpleRefreshLiveDataImpl;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,6 +31,6 @@ public class GetSchamperArticles implements UseCase<Void, RefreshLiveData<Result
 
     @Override
     public RefreshLiveData<Result<List<SchamperArticle>>> execute(Void ignored) {
-        return new RefreshLiveDataImpl<>(executor, bundle -> request.performRequest(bundle).map(Arrays::asList));
+        return new SimpleRefreshLiveDataImpl<>(executor, bundle -> request.performRequest(bundle).map(Arrays::asList));
     }
 }

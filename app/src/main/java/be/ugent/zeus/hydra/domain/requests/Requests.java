@@ -16,6 +16,8 @@ import java.io.Serializable;
  */
 public class Requests {
 
+    private static final String TAG = "Requests";
+
     /**
      * Set this to true in the args to ignore the cache.
      */
@@ -69,9 +71,11 @@ public class Requests {
         return args -> {
             if (args != null && args.getBoolean(IGNORE_CACHE, false)) {
                 // We ignore the cache, execute now.
+                Log.i(TAG, "Ignoring cache.");
                 return executeAndSave(cache, request, args);
             } else {
                 // Get it from the cache if possible.
+                Log.i(TAG, "Attempting to use cache.");
                 return cache.get(request)
                         .map(Result.Builder::fromData)
                         .orElseGet(() -> executeAndSave(cache, request, args));
