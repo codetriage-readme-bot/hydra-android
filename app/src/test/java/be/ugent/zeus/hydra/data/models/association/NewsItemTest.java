@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.data.models.association;
 
+import be.ugent.zeus.hydra.domain.entities.event.NewsItem;
 import be.ugent.zeus.hydra.testing.Utils;
 import be.ugent.zeus.hydra.data.models.ModelTest;
 import nl.jqno.equalsverifier.Warning;

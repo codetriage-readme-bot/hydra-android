@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.data.models.association;
+package be.ugent.zeus.hydra.domain.entities.event;
 
 import android.os.Parcel;
 import android.os.Parcelable;

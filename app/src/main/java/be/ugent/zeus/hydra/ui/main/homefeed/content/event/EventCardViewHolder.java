@@ -12,7 +12,7 @@ import be.ugent.zeus.hydra.ui.main.homefeed.commands.DisableTypeCommand;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
 import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedViewHolder;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.data.models.association.Event;
+import be.ugent.zeus.hydra.domain.entities.event.Event;
 import be.ugent.zeus.hydra.utils.DateUtils;
 
 /**
