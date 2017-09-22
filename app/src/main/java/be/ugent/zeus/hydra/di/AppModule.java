@@ -2,6 +2,8 @@ package be.ugent.zeus.hydra.di;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,5 +32,11 @@ public class AppModule {
     @Singleton
     Application providesApplication() {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences providePreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(application);
     }
 }

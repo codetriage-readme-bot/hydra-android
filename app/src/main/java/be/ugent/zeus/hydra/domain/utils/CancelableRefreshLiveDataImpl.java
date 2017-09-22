@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import java8.util.function.BiFunction;
+import java8.util.function.Function;
 
 /**
  * LiveData used when execution might take a longer time. When the LiveData enters inactive state, an attempt will be
@@ -13,7 +14,7 @@ import java8.util.function.BiFunction;
  */
 public class CancelableRefreshLiveDataImpl<D> extends RefreshLiveDataImpl<D> {
 
-    private final BiFunction<Executor.Companion, Bundle, CancelableResult<D>> executable;
+    protected final BiFunction<Executor.Companion, Bundle, CancelableResult<D>> executable;
 
     private transient Executor.Cancelable executingOrDone;
 
@@ -51,6 +52,11 @@ public class CancelableRefreshLiveDataImpl<D> extends RefreshLiveDataImpl<D> {
         }
     }
 
+    @Override
+    public <E> RefreshLiveData<E> map(Function<D, E> function) {
+        return new CancelableRefreshLiveDataImpl<>(executor, (companion, bundle) -> executable.apply(companion, bundle).map(function));
+    }
+
     public static class CancelableResult<D> {
 
         private final D data;
@@ -78,6 +84,14 @@ public class CancelableRefreshLiveDataImpl<D> extends RefreshLiveDataImpl<D> {
 
         public static <D> CancelableResult<D> completed(D data) {
             return new CancelableResult<>(data, false);
+        }
+
+        public <E> CancelableResult<E> map(Function<D, E> function) {
+            if (wasCancelled) {
+                return cancelled();
+            } else {
+                return completed(function.apply(getData()));
+            }
         }
     }
 }

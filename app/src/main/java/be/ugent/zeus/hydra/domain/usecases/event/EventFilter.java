@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.data.network.requests.association;
+package be.ugent.zeus.hydra.domain.usecases.event;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,6 +23,10 @@ public class EventFilter implements Function<List<Event>, List<Event>> {
 
     public EventFilter(Context context) {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public EventFilter(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
     @Override

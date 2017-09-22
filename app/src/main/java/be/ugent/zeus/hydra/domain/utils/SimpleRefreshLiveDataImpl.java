@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import java8.util.function.Function;
+import java8.util.function.Functions;
 
 /**
  * Simple LiveData that executes simple operations.
@@ -28,5 +29,10 @@ public class SimpleRefreshLiveDataImpl<D> extends RefreshLiveDataImpl<D> {
     @Override
     protected void executeInBackground(Bundle args) {
         executor.execute(() -> postValue(executable.apply(args)));
+    }
+
+    @Override
+    public <E> RefreshLiveData<E> map(Function<D, E> function) {
+        return new SimpleRefreshLiveDataImpl<>(executor, Functions.andThen(executable, function));
     }
 }

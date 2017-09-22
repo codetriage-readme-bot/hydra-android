@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.di;
 
+import be.ugent.zeus.hydra.domain.usecases.event.GetEvents;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.GetHomeFeed;
 import be.ugent.zeus.hydra.domain.usecases.minerva.*;
 import be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles;
@@ -28,8 +29,8 @@ public interface UseCaseComponent {
     GetSingleAnnouncement getSingleAnnouncement();
     MarkAnnouncementAsRead markAnnouncementAsRead();
     GetSchamperArticles getSchamperArticles();
+    GetEvents getEvents();
 
     // Home feed use cases
     GetHomeFeed getHomeFeed();
-
 }

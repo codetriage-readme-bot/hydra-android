@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import be.ugent.zeus.hydra.domain.entities.event.Event;
 import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.Requests;
-import be.ugent.zeus.hydra.data.network.requests.association.EventFilter;
+import be.ugent.zeus.hydra.domain.usecases.event.EventFilter;
 import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.HomeFeedRequest;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;

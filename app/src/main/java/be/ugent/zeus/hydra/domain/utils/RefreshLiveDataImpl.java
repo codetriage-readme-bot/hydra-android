@@ -48,6 +48,7 @@ public abstract class RefreshLiveDataImpl<D> extends RefreshLiveData<D> {
         newArgs.putBoolean(Requests.IGNORE_CACHE, true);
         if (hasActiveObservers()) {
             loadData(newArgs);
+            this.scheduledRefresh = null;
         } else {
             this.scheduledRefresh = newArgs;
         }
