@@ -1,12 +1,11 @@
-package be.ugent.zeus.hydra.ui.main.homefeed.content.event;
+package be.ugent.zeus.hydra.domain.entities.homefeed.cards;
 
-import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.ui.main.homefeed.content.FeedUtils;
 import be.ugent.zeus.hydra.domain.entities.event.Event;
+import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
+import be.ugent.zeus.hydra.domain.entities.homefeed.PriorityUtils;
 import java8.util.Objects;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
-
 
 /**
  * Home card for {@link Event}.
@@ -14,11 +13,11 @@ import org.threeten.bp.ZonedDateTime;
  * @author silox
  * @author Niko Strijbol
  */
-class EventCard extends HomeCard {
+public class EventCard extends HomeCard {
 
     private Event event;
 
-    EventCard(Event event) {
+    public EventCard(Event event) {
         this.event = event;
     }
 
@@ -26,7 +25,7 @@ class EventCard extends HomeCard {
     public int getPriority() {
         Duration duration = Duration.between(ZonedDateTime.now(), event.getStart());
         //Add some to 24*30 for better ordering
-        return FeedUtils.lerp((int) duration.toHours(), 0, 744);
+        return PriorityUtils.lerp((int) duration.toHours(), 0, 744);
     }
 
     @Override

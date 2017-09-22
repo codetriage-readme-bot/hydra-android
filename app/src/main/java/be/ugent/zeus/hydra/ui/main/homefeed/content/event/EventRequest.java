@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import be.ugent.zeus.hydra.domain.entities.event.Event;
+import be.ugent.zeus.hydra.domain.entities.homefeed.cards.EventCard;
 import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.Requests;
 import be.ugent.zeus.hydra.domain.usecases.event.EventFilter;
