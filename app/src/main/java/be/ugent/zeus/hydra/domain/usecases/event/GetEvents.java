@@ -2,6 +2,7 @@ package be.ugent.zeus.hydra.domain.usecases.event;
 
 import android.content.SharedPreferences;
 
+import be.ugent.zeus.hydra.domain.Preferences;
 import be.ugent.zeus.hydra.domain.cache.Cache;
 import be.ugent.zeus.hydra.domain.entities.event.Event;
 import be.ugent.zeus.hydra.domain.requests.Request;
@@ -12,7 +13,7 @@ import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.domain.utils.CancelableRefreshLiveDataImpl;
 import be.ugent.zeus.hydra.domain.utils.PreferenceLiveData;
 import be.ugent.zeus.hydra.domain.utils.RefreshLiveData;
-import be.ugent.zeus.hydra.ui.preferences.AssociationSelectPrefActivity;
+import be.ugent.zeus.hydra.utils.PreferencesUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,12 +46,12 @@ public class GetEvents implements UseCase<Void, RefreshLiveData<Result<List<Even
 
             @Override
             protected Collection<String> getPreferenceKeys() {
-                return Collections.singleton(AssociationSelectPrefActivity.PREF_ASSOCIATIONS_SHOWING);
+                return Collections.singleton(Preferences.DISABLED_ASSOCIATIONS);
             }
 
             @Override
             protected boolean havePreferencesChanged(SharedPreferences preferences) {
-                Set<String> current = preferences.getStringSet(AssociationSelectPrefActivity.PREF_ASSOCIATIONS_SHOWING, Collections.emptySet());
+                Set<String> current = PreferencesUtils.getStringSet(preferences, Preferences.DISABLED_ASSOCIATIONS);
                 boolean hasChanged = disabledAssociations != null && !current.equals(disabledAssociations);
                 disabledAssociations = current;
                 return hasChanged;

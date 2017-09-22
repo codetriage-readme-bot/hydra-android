@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import be.ugent.zeus.hydra.R;
+import be.ugent.zeus.hydra.domain.Preferences;
 import be.ugent.zeus.hydra.domain.entities.event.Association;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
@@ -35,7 +36,8 @@ public class AssociationSelectPrefActivity extends BaseActivity {
     /**
      * Key for the preference that contains which associations should be shown.
      */
-    public static final String PREF_ASSOCIATIONS_SHOWING = "pref_associations_showing";
+    @Deprecated
+    public static final String PREF_ASSOCIATIONS_SHOWING = Preferences.DISABLED_ASSOCIATIONS;
 
     private static final String TAG = "AssociationSelectPrefAc";
 
