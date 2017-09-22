@@ -13,26 +13,22 @@ import java.util.List;
 @Singleton
 public class FeedSourceProvider {
 
-    private final MinervaAnnouncementsSource minervaAnnouncements;
-    private final MinervaAgendaSource minervaAgenda;
-    private final StallSource stall;
-    private final SchamperArticleSource schamperArticleSource;
-    private final EventsSource eventsSource;
+    private final List<FeedSource> sources;
 
     @Inject
-    public FeedSourceProvider(MinervaAnnouncementsSource minervaAnnouncements, MinervaAgendaSource agenda, StallSource stall, SchamperArticleSource articleSource, EventsSource eventsSource) {
-        this.minervaAnnouncements = minervaAnnouncements;
-        this.minervaAgenda = agenda;
-        this.stall = stall;
-        this.schamperArticleSource = articleSource;
-        this.eventsSource = eventsSource;
+    public FeedSourceProvider(MinervaAnnouncementsSource minervaAnnouncements,
+                              MinervaAgendaSource minervaAgenda,
+                              StallSource stall,
+                              SchamperArticleSource schamperArticles,
+                              EventsSource eventsSource) {
+        sources = Arrays.asList(eventsSource, schamperArticles, minervaAnnouncements, minervaAgenda, stall);
     }
 
     public int getCount() {
-        return 5;
+        return sources.size();
     }
 
     public List<FeedSource> getAll() {
-        return Arrays.asList(eventsSource, schamperArticleSource, minervaAnnouncements, minervaAgenda, stall);
+        return sources;
     }
 }
