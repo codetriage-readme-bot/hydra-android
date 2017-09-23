@@ -12,6 +12,7 @@ import be.ugent.zeus.hydra.domain.requests.Result;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public class RequestLiveData<M> extends BaseLiveData<Result<M>> {
 
     private final Request<M> request;

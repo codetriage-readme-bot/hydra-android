@@ -5,6 +5,7 @@ package be.ugent.zeus.hydra.data.network.caching;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 class CacheException extends Exception {
 
     CacheException(String message) {

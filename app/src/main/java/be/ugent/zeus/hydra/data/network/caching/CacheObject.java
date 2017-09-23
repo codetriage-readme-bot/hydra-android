@@ -14,6 +14,7 @@ import java.io.Serializable;
  * @author Niko Strijbol
  */
 @SuppressWarnings("WeakerAccess")
+@Deprecated
 class CacheObject<T extends Serializable> implements Serializable {
 
     private final long lastUpdated;

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public abstract class BaseLiveData<R> extends LiveData<R> {
 
     private Bundle queuedRefresh;

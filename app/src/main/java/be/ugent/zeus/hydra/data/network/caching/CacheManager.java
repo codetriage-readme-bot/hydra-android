@@ -8,6 +8,7 @@ import be.ugent.zeus.hydra.repository.Cache;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public class CacheManager {
 
     private static Cache cache;

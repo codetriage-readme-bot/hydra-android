@@ -10,6 +10,7 @@ import be.ugent.zeus.hydra.repository.data.RequestLiveData;
 /**
  * @author Niko Strijbol
  */
+@Deprecated
 public class RequestRepository<M> {
 
     private final Context context;

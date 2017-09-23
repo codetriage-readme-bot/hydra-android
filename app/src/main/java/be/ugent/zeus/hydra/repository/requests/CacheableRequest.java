@@ -20,6 +20,7 @@ import be.ugent.zeus.hydra.repository.Cache;
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public interface CacheableRequest<D> extends Request<D>, Request.Cacheable<D> {
 
     /**
