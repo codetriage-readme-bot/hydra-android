@@ -198,3 +198,8 @@
   license: The MIT License
   licenseUrl: https://jsoup.org/license
   url: https://jsoup.org/
+
+- artifact: android.arch.persistence:db-framework:+
+  skip: true
+- artifact: android.arch.persistence:db:+
+  skip: true
