@@ -1,15 +1,18 @@
 package be.ugent.zeus.hydra.data.sync;
 
+import be.ugent.zeus.hydra.domain.usecases.minerva.sync.Synchronisation;
+
 import java.util.Collection;
 
 /**
- * Interface to enable automatic execution of {@link be.ugent.zeus.hydra.data.sync.Synchronisation.Diff}.
+ * Interface to enable automatic execution of {@link Synchronisation.Diff}.
  *
  * @param <E> The type of the objects.
  * @param <ID> The type of the primary key of the object.
  *
  * @author Niko Strijbol
  */
+@Deprecated
 public interface SyncCallback<E, ID> {
 
     /**

@@ -1,5 +1,7 @@
-package be.ugent.zeus.hydra.data.sync;
+package be.ugent.zeus.hydra.domain.usecases.minerva.sync;
 
+import be.ugent.zeus.hydra.data.sync.SyncCallback;
+import be.ugent.zeus.hydra.domain.usecases.FullRepository;
 import java8.util.function.Function;
 
 import java.util.Collection;
@@ -131,10 +133,22 @@ public class Synchronisation<E, ID> {
          *
          * @param dao The
          */
+        @Deprecated
         public void apply(SyncCallback<E, ID> dao) {
             dao.delete(getStaleIds());
             dao.update(getUpdated());
             dao.insert(getNew());
+        }
+
+        /**
+         * Execute the diff automatically. This will delete, update and insert the elements, in that order.
+         *
+         * @param repository The repository to apply the changes to.
+         */
+        public void apply(FullRepository<ID, E> repository) {
+            repository.deleteById(getStaleIds());
+            repository.update(getUpdated());
+            repository.insert(getNew());
         }
     }
 }

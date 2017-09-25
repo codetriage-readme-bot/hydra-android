@@ -24,7 +24,7 @@ import be.ugent.zeus.hydra.data.network.requests.minerva.WhatsNewRequest;
 import be.ugent.zeus.hydra.data.sync.MinervaAdapter;
 import be.ugent.zeus.hydra.data.sync.SyncBroadcast;
 import be.ugent.zeus.hydra.data.sync.SyncUtils;
-import be.ugent.zeus.hydra.data.sync.Synchronisation;
+import be.ugent.zeus.hydra.domain.usecases.minerva.sync.Synchronisation;
 import be.ugent.zeus.hydra.data.sync.course.CourseAdapter;
 import be.ugent.zeus.hydra.ui.preferences.MinervaFragment;
 import org.threeten.bp.ZonedDateTime;

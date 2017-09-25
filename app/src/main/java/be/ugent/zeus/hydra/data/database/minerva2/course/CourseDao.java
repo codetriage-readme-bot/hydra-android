@@ -61,4 +61,7 @@ public interface CourseDao {
             AnnouncementTable.Columns.READ_DATE + " = -1) AS unread_count FROM " + CourseTable.TABLE_NAME +
             " ORDER BY " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.ORDER + " ASC, " + CourseTable.TABLE_NAME + "." + CourseTable.Columns.TITLE + " ASC")
     LiveData<List<CourseUnread>> getAllAndUnreadInOrder();
+
+    @Query("SELECT " + CourseTable.Columns.ID + " FROM " + CourseTable.TABLE_NAME)
+    List<String> getIds();
 }

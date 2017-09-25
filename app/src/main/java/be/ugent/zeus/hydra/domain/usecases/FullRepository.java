@@ -93,6 +93,13 @@ public interface FullRepository<ID, M> {
     void deleteById(ID id);
 
     /**
+     * Delete an object by its ID.
+     *
+     * @param id The ID of the object to delete.
+     */
+    void deleteById(Collection<ID> id);
+
+    /**
      * Delete multiple objects. After deletion, the object instance may not be valid anymore.
      *
      * @param objects The objects to delete.

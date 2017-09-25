@@ -16,7 +16,7 @@ import be.ugent.zeus.hydra.data.network.requests.minerva.CoursesMinervaRequest;
 import be.ugent.zeus.hydra.data.sync.MinervaAdapter;
 import be.ugent.zeus.hydra.data.sync.SyncBroadcast;
 import be.ugent.zeus.hydra.data.sync.SyncUtils;
-import be.ugent.zeus.hydra.data.sync.Synchronisation;
+import be.ugent.zeus.hydra.domain.usecases.minerva.sync.Synchronisation;
 
 import java.util.Collection;
 

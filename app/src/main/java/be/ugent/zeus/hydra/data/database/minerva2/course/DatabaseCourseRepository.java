@@ -98,4 +98,9 @@ public class DatabaseCourseRepository implements CourseRepository {
     public LiveData<List<CourseUnread>> getAllAndUnreadInOrder() {
         return NullAwareTransformations.map(courseDao.getAllAndUnreadInOrder(), l -> transform(l, courseMapper::convert));
     }
+
+    @Override
+    public List<String> getIds() {
+        return courseDao.getIds();
+    }
 }
