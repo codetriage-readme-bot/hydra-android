@@ -192,3 +192,9 @@
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/google/dagger
 
+- artifact: org.jsoup:jsoup:+
+  name: jsoup Java HTML Parser
+  copyrightHolder: Jonathan Hedley
+  license: The MIT License
+  licenseUrl: https://jsoup.org/license
+  url: https://jsoup.org/

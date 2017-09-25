@@ -48,12 +48,6 @@ public class AnnouncementsFragment extends Fragment implements MultiSelectDiffAd
     private AnnouncementsAdapter adapter;
     private ActionMode actionMode;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        HydraApplication application = (HydraApplication) getActivity().getApplication();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

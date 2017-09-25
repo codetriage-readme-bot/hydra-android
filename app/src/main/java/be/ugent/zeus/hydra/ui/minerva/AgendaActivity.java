@@ -32,7 +32,7 @@ import static android.view.View.VISIBLE;
 
 /**
  * Displays an Agenda item from Minerva.
- *
+ * <p>
  * To manually start the activity, use the {@link #start(Context, AgendaItem)} method.
  *
  * @author Niko Strijbol
@@ -50,7 +50,7 @@ public class AgendaActivity extends BaseActivity {
      * Start this activity.
      *
      * @param context The context to start with.
-     * @param agenda The item to show.
+     * @param agenda  The item to show.
      */
     public static void start(Context context, AgendaItem agenda) {
         start(context, agenda.getUri());
@@ -59,7 +59,7 @@ public class AgendaActivity extends BaseActivity {
     /**
      * Start this activity.
      *
-     * @param context The context to start with.
+     * @param context         The context to start with.
      * @param calendarItemUri The uri of the item, as returned by {@link AgendaItem#getUri()}.
      */
     public static void start(Context context, String calendarItemUri) {
@@ -89,6 +89,12 @@ public class AgendaActivity extends BaseActivity {
 
     private void onResult(AgendaItem result) {
         setResult(RESULT_OK);
+
+        // If this is null, do nothing.
+        if (result == null) {
+            return;
+        }
+
         errorView.setVisibility(GONE);
         normalView.setVisibility(VISIBLE);
         item = result;

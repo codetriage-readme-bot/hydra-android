@@ -10,7 +10,7 @@ android {
         applicationId "be.ugent.zeus.hydra"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 247
+        versionCode 253
         versionName "2.5"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -60,9 +60,9 @@ android {
             debuggable true
             manifestPlaceholders = [disableAnalytics: true]
             // Set these to true when debugging the home feed.
-            buildConfigField "boolean", "DEBUG_HOME_STREAM_PRIORITY", "true"
-            buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "true"
-            buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "true"
+            buildConfigField "boolean", "DEBUG_HOME_STREAM_PRIORITY", "false"
+            buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "false"
+            buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "false"
         }
     }
 
@@ -99,7 +99,7 @@ project.afterEvaluate {
 
 //The support library version
 final SUPPORT_LIBRARY_VERSION = '26.1.0'
-final GMS_VERSION = '11.2.0'
+final GMS_VERSION = '11.4.0'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -115,8 +115,8 @@ dependencies {
 
     // Lifecycle components
     compile "android.arch.lifecycle:runtime:1.0.0"
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha9-1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
+    compile "android.arch.lifecycle:extensions:1.0.0-beta1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-beta1"
     compile "android.arch.persistence.room:runtime:1.0.0-alpha9-1"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha9-1"
     androidTestCompile("android.arch.persistence.room:testing:1.0.0-alpha9-1") {
@@ -125,10 +125,10 @@ dependencies {
 
     compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    compile 'net.sourceforge.streamsupport:streamsupport:1.5.5'
+    compile 'net.sourceforge.streamsupport:streamsupport:1.5.6'
     compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
     compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
@@ -147,6 +147,9 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:2.11"
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Temporary HTML parser for Urgent.fm
+    compile 'org.jsoup:jsoup:1.10.3'
 
     // Used for the OAuth stuff
     compile ('org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:1.0.2') {
