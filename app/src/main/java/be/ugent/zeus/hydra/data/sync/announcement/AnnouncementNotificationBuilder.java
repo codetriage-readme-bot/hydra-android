@@ -12,8 +12,8 @@ import android.util.Log;
 
 import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.data.ChannelCreator;
-import be.ugent.zeus.hydra.data.models.minerva.Announcement;
-import be.ugent.zeus.hydra.data.models.minerva.Course;
+import be.ugent.zeus.hydra.data.network.minerva.models.Announcement;
+import be.ugent.zeus.hydra.data.network.minerva.course.Course;
 import be.ugent.zeus.hydra.ui.common.html.Utils;
 import be.ugent.zeus.hydra.ui.main.MainActivity;
 import be.ugent.zeus.hydra.ui.minerva.AnnouncementActivity;

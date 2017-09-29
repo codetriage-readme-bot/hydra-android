@@ -9,6 +9,8 @@ import be.ugent.zeus.hydra.domain.usecases.FullRepository;
 import java.util.List;
 
 /**
+ * Provides access to the local storage for courses.
+ *
  * @author Niko Strijbol
  */
 public interface CourseRepository extends FullRepository<String, Course> {

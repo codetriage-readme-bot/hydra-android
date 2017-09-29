@@ -1,10 +1,10 @@
 package be.ugent.zeus.hydra.domain.usecases.minerva.sync;
 
 import be.ugent.zeus.hydra.domain.entities.minerva.Course;
-import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.domain.requests.RequestException;
 import be.ugent.zeus.hydra.domain.usecases.ExceptionUseCase;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.CourseRepository;
+import be.ugent.zeus.hydra.domain.usecases.minerva.repository.MinervaApi;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -16,18 +16,18 @@ import java.util.List;
 public class SyncCoursesUseCase implements ExceptionUseCase<Void, Void, RequestException> {
 
     private final CourseRepository repository;
-    private final Request<List<Course>> courseRequest;
+    private final MinervaApi minervaApi;
 
     @Inject
-    public SyncCoursesUseCase(CourseRepository repository, Request<List<Course>> courseRequest) {
+    public SyncCoursesUseCase(CourseRepository repository, MinervaApi minervaApi) {
         this.repository = repository;
-        this.courseRequest = courseRequest;
+        this.minervaApi = minervaApi;
     }
 
     @Override
     public Void execute(Void arguments) throws RequestException {
         // Get the courses from the API.
-        List<Course> remoteCourses = courseRequest.performRequest(null).getDataOrThrow();
+        List<Course> remoteCourses = minervaApi.getAllCourses().getDataOrThrow();
         // Get existing courses.
         Collection<String> existingIds = repository.getIds();
         // Apply the synchronisation.

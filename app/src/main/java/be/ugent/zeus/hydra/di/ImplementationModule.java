@@ -42,4 +42,10 @@ public class ImplementationModule {
     public HomeFeedOptions provideHomeFeedOptions(Context context) {
         return new HomeFeedPreferences(context);
     }
+
+    @Provides
+    @Singleton
+    public be.ugent.zeus.hydra.data.network.minerva.course.CourseMapper provideCourseMapper2() {
+        return Mappers.getMapper(be.ugent.zeus.hydra.data.network.minerva.course.CourseMapper.class);
+    }
 }
