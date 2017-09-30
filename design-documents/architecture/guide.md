@@ -3,7 +3,7 @@ Hydra Android Architectural Guide (HAAG) or, since we like fancy abbreviations, 
 # Current status
 
 This currently describes what we would want the architecture and design to be like. This is not yet
-the case, and is an ongoing effort, see [project.md].
+the case, and is an ongoing effort, see [HEE](project.md).
 
 # Introduction
 
