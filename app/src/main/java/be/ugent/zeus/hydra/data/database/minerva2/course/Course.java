@@ -3,6 +3,7 @@ package be.ugent.zeus.hydra.data.database.minerva2.course;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 /**
  * Represents a course as it is saved in the database.
@@ -14,6 +15,7 @@ public final class Course {
 
     @PrimaryKey
     @ColumnInfo(name = CourseTable.Columns.ID)
+    @NonNull
     private String id;
     @ColumnInfo(name = CourseTable.Columns.CODE)
     private String code;
@@ -28,11 +30,12 @@ public final class Course {
     @ColumnInfo(name = CourseTable.Columns.ORDER)
     private int order = 0;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 

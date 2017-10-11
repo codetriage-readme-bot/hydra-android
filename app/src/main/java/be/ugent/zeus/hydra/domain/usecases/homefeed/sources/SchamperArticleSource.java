@@ -32,7 +32,7 @@ public class SchamperArticleSource extends OptionalFeedSource {
 
     @Override
     protected LiveData<Result<List<HomeCard>>> getActualData(Args args) {
-        useCase.requestLoad();
+        useCase.requestRefresh(args.args);
         return useCase.map((companion, articles) -> articles.map(this::convertAndFilterResult));
     }
 

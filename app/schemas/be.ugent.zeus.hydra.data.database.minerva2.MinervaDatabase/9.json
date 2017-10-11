@@ -2,17 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "fc19399accb367c36e2f6584c92a5e9d",
+    "identityHash": "677f2a92857b3fbf26bf6bbb199cb683",
     "entities": [
       {
         "tableName": "minerva_courses",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT, `code` TEXT, `title` TEXT, `description` TEXT, `tutor` TEXT, `academic_year` INTEGER NOT NULL, `ordering` INTEGER NOT NULL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT NOT NULL, `code` TEXT, `title` TEXT, `description` TEXT, `tutor` TEXT, `academic_year` INTEGER NOT NULL, `ordering` INTEGER NOT NULL, PRIMARY KEY(`_id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "_id",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "code",
@@ -253,7 +253,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc19399accb367c36e2f6584c92a5e9d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"677f2a92857b3fbf26bf6bbb199cb683\")"
     ]
   }
 }

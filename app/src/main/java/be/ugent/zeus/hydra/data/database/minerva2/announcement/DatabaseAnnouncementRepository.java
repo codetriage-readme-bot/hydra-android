@@ -10,6 +10,7 @@ import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementReposi
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -83,6 +84,11 @@ public class DatabaseAnnouncementRepository implements AnnouncementRepository {
     @Override
     public void deleteById(Integer integer) {
         announcementDao.delete(integer);
+    }
+
+    @Override
+    public void deleteById(Collection<Integer> id) {
+        announcementDao.deleteById(new ArrayList<>(id));
     }
 
     @Override

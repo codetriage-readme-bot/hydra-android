@@ -94,9 +94,10 @@ public abstract class BaseLiveData<D> extends LiveDataInterface<D> {
 
     @Override
     public void requestRefresh(Bundle args) {
-        Bundle newArgs = new Bundle(args);
+        Bundle newArgs = new Bundle();
         // We want to ignore any existing data.
         newArgs.putBoolean(Requests.IGNORE_CACHE, true);
+        newArgs.putAll(args);
 
         if (hasActiveObservers()) {
             loadData(newArgs);
