@@ -3,6 +3,7 @@ package be.ugent.zeus.hydra.domain.entities.homefeed.cards;
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.entities.homefeed.PriorityUtils;
+import be.ugent.zeus.hydra.domain.usecases.homefeed.sources.SchamperArticleSource;
 import org.threeten.bp.Duration;
 import org.threeten.bp.ZonedDateTime;
 
@@ -31,7 +32,7 @@ public class SchamperCard extends HomeCard {
         ZonedDateTime date = article.getPubDate();
         Duration duration = Duration.between(date, ZonedDateTime.now());
         // We only show the last month of schamper articles.
-        return PriorityUtils.lerp((int) duration.toDays(), 0, 30);
+        return PriorityUtils.lerp((int) duration.toDays(), 0, (int) SchamperArticleSource.MAX_ARTICLE_AGE.toDays());
     }
 
     @Override

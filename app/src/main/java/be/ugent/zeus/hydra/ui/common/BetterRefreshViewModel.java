@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.requests.Result;
-import be.ugent.zeus.hydra.domain.utils.RefreshLiveData;
+import be.ugent.zeus.hydra.domain.utils.livedata.LiveDataInterface;
 
 /**
  * @author Niko Strijbol
@@ -17,16 +17,16 @@ public abstract class BetterRefreshViewModel<OUT> extends AndroidViewModel imple
 
     private static final String TAG = "RefreshViewModel";
 
-    private RefreshLiveData<Result<OUT>> data;
+    private LiveDataInterface<Result<OUT>> data;
     private LiveData<Boolean> refreshing;
 
     public BetterRefreshViewModel(Application application) {
         super(application);
     }
 
-    protected abstract RefreshLiveData<Result<OUT>> executeUseCase();
+    protected abstract LiveDataInterface<Result<OUT>> executeUseCase();
 
-    public RefreshLiveData<Result<OUT>> getData() {
+    public LiveDataInterface<Result<OUT>> getData() {
         if (data == null) {
             data = executeUseCase();
         }
@@ -46,7 +46,7 @@ public abstract class BetterRefreshViewModel<OUT> extends AndroidViewModel imple
     private LiveData<Boolean> buildRefreshLiveData() {
         MediatorLiveData<Boolean> result = new MediatorLiveData<>();
         result.addSource(getData(), data -> result.setValue(data != null && !data.isDone()));
-        getData().registerRefreshListener(() -> result.postValue(true));
+        getData().registerDataLoadListener(() -> result.postValue(true));
         return result;
     }
 

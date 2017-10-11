@@ -1,42 +1,87 @@
 package be.ugent.zeus.hydra.domain.utils;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
-import java8.util.function.BiFunction;
-import java8.util.function.Function;
+import be.ugent.zeus.hydra.domain.utils.livedata.BaseLiveData;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
+ * A LiveData that listens to preference changes. When the preferences change, a refresh will be scheduled. Since the
+ * LiveData only listens when there are active observers, the LiveData will query if some monitored value has changed
+ * since the last active observer, and if so, it will also schedule a refresh.
+ *
  * @author Niko Strijbol
  */
-public abstract class PreferenceLiveData<D> extends CancelableRefreshLiveDataImpl<D> implements SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class PreferenceLiveData<D> extends BaseLiveData<D> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final SharedPreferences preferences;
 
     /**
-     * Construct a Live Data.
-     *  @param executor   The executor determines on which thread the data is executed.
-     * @param executable The code to execute.
-     * @param preferences
+     * Holds the values of the preferences as they were when the last observed change happened.
      */
-    public PreferenceLiveData(Executor executor, BiFunction<Executor.Companion, Bundle, CancelableResult<D>> executable, SharedPreferences preferences) {
-        super(executor, executable);
+    private final Map<String, Object> saved = new HashMap<>();
+
+    /**
+     * Construct a LiveData. This will schedule an initial load of the data.
+     *
+     * @param executor    The executor determines on which thread the data is executed.
+     * @param preferences The preferences to use.
+     */
+    public PreferenceLiveData(Executor executor, SharedPreferences preferences) {
+        super(executor);
         this.preferences = preferences;
     }
 
+    /**
+     * Construct a LiveData. This will schedule an initial load of the data.
+     *
+     * @param executor    The executor determines on which thread the data is executed.
+     * @param preferences The preferences to use.
+     */
+    public PreferenceLiveData(Executor executor, SharedPreferences preferences, boolean shouldLoadNow) {
+        super(executor, shouldLoadNow);
+        this.preferences = preferences;
+    }
+
+    /**
+     * Get for which keys the preferences are monitored. For a better performance, this function should return a
+     * collection that has a cheap {@link Collection#contains(Object)} method, as it might be called multiple times.
+     * Good candidates include {@link java.util.HashSet}.
+     *
+     * @return The keys of the preferences to monitor.
+     */
     protected abstract Collection<String> getPreferenceKeys();
 
-    protected abstract boolean havePreferencesChanged(SharedPreferences preferences);
+    /**
+     * Check if the preferences have updated or not.
+     *
+     * @return True if they have changed, otherwise false.
+     */
+    private boolean havePreferencesChanged() {
+        Map<String, ?> currentValues = preferences.getAll();
+        boolean hasChanged = false;
+        for (String key : getPreferenceKeys()) {
+            Object currentValue = currentValues.get(key);
+            Object savedValue = saved.get(key);
+            if (savedValue != null && !currentValue.equals(savedValue)) {
+                hasChanged = true;
+            }
+            saved.put(key, currentValue);
+        }
+
+        return hasChanged;
+    }
 
     @Override
     protected void onActive() {
         // Register the listener for when the settings change while it's active
         preferences.registerOnSharedPreferenceChangeListener(this);
         // Check if the value is equal to the saved value. If not, we need to reload.
-        if (havePreferencesChanged(preferences)) {
+        if (havePreferencesChanged()) {
             requestRefresh();
         }
 
@@ -46,22 +91,8 @@ public abstract class PreferenceLiveData<D> extends CancelableRefreshLiveDataImp
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (getPreferenceKeys().contains(s)) {
+            saved.put(s, sharedPreferences.getAll().get(s));
             requestRefresh();
         }
-    }
-
-    @Override
-    public <E> RefreshLiveData<E> map(Function<D, E> function) {
-        return new PreferenceLiveData<E>(executor, (companion, bundle) -> executable.apply(companion, bundle).map(function), preferences) {
-            @Override
-            protected Collection<String> getPreferenceKeys() {
-                return PreferenceLiveData.this.getPreferenceKeys();
-            }
-
-            @Override
-            protected boolean havePreferencesChanged(SharedPreferences preferences) {
-                return PreferenceLiveData.this.havePreferencesChanged(preferences);
-            }
-        };
     }
 }

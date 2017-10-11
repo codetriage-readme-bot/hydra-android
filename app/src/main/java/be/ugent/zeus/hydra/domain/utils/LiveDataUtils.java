@@ -34,14 +34,4 @@ public class LiveDataUtils {
         result.addSource(source, s -> executor.execute(() -> result.postValue(function.apply(s))));
         return result;
     }
-
-    /**
-     * Same as {@link android.arch.lifecycle.Transformations#map(LiveData, Function)}, but can be called from any
-     * thread. When on the main thread, you should not use this function, as it is slower than the normal map.
-     */
-    public static <S, R> LiveData<R> threadSafeMap(LiveData<S> source, final Function<S, R> func) {
-        final MediatorLiveData<R> result = new MediatorLiveData<>();
-        result.addSource(source, s -> result.postValue(func.apply(s)));
-        return result;
-    }
 }

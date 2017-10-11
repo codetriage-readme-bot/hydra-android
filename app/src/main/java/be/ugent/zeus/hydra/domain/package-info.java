@@ -5,8 +5,9 @@
  * Android classes: the 'system' classes, such as {@link android.os.Bundle}, or the 'framework' classes. The first ones
  * are allowed if absolutely necessary. The second category is absolutely prohibited.
  *
- * For example, you might make a use case with a {@link android.os.Bundle} as argument. You cannot however use things
- * like the *Manager classes.
+ * Currently, allowed classes are:
+ * - {@link android.os.Bundle}
+ * - {@link android.content.SharedPreferences}, as it is an interface.
  *
  * Another area where shortcuts can be made to reduce code duplication are the entities. Sometimes it is faster to
  * add Parcelable, Serializable and Gson support to the domain models instead of making the same model three times.

@@ -6,7 +6,7 @@ import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles;
-import be.ugent.zeus.hydra.domain.utils.RefreshLiveData;
+import be.ugent.zeus.hydra.domain.utils.livedata.LiveDataInterface;
 import be.ugent.zeus.hydra.ui.common.BetterRefreshViewModel;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class SchamperViewModel extends BetterRefreshViewModel<List<SchamperArtic
     }
 
     @Override
-    protected RefreshLiveData<Result<List<SchamperArticle>>> executeUseCase() {
+    protected LiveDataInterface<Result<List<SchamperArticle>>> executeUseCase() {
         return useCase.execute(null);
     }
 }
