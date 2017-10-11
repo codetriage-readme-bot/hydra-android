@@ -6,7 +6,7 @@ import android.util.Pair;
 
 import be.ugent.zeus.hydra.data.database.Dao;
 import be.ugent.zeus.hydra.data.sync.SyncCallback;
-import be.ugent.zeus.hydra.data.network.minerva.course.Course;
+import be.ugent.zeus.hydra.data.models.minerva.Course;
 
 import java.util.Collection;
 import java.util.Collections;

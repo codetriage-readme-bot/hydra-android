@@ -9,7 +9,6 @@ import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AgendaItemReposito
 import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -80,11 +79,6 @@ public class DatabaseAgendaItemRepository implements AgendaItemRepository {
     @Override
     public void deleteById(Integer integer) {
         agendaDao.delete(integer);
-    }
-
-    @Override
-    public void deleteById(Collection<Integer> ids) {
-        agendaDao.deleteById(new ArrayList<>(ids));
     }
 
     @Override

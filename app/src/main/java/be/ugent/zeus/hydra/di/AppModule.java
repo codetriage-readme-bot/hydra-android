@@ -11,14 +11,12 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 /**
- * Provides access to the application, context and general preferences.
- *
  * @author Niko Strijbol
  */
 @Module
 public class AppModule {
 
-    private Application application;
+    Application application;
 
     public AppModule(Application application) {
         this.application = application;

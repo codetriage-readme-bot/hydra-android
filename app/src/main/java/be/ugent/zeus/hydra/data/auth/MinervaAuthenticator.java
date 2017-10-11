@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
-import be.ugent.zeus.hydra.data.network.minerva.models.auth.BearerToken;
+import be.ugent.zeus.hydra.data.models.minerva.auth.BearerToken;
 import be.ugent.zeus.hydra.domain.requests.Request;
 import be.ugent.zeus.hydra.data.network.exceptions.IOFailureException;
 import be.ugent.zeus.hydra.domain.requests.RequestException;

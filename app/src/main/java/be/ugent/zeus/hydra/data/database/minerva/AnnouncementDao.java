@@ -4,8 +4,8 @@ import android.content.Context;
 
 import be.ugent.zeus.hydra.data.database.Dao;
 import be.ugent.zeus.hydra.data.sync.SyncCallback;
-import be.ugent.zeus.hydra.data.network.minerva.models.Announcement;
-import be.ugent.zeus.hydra.data.network.minerva.course.Course;
+import be.ugent.zeus.hydra.data.models.minerva.Announcement;
+import be.ugent.zeus.hydra.data.models.minerva.Course;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.Collection;

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import be.ugent.zeus.hydra.data.ChannelCreator;
 import be.ugent.zeus.hydra.di.DaggerUseCaseComponent;
-import be.ugent.zeus.hydra.di.minerva.SyncComponent;
 import be.ugent.zeus.hydra.di.UseCaseComponent;
 import be.ugent.zeus.hydra.di.AppModule;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -103,19 +102,11 @@ public class HydraApplication extends Application {
                 .build();
     }
 
-    protected SyncComponent initSyncDagger() {
-        return null;
-    }
-
     public UseCaseComponent getUseCaseComponent() {
         return useCaseComponent;
     }
 
     public static UseCaseComponent getComponent(Application application) {
         return ((HydraApplication) application).getUseCaseComponent();
-    }
-
-    public static SyncComponent getSyncComponent(Application application) {
-        return null;
     }
 }

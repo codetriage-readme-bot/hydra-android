@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import be.ugent.zeus.hydra.data.models.UrgentInfo;
-import be.ugent.zeus.hydra.domain.requests.Request;
-import be.ugent.zeus.hydra.domain.requests.RequestException;
-import be.ugent.zeus.hydra.domain.requests.Result;
+import be.ugent.zeus.hydra.repository.requests.Request;
+import be.ugent.zeus.hydra.repository.requests.RequestException;
+import be.ugent.zeus.hydra.repository.requests.Result;
 
 /**
  * @author Niko Strijbol

@@ -1,6 +1,5 @@
 package be.ugent.zeus.hydra.data.models.minerva;
 
-import be.ugent.zeus.hydra.data.network.minerva.course.Course;
 import be.ugent.zeus.hydra.testing.Utils;
 import be.ugent.zeus.hydra.data.models.ModelTest;
 import nl.jqno.equalsverifier.Warning;

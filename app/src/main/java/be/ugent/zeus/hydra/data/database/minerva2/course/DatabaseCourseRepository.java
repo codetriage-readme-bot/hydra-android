@@ -9,7 +9,6 @@ import be.ugent.zeus.hydra.domain.usecases.minerva.repository.CourseRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -78,12 +77,6 @@ public class DatabaseCourseRepository implements CourseRepository {
     @Override
     public void deleteById(String s) {
         courseDao.deleteById(s);
-    }
-
-    @Override
-    public void deleteById(Collection<String> id) {
-        // STOPSHIP: 29/09/2017 Implement this method.
-        courseDao.deleteById(new ArrayList<>(id));
     }
 
     @Override
