@@ -24,6 +24,7 @@ import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
 import be.ugent.zeus.hydra.repository.observers.SuccessObserver;
 import be.ugent.zeus.hydra.ui.common.ViewUtils;
 import be.ugent.zeus.hydra.ui.common.widgets.MenuTable;
+import be.ugent.zeus.hydra.ui.resto.LegendActivity;
 import be.ugent.zeus.hydra.ui.resto.RestoLocationActivity;
 import be.ugent.zeus.hydra.ui.resto.SandwichActivity;
 import be.ugent.zeus.hydra.ui.resto.menu.MenuActivity;
@@ -42,6 +43,7 @@ public class RestoFragment extends Fragment {
     private Button viewMenu;
     private Button viewSandwich;
     private Button viewResto;
+    private Button viewLegend;
     private TextView errorView;
     private CardView todayCard;
     private View menuLayout;
@@ -61,6 +63,7 @@ public class RestoFragment extends Fragment {
         viewMenu = view.findViewById(R.id.home_resto_view);
         viewSandwich = view.findViewById(R.id.home_resto_view_sandwich);
         viewResto = view.findViewById(R.id.home_resto_view_resto);
+        viewLegend = view.findViewById(R.id.home_resto_view_legend);
         title = view.findViewById(R.id.menu_today_card_title);
         errorView = view.findViewById(R.id.error_view);
         errorView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -71,6 +74,7 @@ public class RestoFragment extends Fragment {
 
         viewSandwich.setOnClickListener(v -> startActivity(new Intent(getContext(), SandwichActivity.class)));
         viewResto.setOnClickListener(v -> startActivity(new Intent(getContext(), RestoLocationActivity.class)));
+        viewLegend.setOnClickListener(v -> startActivity(new Intent(getContext(), LegendActivity.class)));
         todayCard.setOnClickListener(v -> startActivity(new Intent(getContext(), MenuActivity.class)));
 
         viewModel = ViewModelProviders.of(this).get(RestoViewModel.class);
@@ -93,10 +97,12 @@ public class RestoFragment extends Fragment {
         Drawable menuIcon = ViewUtils.getTintedVectorDrawable(c, R.drawable.btn_restaurant_menu, color);
         Drawable sandwichIcon = ViewUtils.getTintedVectorDrawable(c, R.drawable.btn_sandwich, color);
         Drawable restoIcon = ViewUtils.getTintedVectorDrawable(c, R.drawable.btn_explore, color);
+        Drawable legendIcon = ViewUtils.getTintedVectorDrawable(c, R.drawable.ic_info_outline, color);
 
         viewMenu.setCompoundDrawablesWithIntrinsicBounds(null, menuIcon, null, null);
         viewSandwich.setCompoundDrawablesWithIntrinsicBounds(null, sandwichIcon, null, null);
         viewResto.setCompoundDrawablesWithIntrinsicBounds(null, restoIcon, null, null);
+        viewLegend.setCompoundDrawablesWithIntrinsicBounds(null, legendIcon, null, null);
     }
 
     private void onError(Throwable throwable) {

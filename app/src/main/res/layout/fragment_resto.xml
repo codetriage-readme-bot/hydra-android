@@ -101,6 +101,14 @@
                 tools:drawableTop="@drawable/btn_explore"
                 android:drawableTint="?android:colorControlNormal"
                 android:maxLines="1" />
+            <Button
+                android:id="@+id/home_resto_view_legend"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Legende"
+                tools:drawableTop="@drawable/ic_info_outline"
+                android:drawableTint="?android:colorControlNormal"
+                android:maxLines="1" />
 
         </be.ugent.zeus.hydra.ui.common.widgets.ButtonBarLayout>
 
