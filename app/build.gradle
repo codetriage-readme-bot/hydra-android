@@ -142,10 +142,10 @@ dependencies {
     compile 'org.mapstruct:mapstruct:1.2.0.CR2'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.CR2'
 
-    compile "com.google.dagger:dagger:2.11"
-    compile 'com.google.dagger:dagger-android-support:2.11'
-    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    compile "com.google.dagger:dagger:2.12"
+    compile 'com.google.dagger:dagger-android-support:2.12'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.12"
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.12'
     provided 'javax.annotation:jsr250-api:1.0'
 
     // Temporary HTML parser for Urgent.fm
