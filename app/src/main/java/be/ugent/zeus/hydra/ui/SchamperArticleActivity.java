@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.CardView;
 import android.text.method.LinkMovementMethod;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -87,7 +89,6 @@ public class SchamperArticleActivity extends BaseActivity {
         } else {
             date.setText(category);
         }
-
         if (article.getBody() != null) {
 
             //The intro
