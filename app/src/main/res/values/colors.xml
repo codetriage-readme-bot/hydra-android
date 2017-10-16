@@ -30,6 +30,12 @@
     <color name="sko_blue_light">#009ADE</color>
     <color name="sko_blue_dark">#005C86</color>
     <color name="sko_red">#E43026</color>
+
+    <!-- Schamper Colors -->
+    <color name="schamper_green">#70be93</color>
+    <color name="schamper_blue">#46ade2</color>
+    <color name="schamper_pink">#E83F68</color>
+    <color name="schamper_orange">#f9b126</color>
     
     <!--
         ~ The grey colour for the launcher shortcuts background.
