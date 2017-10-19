@@ -12,7 +12,7 @@ import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.domain.utils.PreferenceLiveData;
-import be.ugent.zeus.hydra.domain.utils.livedata.LiveDataInterface;
+import android.arch.lifecycle.LiveDataInterface;
 import java8.util.Comparators;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;

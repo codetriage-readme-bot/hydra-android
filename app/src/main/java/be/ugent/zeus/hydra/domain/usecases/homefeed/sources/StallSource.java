@@ -1,6 +1,7 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
+import android.arch.lifecycle.SingleLiveData;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -9,7 +10,6 @@ import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
-import be.ugent.zeus.hydra.domain.utils.livedata.BaseLiveData;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,8 +29,8 @@ public class StallSource extends OptionalFeedSource {
     }
 
     @Override
-    protected LiveData<Result<List<HomeCard>>> getActualData(Args ignored) {
-        return new BaseLiveData<Result<List<HomeCard>>>(executor) {
+    protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args ignored) {
+        return new SingleLiveData<Result<List<HomeCard>>>(executor) {
             @Override
             protected Result<List<HomeCard>> doCalculations(Executor.Companion companion, Bundle args) {
                 try {

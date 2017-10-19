@@ -1,6 +1,5 @@
-package be.ugent.zeus.hydra.domain.utils.livedata;
+package android.arch.lifecycle;
 
-import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 

@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
-import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.domain.requests.Result;
+import be.ugent.zeus.hydra.domain.usecases.UseCase;
 
 import java.util.List;
 

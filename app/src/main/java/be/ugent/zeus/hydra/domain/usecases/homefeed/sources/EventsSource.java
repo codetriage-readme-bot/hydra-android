@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.entities.homefeed.cards.EventCard;
@@ -30,7 +30,7 @@ public class EventsSource extends OptionalFeedSource {
     }
 
     @Override
-    protected LiveData<Result<List<HomeCard>>> getActualData(Args args) {
+    protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args args) {
         return wrapped.execute(null).map(listResult -> listResult.map(events -> {
             ZonedDateTime now = ZonedDateTime.now();
             ZonedDateTime plusOne = now.plus(MAX_EVENT_IN_ADVANCE);

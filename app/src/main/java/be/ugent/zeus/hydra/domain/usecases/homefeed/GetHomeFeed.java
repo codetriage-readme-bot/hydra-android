@@ -1,18 +1,18 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.LiveDataInterface;
+import android.arch.lifecycle.MergeLiveData;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
+import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
-import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.ui.main.homefeed.FeedException;
+import java8.util.function.BiFunction;
 import java8.util.stream.Collectors;
 import java8.util.stream.RefStreams;
 import java8.util.stream.Stream;
@@ -32,39 +32,37 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author Niko Strijbol
  */
-public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.OnRefreshListener {
+public class GetHomeFeed extends MergeLiveData<Result<List<HomeCard>>> implements UseCase<Void, LiveDataInterface<Result<List<HomeCard>>>>, FeedLiveData.OnRefreshListener {
 
     private final HomeFeedOptions options;
-    private final Executor executor;
     private final FeedSourceProvider sourceProvider;
 
     private final transient Object feedLock = new Object();
 
-    private Wrapper<Result<List<HomeCard>>> currentData;
-
-    /**
-     * The current data. Is null if there is no data yet.
-     */
-    @Nullable
-    private FeedLiveData data;
+    private boolean hasBeenSetUp = false;
 
     @Inject
     public GetHomeFeed(HomeFeedOptions options, @Named(Executor.BACKGROUND) Executor executor, FeedSourceProvider provider) {
+        super(executor);
         this.options = options;
-        this.executor = executor;
         this.sourceProvider = provider;
     }
 
     @Override
-    public FeedLiveData execute(Void ignored) {
+    public LiveDataInterface<Result<List<HomeCard>>> execute(Void ignored) {
         invalidate(Bundle.EMPTY);
-        return data;
+        return this;
     }
 
     @MainThread
     private void invalidate(Bundle args) {
-        if (data == null) {
-            constructNewData();
+
+        if (!hasBeenSetUp) {
+            Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
+                    .withData(Collections.emptyList())
+                    .buildPartial();
+            setValue(begin);
+            hasBeenSetUp = true;
         }
 
         Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
@@ -76,19 +74,8 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
 
         Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
         for (FeedSource source : getSources()) {
-            data.addSource(source.getCardType(), source.execute(arguments), new FeedObserver(currentData, data, source.getCardType(), errors, latch, executor, feedLock));
+            addSource(source.execute(arguments), new FeedObserver(source.getCardType(), latch, feedLock, errors));
         }
-    }
-
-    @MainThread
-    private void constructNewData() {
-        data = new FeedLiveData(this);
-        Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
-                .withData(Collections.emptyList())
-                .buildPartial();
-        currentData = new Wrapper<>();
-        currentData.object = begin;
-        data.setValue(begin);
     }
 
     @Override
@@ -96,39 +83,29 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
         invalidate(args);
     }
 
-    private static class FeedObserver implements Observer<Result<List<HomeCard>>> {
+    private static class FeedObserver implements BiFunction<Result<List<HomeCard>>, Result<List<HomeCard>>, Result<List<HomeCard>>> {
 
-        private final Wrapper<Result<List<HomeCard>>> existing;
         @HomeCard.CardType
         private final int cardType;
         private final Set<Integer> errors;
         private final CountDownLatch latch;
-        private final Executor executor;
         private final Object lock;
-        private final MutableLiveData<Result<List<HomeCard>>> publisher;
 
-        private FeedObserver(Wrapper<Result<List<HomeCard>>> existing, MutableLiveData<Result<List<HomeCard>>> publisher, @HomeCard.CardType int cardType, Set<Integer> errors, CountDownLatch latch, Executor executor, Object lock) {
-            this.existing = existing;
+        private FeedObserver(@HomeCard.CardType int cardType, CountDownLatch latch, Object lock, Set<Integer> errors) {
             this.cardType = cardType;
             this.errors = errors;
             this.latch = latch;
-            this.executor = executor;
             this.lock = lock;
-            this.publisher = publisher;
         }
 
         @Override
-        public void onChanged(@Nullable Result<List<HomeCard>> listResult) {
-            executor.execute(() -> doInBackground(listResult));
-        }
+        public Result<List<HomeCard>> apply(Result<List<HomeCard>> data, Result<List<HomeCard>> listResult) {
 
-        private void doInBackground(Result<List<HomeCard>> listResult) {
             Log.i("TEMP-FEED", "Observer: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
 
             // Only one thread can access the feed
             synchronized (lock) {
                 // Get the existing data
-                Result<List<HomeCard>> data = existing.object;
                 // This should not be null.
                 assert data != null;
                 assert listResult != null;
@@ -136,6 +113,7 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
                 Result.Builder<List<HomeCard>> builder = new Result.Builder<>();
 
                 if (data.hasException() || listResult.hasException()) {
+
                     if (listResult.hasException()) {
                         errors.add(cardType);
                     }
@@ -154,27 +132,22 @@ public class GetHomeFeed implements UseCase<Void, FeedLiveData>, FeedLiveData.On
                         .sorted()
                         .collect(Collectors.toList()));
 
+                Result<List<HomeCard>> result;
 
                 // If this is the last source to complete, set it to final.
                 if (latch.getCount() == 1) {
-                    existing.object = builder.build();
+                    result = builder.build();
                 } else {
-                    existing.object = builder.buildPartial();
+                    result = builder.buildPartial();
                 }
 
-                publisher.postValue(existing.object);
+                latch.countDown();
+                return result;
             }
-
-            // Indicate this source has completed.
-            latch.countDown();
         }
     }
 
     private List<FeedSource> getSources() {
         return sourceProvider.getAll();
-    }
-
-    private static class Wrapper<E> {
-        public transient E object;
     }
 }

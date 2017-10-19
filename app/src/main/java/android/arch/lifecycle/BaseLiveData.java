@@ -1,11 +1,10 @@
-package be.ugent.zeus.hydra.domain.utils.livedata;
+package android.arch.lifecycle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import be.ugent.zeus.hydra.domain.requests.Requests;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
-import java8.util.function.BiFunction;
 
 /**
  * The base implementation for a LiveData. This class should only be used directly from the domain package.
@@ -146,43 +145,15 @@ public abstract class BaseLiveData<D> extends LiveDataInterface<D> {
         }
     }
 
-    protected void produceData(Bundle args) {
-        this.executingOrDone = executor.execute(companion -> {
-            D result = doCalculations(companion, args);
-            if (!companion.isCancelled()) {
-                postValue(result);
-            }
-        });
-    }
+    /**
+     * Produce the data.
+     *
+     * @param args The arguments.
+     */
+    protected abstract void produceData(Bundle args);
 
     @Override
     public void registerDataLoadListener(OnDataLoadListener listener) {
         onDataLoadListener = listener;
-    }
-
-    /**
-     * Calculate or otherwise get the data. This function can be called on any thread, depending on which
-     * executor is present.
-     *
-     * The results should be returned, not set using {@link #postValue(Object)} or {@link #setValue(Object)}.
-     *
-     * If the calculations was cancelled, the return value of this function is ignored, so it may return anything.
-     *
-     * @param companion If the calculation takes some time, this should be checked regularly to see check if the
-     *                  calculations should be cancelled.
-     * @param args The arguments.
-     *
-     * @return The result.
-     */
-    protected abstract D doCalculations(Executor.Companion companion, Bundle args);
-
-    @Override
-    public <E> LiveDataInterface<E> map(BiFunction<Executor.Companion, D, E> function) {
-        return new BaseLiveData<E>(executor) {
-            @Override
-            protected E doCalculations(Executor.Companion companion, Bundle args) {
-                return function.apply(companion, BaseLiveData.this.doCalculations(companion, args));
-            }
-        };
     }
 }

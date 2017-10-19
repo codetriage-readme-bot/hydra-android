@@ -6,7 +6,7 @@ import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles;
-import be.ugent.zeus.hydra.domain.utils.livedata.LiveDataInterface;
+import android.arch.lifecycle.LiveDataInterface;
 import be.ugent.zeus.hydra.ui.common.BetterRefreshViewModel;
 
 import java.util.List;

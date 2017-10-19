@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.requests.Result;
-import be.ugent.zeus.hydra.domain.utils.livedata.LiveDataInterface;
+import android.arch.lifecycle.LiveDataInterface;
 
 /**
  * @author Niko Strijbol

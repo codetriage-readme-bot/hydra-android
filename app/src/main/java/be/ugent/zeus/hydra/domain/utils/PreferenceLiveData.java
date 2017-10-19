@@ -3,7 +3,7 @@ package be.ugent.zeus.hydra.domain.utils;
 import android.content.SharedPreferences;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
-import be.ugent.zeus.hydra.domain.utils.livedata.BaseLiveData;
+import android.arch.lifecycle.SingleLiveData;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author Niko Strijbol
  */
-public abstract class PreferenceLiveData<D> extends BaseLiveData<D> implements SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class PreferenceLiveData<D> extends SingleLiveData<D> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final SharedPreferences preferences;
 
