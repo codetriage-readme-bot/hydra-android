@@ -56,25 +56,24 @@ public class GetHomeFeed extends MergeLiveData<Result<List<HomeCard>>> implement
 
     @MainThread
     private void invalidate(Bundle args) {
-
         if (!hasBeenSetUp) {
             Result<List<HomeCard>> begin = new Result.Builder<List<HomeCard>>()
                     .withData(Collections.emptyList())
                     .buildPartial();
             setValue(begin);
             hasBeenSetUp = true;
-        }
 
-        Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
+            Log.i("TEMP-FEED", "execute: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
 
-        Set<Integer> errors = Collections.newSetFromMap(new ConcurrentHashMap<>());
-        CountDownLatch latch = new CountDownLatch(sourceProvider.getCount());
+            Set<Integer> errors = Collections.newSetFromMap(new ConcurrentHashMap<>());
+            CountDownLatch latch = new CountDownLatch(sourceProvider.getCount());
 
-        FeedSource.Args arguments = new FeedSource.Args(options, args);
+            FeedSource.Args arguments = new FeedSource.Args(options, args);
 
-        Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
-        for (FeedSource source : getSources()) {
-            addSource(source.execute(arguments), new FeedObserver(source.getCardType(), latch, feedLock, errors));
+            Log.i("TEMP-FEED-EXECUTE", "execute2: Is this the main thread: " + (Looper.getMainLooper().getThread() == Thread.currentThread()));
+            for (FeedSource source : getSources()) {
+                addSource(source.execute(arguments), new FeedObserver(source.getCardType(), latch, feedLock, errors));
+            }
         }
     }
 

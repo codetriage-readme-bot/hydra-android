@@ -1,6 +1,7 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
+import android.arch.lifecycle.SimpleWrapper;
 import android.os.Looper;
 import android.util.Log;
 
@@ -12,7 +13,6 @@ import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AnnouncementRepository;
-import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
@@ -36,19 +36,20 @@ public class MinervaAnnouncementsSource extends OptionalFeedSource {
     }
 
     @Override
-    protected LiveData<Result<List<HomeCard>>> getActualData(Args ignored) {
-        return LiveDataUtils.mapAsync(executor, repository.getLiveUnreadMostRecentFirst(), announcements -> {
-            Log.i("TEMP-FEED-ANNOUNCEMENT", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
-            // Partition it by course.
-            Map<Course, List<Announcement>> partitioned = StreamSupport.stream(announcements)
-                    .collect(Collectors.groupingBy(Announcement::getCourse));
+    protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args ignored) {
+        return new SimpleWrapper<>(repository.getLiveUnreadMostRecentFirst())
+                .mapAsync(executor, announcements -> {
+                    Log.i("TEMP-FEED-ANNOUNCEMENT", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
+                    // Partition it by course.
+                    Map<Course, List<Announcement>> partitioned = StreamSupport.stream(announcements)
+                            .collect(Collectors.groupingBy(Announcement::getCourse));
 
-            List<HomeCard> result = StreamSupport.stream(partitioned.entrySet())
-                    .map(courseListEntry -> new MinervaAnnouncementsCard(courseListEntry.getValue(), courseListEntry.getKey()))
-                    .collect(Collectors.toList());
+                    List<HomeCard> result = StreamSupport.stream(partitioned.entrySet())
+                            .map(courseListEntry -> new MinervaAnnouncementsCard(courseListEntry.getValue(), courseListEntry.getKey()))
+                            .collect(Collectors.toList());
 
-            return Result.Builder.fromData(result);
-        });
+                    return Result.Builder.fromData(result);
+                });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
+import android.arch.lifecycle.SimpleWrapper;
 import android.os.Looper;
 import android.util.Log;
 
@@ -11,7 +12,6 @@ import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.homefeed.OptionalFeedSource;
 import be.ugent.zeus.hydra.domain.usecases.minerva.repository.AgendaItemRepository;
-import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import be.ugent.zeus.hydra.utils.DateUtils;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -38,23 +38,24 @@ public class MinervaAgendaSource extends OptionalFeedSource {
     }
 
     @Override
-    protected LiveData<Result<List<HomeCard>>> getActualData(Args ignored) {
+    protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args ignored) {
 
         ZonedDateTime lower = ZonedDateTime.now();
         ZonedDateTime upper = lower.plusWeeks(3); // Only display things up to 3 weeks from now.
 
-        return LiveDataUtils.mapAsync(executor, repository.getBetween(lower, upper), agendaItems -> {
-            Log.i("TEMP-FEED-CALENDAR", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
-            // Group per day
-            Map<LocalDate, List<AgendaItem>> perDay = StreamSupport.stream(agendaItems)
-                    .collect(Collectors.groupingBy(a -> DateUtils.toLocalDateTime(a.getStartDate()).toLocalDate()));
+        return new SimpleWrapper<>(repository.getBetween(lower, upper))
+                .mapAsync(executor, agendaItems -> {
+                    Log.i("TEMP-FEED-CALENDAR", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
+                    // Group per day
+                    Map<LocalDate, List<AgendaItem>> perDay = StreamSupport.stream(agendaItems)
+                            .collect(Collectors.groupingBy(a -> DateUtils.toLocalDateTime(a.getStartDate()).toLocalDate()));
 
-            List<HomeCard> result = StreamSupport.stream(perDay.entrySet())
-                    .map(e -> new MinervaAgendaCard(e.getKey(), e.getValue()))
-                    .collect(Collectors.toList());
+                    List<HomeCard> result = StreamSupport.stream(perDay.entrySet())
+                            .map(e -> new MinervaAgendaCard(e.getKey(), e.getValue()))
+                            .collect(Collectors.toList());
 
-            return Result.Builder.fromData(result);
-        });
+                    return Result.Builder.fromData(result);
+                });
     }
 
     @Override

@@ -1,10 +1,10 @@
 package be.ugent.zeus.hydra.domain.utils;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
+import java8.util.function.Function;
 
 /**
  * Contains utilities for {@link android.arch.lifecycle.LiveData}.

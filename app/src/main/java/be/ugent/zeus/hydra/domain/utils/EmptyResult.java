@@ -1,6 +1,8 @@
 package be.ugent.zeus.hydra.domain.utils;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
+import android.arch.lifecycle.SimpleWrapper;
 
 import be.ugent.zeus.hydra.domain.requests.Result;
 
@@ -35,7 +37,7 @@ public class EmptyResult<R> extends LiveData<R> {
         return new EmptyResult<>(Collections.emptyList());
     }
 
-    public static <E> LiveData<Result<List<E>>> emptyResultList() {
-        return new EmptyResult<>(Result.Builder.fromData(Collections.emptyList()));
+    public static <E> LiveDataInterface<Result<List<E>>> emptyResultList() {
+        return new SimpleWrapper<>(new EmptyResult<>(Result.Builder.fromData(Collections.emptyList())));
     }
 }

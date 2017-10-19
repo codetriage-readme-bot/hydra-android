@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.requests.Result;
@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class OptionalFeedSource implements FeedSource {
 
     @Override
-    public LiveData<Result<List<HomeCard>>> execute(Args arguments) {
+    public LiveDataInterface<Result<List<HomeCard>>> execute(Args arguments) {
         if (isEnabled(arguments)) {
             return getActualData(arguments);
         } else {
@@ -29,7 +29,7 @@ public abstract class OptionalFeedSource implements FeedSource {
      *
      * @return The data.
      */
-    protected abstract LiveData<Result<List<HomeCard>>> getActualData(Args args);
+    protected abstract LiveDataInterface<Result<List<HomeCard>>> getActualData(Args args);
 
     /**
      * Check if this card type is enabled or not.

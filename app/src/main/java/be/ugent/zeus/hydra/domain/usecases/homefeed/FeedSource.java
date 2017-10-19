@@ -1,6 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataInterface;
 import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Niko Strijbol
  */
-public interface FeedSource extends UseCase<FeedSource.Args, LiveData<Result<List<HomeCard>>>> {
+public interface FeedSource extends UseCase<FeedSource.Args, LiveDataInterface<Result<List<HomeCard>>>> {
 
     /**
      * {@inheritDoc}
@@ -21,7 +21,7 @@ public interface FeedSource extends UseCase<FeedSource.Args, LiveData<Result<Lis
      * {@link be.ugent.zeus.hydra.domain.usecases.Executor} or similar.
      */
     @Override
-    LiveData<Result<List<HomeCard>>> execute(Args arguments);
+    LiveDataInterface<Result<List<HomeCard>>> execute(Args arguments);
 
     /**
      * The type of card that will be added/removed by this operation.
