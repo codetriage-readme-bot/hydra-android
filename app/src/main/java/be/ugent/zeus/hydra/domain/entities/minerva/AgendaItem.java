@@ -27,6 +27,10 @@ public final class AgendaItem {
     private Course course;
     private long calendarId = NO_CALENDAR_ID;
 
+    // This indicates this is actually a merged event, consisting of multiple events from Minerva.
+    // If this is the case, the ID is from one of the events.
+    private boolean isMerged = false;
+
     public int getId() {
         return id;
     }
@@ -121,6 +125,14 @@ public final class AgendaItem {
 
     public void setCalendarId(long calendarId) {
         this.calendarId = calendarId;
+    }
+
+    public boolean isMerged() {
+        return isMerged;
+    }
+
+    public void setMerged(boolean merged) {
+        isMerged = merged;
     }
 
     /**

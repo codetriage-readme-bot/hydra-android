@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
+import be.ugent.zeus.hydra.data.sync.minerva.helpers.NotificationHelper;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.domain.usecases.minerva.MarkAnnouncementAsRead;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
@@ -28,6 +30,7 @@ import be.ugent.zeus.hydra.ui.minerva.overview.CourseActivity;
 import be.ugent.zeus.hydra.ui.preferences.MinervaFragment;
 import be.ugent.zeus.hydra.utils.DateUtils;
 import be.ugent.zeus.hydra.utils.NetworkUtils;
+import org.threeten.bp.ZonedDateTime;
 
 /**
  * Show a Minerva announcement.
@@ -120,8 +123,11 @@ public class AnnouncementActivity extends BaseActivity {
         // Mark the announcement as read if it is not already.
         if (!announcement.isRead()) {
             AsyncTask.execute(() -> {
+                // TODO: supress notification if present
                 MarkAnnouncementAsRead useCase = HydraApplication.getComponent(getApplication()).markAnnouncementAsRead();
                 useCase.execute(announcement);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                NotificationHelper.cancel(announcement, notificationManager);
             });
         }
     }

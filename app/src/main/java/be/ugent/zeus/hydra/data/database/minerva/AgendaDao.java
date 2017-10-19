@@ -11,9 +11,7 @@ import java8.util.stream.RefStreams;
 import java8.util.stream.Stream;
 import org.threeten.bp.Instant;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * The database access object (DAO), to work with Minerva calendar items.
@@ -78,6 +76,10 @@ public class AgendaDao extends Dao implements SyncCallback<AgendaItem, Integer> 
 
     public Collection<Integer> getAllIds() {
         return Collections.emptyList();
+    }
+
+    public Map<AgendaItem, Long> getAll() {
+        return new HashMap<>();
     }
 
     public Collection<Long> getCalendarIdsForIds(Collection<Integer> agendaIds) {

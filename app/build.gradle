@@ -10,8 +10,8 @@ android {
         applicationId "be.ugent.zeus.hydra"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 253
-        versionName "2.5"
+        versionCode 260
+        versionName "2.6.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -30,6 +30,7 @@ android {
         buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "false"
         // Add a hard-coded special event card to access the SKO part of the app
         buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "false"
+        buildConfigField "boolean", "DEBUG_ENABLE_STRICT_MODE", "false"
 
         // used by Room, to test migrations
         javaCompileOptions {
@@ -63,6 +64,7 @@ android {
             buildConfigField "boolean", "DEBUG_HOME_STREAM_PRIORITY", "false"
             buildConfigField "boolean", "DEBUG_HOME_STREAM_STALL", "false"
             buildConfigField "boolean", "DEBUG_HOME_STREAM_ADD_SKO_CARD", "false"
+            buildConfigField "boolean", "DEBUG_ENABLE_STRICT_MODE", "false"
         }
     }
 
@@ -90,6 +92,11 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
+    }
+
+    // TODO: fork the material-intro library and remove databinding.
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -132,7 +139,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
     compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
-    compile 'com.heinrichreimersoftware:material-intro:1.6' // DO NOT UPDATE unless you want databinding
+    compile 'com.heinrichreimersoftware:material-intro:1.6.2'
     compile 'su.j2e:rv-joiner:1.0.9'
     compile 'com.github.alexfu:SQLiteQueryBuilder:0.3.0'
     compile 'com.jonathanfinerty.once:once:1.2.2'
@@ -147,9 +154,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:2.12"
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.12'
     provided 'javax.annotation:jsr250-api:1.0'
-
-    // Temporary HTML parser for Urgent.fm
-    compile 'org.jsoup:jsoup:1.10.3'
 
     // Used for the OAuth stuff
     compile ('org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:1.0.2') {

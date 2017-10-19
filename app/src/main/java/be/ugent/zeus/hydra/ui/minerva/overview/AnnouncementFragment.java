@@ -1,13 +1,12 @@
 package be.ugent.zeus.hydra.ui.minerva.overview;
 
-import android.app.NotificationManager;
-import android.support.v4.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,13 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.data.sync.announcement.AnnouncementNotificationBuilder;
+import be.ugent.zeus.hydra.data.sync.minerva.helpers.NotificationHelper;
+import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
 import be.ugent.zeus.hydra.repository.observers.ErrorObserver;
 import be.ugent.zeus.hydra.repository.observers.ProgressObserver;
+import be.ugent.zeus.hydra.repository.observers.SuccessObserver;
 import be.ugent.zeus.hydra.ui.common.recyclerview.EmptyViewObserver;
 import be.ugent.zeus.hydra.ui.common.recyclerview.ResultStarter;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
+
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -58,14 +61,6 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // Check for notification we want to remove.
-        NotificationManager manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(courseId, AnnouncementNotificationBuilder.NOTIFICATION_ID);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_minerva_course_announcements, container, false);
     }
@@ -90,6 +85,14 @@ public class AnnouncementFragment extends Fragment implements ResultStarter {
         viewModel.getData().observe(this, ErrorObserver.with(this::onError));
         viewModel.getData().observe(this, new AdapterObserver<>(adapter));
         viewModel.getData().observe(this, new ProgressObserver<>(view.findViewById(R.id.progress_bar)));
+
+        viewModel.getData().observe(this, new SuccessObserver<List<Announcement>>() {
+            @Override
+            protected void onSuccess(List<Announcement> data) {
+                NotificationManagerCompat manager = NotificationManagerCompat.from(getContext());
+                NotificationHelper.cancel(manager, courseId, data);
+            }
+        });
     }
 
     private void onError(Throwable throwable) {

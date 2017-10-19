@@ -1,12 +1,12 @@
 package be.ugent.zeus.hydra.ui.main.minerva;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.R;
+import be.ugent.zeus.hydra.data.sync.minerva.helpers.NotificationHelper;
 import be.ugent.zeus.hydra.domain.entities.minerva.Announcement;
 import be.ugent.zeus.hydra.domain.usecases.minerva.MarkAnnouncementAsRead;
 import be.ugent.zeus.hydra.repository.observers.AdapterObserver;
@@ -163,6 +164,11 @@ public class AnnouncementsFragment extends Fragment implements MultiSelectDiffAd
     private void markSelectedAsRead() {
         MarkAnnouncementAsRead useCase = HydraApplication.getComponent(getActivity().getApplication()).markAnnouncementAsRead();
         Collection<Announcement> toMark = adapter.getSelectedItems();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        for (Announcement an : toMark) {
+            // TODO
+            NotificationHelper.cancel(an, notificationManager);
+        }
         AsyncTask.execute(() -> useCase.execute(toMark));
 
         // Request a refresh of the data to update the list of announcements.

@@ -2,12 +2,14 @@ package be.ugent.zeus.hydra;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import be.ugent.zeus.hydra.data.ChannelCreator;
+import be.ugent.zeus.hydra.di.AppModule;
 import be.ugent.zeus.hydra.di.DaggerUseCaseComponent;
 import be.ugent.zeus.hydra.di.UseCaseComponent;
-import be.ugent.zeus.hydra.di.AppModule;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -24,8 +26,25 @@ import jonathanfinerty.once.Once;
 @SuppressWarnings("WeakerAccess")
 public class HydraApplication extends Application {
 
+    private static final String TAG = "HydraApplication";
+
     private Tracker tracker;
     private UseCaseComponent useCaseComponent;
+
+    /**
+     * Get the application from an activity. The application is cast to this class.
+     *
+     * @param activity The activity.
+     *
+     * @return The application.
+     */
+    public static HydraApplication getApplication(@NonNull Activity activity) {
+        return (HydraApplication) activity.getApplication();
+    }
+
+    public static UseCaseComponent getComponent(Application application) {
+        return ((HydraApplication) application).getUseCaseComponent();
+    }
 
     @Override
     public void onCreate() {
@@ -35,6 +54,11 @@ public class HydraApplication extends Application {
             // You should not init your app in this process.
             return;
         }
+
+        if (BuildConfig.DEBUG) {
+            enableStrictModeInDebug();
+        }
+
         AndroidThreeTen.init(this);
         LeakCanary.install(this);
         Once.initialise(this);
@@ -76,19 +100,7 @@ public class HydraApplication extends Application {
     }
 
     /**
-     * Get the application from an activity. The application is cast to this class.
-     *
-     * @param activity The activity.
-     *
-     * @return The application.
-     */
-    public static HydraApplication getApplication(@NonNull Activity activity) {
-        return (HydraApplication) activity.getApplication();
-    }
-
-    /**
-     * Create notifications channels when needed.
-     * TODO: should this move to the SKO activity?
+     * Create notifications channels when needed. TODO: should this move to the SKO activity?
      */
     private void createChannels() {
         ChannelCreator channelCreator = ChannelCreator.getInstance(this);
@@ -106,7 +118,24 @@ public class HydraApplication extends Application {
         return useCaseComponent;
     }
 
-    public static UseCaseComponent getComponent(Application application) {
-        return ((HydraApplication) application).getUseCaseComponent();
+    /**
+     * Used to enable {@link StrictMode} for debug builds.
+     */
+    private void enableStrictModeInDebug() {
+
+        if (!BuildConfig.DEBUG_ENABLE_STRICT_MODE) {
+            return;
+        }
+
+        Log.d(TAG, "Enabling strict mode...");
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
     }
 }
