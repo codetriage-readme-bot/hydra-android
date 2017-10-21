@@ -1,5 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.event;
 
+import android.arch.lifecycle.LiveDataInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,7 +13,6 @@ import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import be.ugent.zeus.hydra.domain.usecases.UseCase;
 import be.ugent.zeus.hydra.domain.utils.PreferenceLiveData;
-import android.arch.lifecycle.LiveDataInterface;
 import java8.util.Comparators;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -36,14 +36,13 @@ public class GetEvents extends PreferenceLiveData<Result<List<Event>>> implement
 
     @Inject
     public GetEvents(Cache cache, @Named(Executor.BACKGROUND) Executor executor, Request.Cacheable<Event[]> request, SharedPreferences preferences) {
-        super(executor, preferences, false);
+        super(executor, preferences);
         this.preferences = preferences;
         this.request = Requests.cache(cache, request);
     }
 
     @Override
     public LiveDataInterface<Result<List<Event>>> execute(Void arguments) {
-        requestLoad();
         return this;
     }
 

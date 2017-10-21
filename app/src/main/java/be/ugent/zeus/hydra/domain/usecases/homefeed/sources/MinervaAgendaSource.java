@@ -43,7 +43,7 @@ public class MinervaAgendaSource extends OptionalFeedSource {
         ZonedDateTime lower = ZonedDateTime.now();
         ZonedDateTime upper = lower.plusWeeks(3); // Only display things up to 3 weeks from now.
 
-        return new SimpleWrapper<>(repository.getBetween(lower, upper))
+        return SimpleWrapper.from(repository.getBetween(lower, upper))
                 .mapAsync(executor, agendaItems -> {
                     Log.i("TEMP-FEED-CALENDAR", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
                     // Group per day

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
 import java8.util.function.BiFunction;
+import java8.util.function.Function;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -84,9 +85,19 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * The mapper function will be executed on the main thread.
+     */
     @Override
     public <E> LiveDataInterface<E> map(BiFunction<Executor.Companion, T, E> mapper) {
-        return new SimpleWrapper<>(this).mapAsync(executor, t -> mapper.apply(() -> false, t));
+        return new SimpleWrapper<>(this, t -> mapper.apply(() -> false, t));
+    }
+
+    @Override
+    public <E> LiveDataInterface<E> map(Function<T, E> function) {
+        return new SimpleWrapper<>(this, function);
     }
 
     private class ExistingObserver<V> implements Observer<V> {

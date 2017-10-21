@@ -38,6 +38,6 @@ public class EmptyResult<R> extends LiveData<R> {
     }
 
     public static <E> LiveDataInterface<Result<List<E>>> emptyResultList() {
-        return new SimpleWrapper<>(new EmptyResult<>(Result.Builder.fromData(Collections.emptyList())));
+        return SimpleWrapper.from(new EmptyResult<>(Result.Builder.fromData(Collections.emptyList())));
     }
 }

@@ -61,7 +61,7 @@ public abstract class SingleLiveData<D> extends BaseLiveData<D> {
 
     @Override
     public <E> SingleLiveData<E> map(BiFunction<Executor.Companion, D, E> function) {
-        return new SingleLiveData<E>(executor) {
+        return new SingleLiveData<E>(executor, false) {
             @Override
             protected E doCalculations(Executor.Companion companion, Bundle args) {
                 return function.apply(companion, SingleLiveData.this.doCalculations(companion, args));

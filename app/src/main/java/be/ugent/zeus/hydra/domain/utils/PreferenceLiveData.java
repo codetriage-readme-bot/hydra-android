@@ -1,9 +1,9 @@
 package be.ugent.zeus.hydra.domain.utils;
 
+import android.arch.lifecycle.SingleLiveData;
 import android.content.SharedPreferences;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
-import android.arch.lifecycle.SingleLiveData;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,17 +33,6 @@ public abstract class PreferenceLiveData<D> extends SingleLiveData<D> implements
      */
     public PreferenceLiveData(Executor executor, SharedPreferences preferences) {
         super(executor);
-        this.preferences = preferences;
-    }
-
-    /**
-     * Construct a LiveData. This will schedule an initial load of the data.
-     *
-     * @param executor    The executor determines on which thread the data is executed.
-     * @param preferences The preferences to use.
-     */
-    public PreferenceLiveData(Executor executor, SharedPreferences preferences, boolean shouldLoadNow) {
-        super(executor, shouldLoadNow);
         this.preferences = preferences;
     }
 

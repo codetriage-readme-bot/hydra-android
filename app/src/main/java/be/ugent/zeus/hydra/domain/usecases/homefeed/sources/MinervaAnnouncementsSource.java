@@ -37,7 +37,7 @@ public class MinervaAnnouncementsSource extends OptionalFeedSource {
 
     @Override
     protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args ignored) {
-        return new SimpleWrapper<>(repository.getLiveUnreadMostRecentFirst())
+        return SimpleWrapper.from(repository.getLiveUnreadMostRecentFirst())
                 .mapAsync(executor, announcements -> {
                     Log.i("TEMP-FEED-ANNOUNCEMENT", "executOR: Is this the main thread: " + (Looper.myLooper() == Looper.getMainLooper()));
                     // Partition it by course.

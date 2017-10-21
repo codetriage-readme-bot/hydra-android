@@ -20,6 +20,9 @@ import java.util.List;
  */
 public class EventsSource extends OptionalFeedSource {
 
+    /**
+     * Maximum period for the events. Events that are further in the future that this duration will not be shown.
+     */
     public static final Duration MAX_EVENT_IN_ADVANCE = Duration.ofDays(30);
 
     private final GetEvents wrapped;
@@ -31,7 +34,7 @@ public class EventsSource extends OptionalFeedSource {
 
     @Override
     protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args args) {
-        return wrapped.execute(null).map(listResult -> listResult.map(events -> {
+        return wrapped.map(listResult -> listResult.map(events -> {
             ZonedDateTime now = ZonedDateTime.now();
             ZonedDateTime plusOne = now.plus(MAX_EVENT_IN_ADVANCE);
             return StreamSupport.stream(events)
