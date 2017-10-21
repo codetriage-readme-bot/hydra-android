@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A {@link LiveData} that supports merging multiple sources, similar to {@link MediatorLiveData}.
+ *
+ * The main difference is support for {@link LiveDataInterface} and
+ *
  * @author Niko Strijbol
  */
 public class MergeLiveData<T> extends BaseLiveData<T> {
@@ -82,7 +86,7 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
 
     @Override
     public <E> LiveDataInterface<E> map(BiFunction<Executor.Companion, T, E> mapper) {
-        throw new UnsupportedOperationException("You cannot map a merged live data at the moment.");
+        return new SimpleWrapper<>(this).mapAsync(executor, t -> mapper.apply(() -> false, t));
     }
 
     private class ExistingObserver<V> implements Observer<V> {
@@ -106,7 +110,7 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
             Log.d(TAG, "POPPING UPDATE, size is " + scheduled.size());
             scheduled.poll();
             if (!scheduled.isEmpty()) {
-                Log.d(TAG, "SCHEDULING NEXT UPDATE");
+                Log.d(TAG, "EXECUTING NEXT UPDATE");
                 scheduled.peek().execute();
             }
         }
@@ -131,7 +135,7 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
 
     private void postUpdate(Update<?> update) {
         synchronized (lock) {
-            Log.d(TAG, "EXECUTING UPDATE size is " + scheduled.size());
+            Log.d(TAG, "POSTING UPDATE, size is " + scheduled.size());
             scheduled.add(update);
             if (scheduled.size() == 1) {
                 Log.d(TAG, "EXECUTING UPDATE");

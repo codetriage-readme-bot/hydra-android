@@ -1,7 +1,6 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed;
 
 import android.arch.lifecycle.LiveDataInterface;
-import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
 import be.ugent.zeus.hydra.domain.requests.Result;
@@ -33,11 +32,9 @@ public interface FeedSource extends UseCase<FeedSource.Args, LiveDataInterface<R
 
     class Args {
         public final HomeFeedOptions options;
-        public final Bundle args;
 
-        public Args(HomeFeedOptions options, Bundle args) {
+        public Args(HomeFeedOptions options) {
             this.options = options;
-            this.args = args;
         }
     }
 }

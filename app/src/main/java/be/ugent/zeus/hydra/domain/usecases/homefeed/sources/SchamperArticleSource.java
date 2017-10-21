@@ -1,6 +1,7 @@
 package be.ugent.zeus.hydra.domain.usecases.homefeed.sources;
 
 import android.arch.lifecycle.LiveDataInterface;
+import android.os.Bundle;
 
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
 import be.ugent.zeus.hydra.domain.entities.homefeed.HomeCard;
@@ -32,7 +33,7 @@ public class SchamperArticleSource extends OptionalFeedSource {
 
     @Override
     protected LiveDataInterface<Result<List<HomeCard>>> getActualData(Args args) {
-        useCase.requestRefresh(args.args);
+        useCase.requestRefresh(Bundle.EMPTY);
         return useCase.map((companion, articles) -> articles.map(this::convertAndFilterResult));
     }
 

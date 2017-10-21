@@ -51,7 +51,11 @@ public abstract class LiveDataInterface<D> extends LiveData<D> {
     public abstract void registerDataLoadListener(@Nullable OnDataLoadListener listener);
 
     /**
-     * Apply a function to this live data.
+     * Apply a transformation to the results of this LiveData. This method will probably be more efficient than
+     * applying a method from {@link Transformations}.
+     *
+     * The implementation defines the specifics regarding threading: the function may be applied on a background thread
+     * or it may be applied on the main thread.
      *
      * @param function The function to apply.
      * @param <E> The new data type.
@@ -65,6 +69,8 @@ public abstract class LiveDataInterface<D> extends LiveData<D> {
     /**
      * Apply a long running function to this live data. You should check {@link Executor.Companion#isCancelled()}
      * on a regular basis. If cancelled, the result will be ignored, so the function may return anything.
+     *
+     * If the implementation does not run the function on a separate thread, the companion will always return false.
      *
      * @param function The function to apply.
      * @param <E> The new data type.
