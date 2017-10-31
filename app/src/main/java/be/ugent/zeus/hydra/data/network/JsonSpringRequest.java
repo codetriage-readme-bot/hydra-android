@@ -9,7 +9,7 @@ import be.ugent.zeus.hydra.data.network.exceptions.RestTemplateException;
 import be.ugent.zeus.hydra.repository.requests.Request;
 import be.ugent.zeus.hydra.repository.requests.RequestException;
 import be.ugent.zeus.hydra.repository.requests.Result;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
@@ -49,7 +49,7 @@ public abstract class JsonSpringRequest<R> implements Request<R> {
             if (result == null) {
                 // Create, log and throw exception, since this is not normal.
                 ResourceAccessException exception = new ResourceAccessException("The server did not respond with the expected format for URL: " + getAPIUrl());
-                FirebaseCrash.report(exception);
+                Crashlytics.logException(exception);
                 throw exception;
             }
             return new Result.Builder<R>()

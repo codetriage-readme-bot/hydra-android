@@ -7,11 +7,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.data.ChannelCreator;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.squareup.leakcanary.LeakCanary;
+import io.fabric.sdk.android.Fabric;
 import jonathanfinerty.once.Once;
 
 /**
@@ -27,6 +30,17 @@ public class HydraApplication extends Application {
 
     private Tracker tracker;
 
+    /**
+     * Get the application from an activity. The application is cast to this class.
+     *
+     * @param activity The activity.
+     *
+     * @return The application.
+     */
+    public static HydraApplication getApplication(@NonNull Activity activity) {
+        return (HydraApplication) activity.getApplication();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -40,12 +54,21 @@ public class HydraApplication extends Application {
             enableStrictModeInDebug();
         }
 
+        initialiseAnalytics();
+
         AndroidThreeTen.init(this);
         LeakCanary.install(this);
         Once.initialise(this);
 
         // Initialize the channels that are needed in the whole app. The channels for Minerva are created when needed.
         createChannels();
+    }
+
+    private void initialiseAnalytics() {
+        Fabric.with(this, new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(false).build())
+                .build()
+        );
     }
 
     /**
@@ -79,19 +102,7 @@ public class HydraApplication extends Application {
     }
 
     /**
-     * Get the application from an activity. The application is cast to this class.
-     *
-     * @param activity The activity.
-     *
-     * @return The application.
-     */
-    public static HydraApplication getApplication(@NonNull Activity activity) {
-        return (HydraApplication) activity.getApplication();
-    }
-
-    /**
-     * Create notifications channels when needed.
-     * TODO: should this move to the SKO activity?
+     * Create notifications channels when needed. TODO: should this move to the SKO activity?
      */
     private void createChannels() {
         ChannelCreator channelCreator = ChannelCreator.getInstance(this);

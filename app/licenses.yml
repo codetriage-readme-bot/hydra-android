@@ -135,3 +135,10 @@
   skip: true
 - artifact: android.arch.lifecycle:runtime:+
   skip: true
+
+- artifact: com.crashlytics.sdk.android:+:+
+  skip: true
+- artifact: com.crashlytics.sdk.android:beta:+
+  skip: true
+- artifact: io.fabric.sdk.android:fabric:+
+  skip: true
