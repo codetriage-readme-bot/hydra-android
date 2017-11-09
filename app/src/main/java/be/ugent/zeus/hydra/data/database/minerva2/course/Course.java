@@ -13,9 +13,9 @@ import android.support.annotation.NonNull;
 @Entity(tableName = CourseTable.TABLE_NAME)
 public final class Course {
 
+    @NonNull
     @PrimaryKey
     @ColumnInfo(name = CourseTable.Columns.ID)
-    @NonNull
     private String id;
     @ColumnInfo(name = CourseTable.Columns.CODE)
     private String code;

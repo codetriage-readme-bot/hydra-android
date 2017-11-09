@@ -53,6 +53,8 @@ public class AgendaItem {
     private String courseId;
     @ColumnInfo(name = AgendaTable.Columns.CALENDAR_ID)
     private long calendarId = NO_CALENDAR_ID;
+    @ColumnInfo(name = AgendaTable.Columns.IS_MERGED)
+    private boolean isMerged = false;
 
     public int getId() {
         return id;
@@ -148,5 +150,13 @@ public class AgendaItem {
 
     public void setCalendarId(long calendarId) {
         this.calendarId = calendarId;
+    }
+
+    public boolean isMerged() {
+        return isMerged;
+    }
+
+    public void setMerged(boolean merged) {
+        isMerged = merged;
     }
 }

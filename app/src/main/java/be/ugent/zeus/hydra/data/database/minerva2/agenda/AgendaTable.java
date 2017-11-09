@@ -26,5 +26,6 @@ public final class AgendaTable implements BaseColumns {
         String LAST_EDIT = "last_edit";
         String LAST_EDIT_TYPE = "last_edit_type";
         String CALENDAR_ID = "calendar_id";
+        String IS_MERGED = "is_merged";
     }
 }

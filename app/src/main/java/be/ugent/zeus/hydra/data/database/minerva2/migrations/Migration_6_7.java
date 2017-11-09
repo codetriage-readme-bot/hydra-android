@@ -2,7 +2,6 @@ package be.ugent.zeus.hydra.data.database.minerva2.migrations;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.migration.Migration;
-import android.content.Context;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.data.database.minerva2.agenda.AgendaTable;
@@ -14,11 +13,8 @@ import be.ugent.zeus.hydra.data.database.minerva2.agenda.AgendaTable;
  */
 public class Migration_6_7 extends Migration {
 
-    private final Context context;
-
-    public Migration_6_7(Context context) {
+    public Migration_6_7() {
         super(6, 7);
-        this.context = context;
     }
 
     @Override

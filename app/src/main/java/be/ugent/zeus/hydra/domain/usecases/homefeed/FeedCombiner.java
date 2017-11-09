@@ -48,6 +48,8 @@ public class FeedCombiner implements Function<Pair<Integer, Result<List<HomeCard
 
         Collections.sort(feedItems);
 
+        builder.withData(feedItems);
+
         Result<List<HomeCard>> result;
 
         // If this is the last source to complete, set it to final.

@@ -15,6 +15,7 @@ import be.ugent.zeus.hydra.data.database.minerva2.course.CourseDao;
 import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_6_7;
 import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_7_8;
 import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_8_9;
+import be.ugent.zeus.hydra.data.database.minerva2.migrations.Migration_9_10;
 import be.ugent.zeus.hydra.utils.TtbUtils;
 
 import javax.inject.Singleton;
@@ -41,7 +42,7 @@ public abstract class MinervaDatabase extends RoomDatabase {
      * The current version of the database. When changing this value, you must provide a appropriate migration, or the
      * app will crash.
      */
-    public static final int VERSION = 9;
+    public static final int VERSION = 10;
 
     /**
      * Create a new instance of the database.
@@ -53,7 +54,7 @@ public abstract class MinervaDatabase extends RoomDatabase {
     public static synchronized MinervaDatabase create(Context context) {
         return Room.databaseBuilder(context, MinervaDatabase.class, NAME)
                 .allowMainThreadQueries()
-                .addMigrations(new Migration_6_7(context), new Migration_7_8(), new Migration_8_9())
+                .addMigrations(new Migration_6_7(), new Migration_7_8(), new Migration_8_9(), new Migration_9_10())
                 .build();
     }
 
