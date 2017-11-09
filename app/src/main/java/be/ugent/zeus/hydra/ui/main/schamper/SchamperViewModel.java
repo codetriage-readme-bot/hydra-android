@@ -4,9 +4,10 @@ import android.app.Application;
 
 import be.ugent.zeus.hydra.HydraApplication;
 import be.ugent.zeus.hydra.domain.entities.SchamperArticle;
-import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.schamper.GetSchamperArticles;
-import android.arch.lifecycle.LiveDataInterface;
+
+import android.arch.lifecycle.RefreshLiveDataInterface;
+
 import be.ugent.zeus.hydra.ui.common.BetterRefreshViewModel;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class SchamperViewModel extends BetterRefreshViewModel<List<SchamperArtic
     }
 
     @Override
-    protected LiveDataInterface<Result<List<SchamperArticle>>> executeUseCase() {
+    protected RefreshLiveDataInterface executeUseCase() {
         return useCase.execute(null);
     }
 }

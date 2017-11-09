@@ -4,30 +4,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import be.ugent.zeus.hydra.domain.usecases.Executor;
+import be.ugent.zeus.hydra.domain.utils.LiveDataUtils;
 import java8.util.function.BiFunction;
 import java8.util.function.Function;
-import java8.util.function.Functions;
 
 /**
  * @author Niko Strijbol
  */
-public class SimpleWrapper<O, D> extends LiveDataInterface<D> implements Observer<O> {
+public class SimpleWrapper<D> extends LiveDataInterface<D> implements Observer<D> {
 
-    private final LiveData<O> wrapped;
-    private final Function<O, D> mapper;
+    private final LiveData<D> wrapped;
     private int version = -1; // TODO: why is this needed?
 
-    protected SimpleWrapper(LiveData<O> wrapped, Function<O, D> function) {
+    protected SimpleWrapper(LiveData<D> wrapped) {
         this.wrapped = wrapped;
-        this.mapper = function;
     }
 
-    public static <D> SimpleWrapper<D, D> from(LiveData<D> wrapped) {
-        return new SimpleWrapper<>(wrapped, Functions.identity());
-    }
-
-    public static <O, D> SimpleWrapper<O, D> from(LiveData<O> wrapped, Function<O, D> mapper) {
-        return new SimpleWrapper<>(wrapped, mapper);
+    public static <D> SimpleWrapper<D> from(LiveData<D> liveData) {
+        return new SimpleWrapper<>(liveData);
     }
 
     @Override
@@ -62,32 +56,23 @@ public class SimpleWrapper<O, D> extends LiveDataInterface<D> implements Observe
 
     @Override
     public <T> LiveDataInterface<T> map(BiFunction<Executor.Companion, D, T> mapping) {
-        return new SimpleWrapper<>(wrapped, o -> mapping.apply(() -> false, mapper.apply(o)));
+        return new SimpleWrapper<>(Transformations.map(wrapped, d -> mapping.apply(() -> false, d)));
     }
 
     @Override
     public <T> LiveDataInterface<T> map(Function<D, T> mapping) {
-        return new SimpleWrapper<>(wrapped, Functions.andThen(mapper, mapping));
+        return new SimpleWrapper<>(Transformations.map(wrapped, mapping::apply));
     }
 
     public <T> LiveDataInterface<T> mapAsync(Executor executor, Function<D, T> mapping) {
-        return new SimpleWrapper<O, T>(wrapped, null) {
-            @Override
-            protected void applyData(O originalData) {
-                executor.execute(() -> postValue(mapping.apply(mapper.apply(originalData))));
-            }
-        };
+        return new SimpleWrapper<>(LiveDataUtils.mapAsync(executor, wrapped, mapping));
     }
 
     @Override
-    public void onChanged(@Nullable O o) {
+    public void onChanged(@Nullable D o) {
         if (this.version != this.wrapped.getVersion()) {
             this.version = this.wrapped.getVersion();
-            applyData(o);
+            setValue(o);
         }
-    }
-
-    protected void applyData(O originalData) {
-        setValue(mapper.apply(originalData));
     }
 }

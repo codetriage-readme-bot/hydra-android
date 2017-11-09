@@ -4,11 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.RefreshLiveDataInterface;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.domain.requests.Result;
-import android.arch.lifecycle.LiveDataInterface;
 
 /**
  * @author Niko Strijbol
@@ -17,16 +17,16 @@ public abstract class BetterRefreshViewModel<OUT> extends AndroidViewModel imple
 
     private static final String TAG = "RefreshViewModel";
 
-    private LiveDataInterface<Result<OUT>> data;
+    private RefreshLiveDataInterface<Result<OUT>> data;
     private LiveData<Boolean> refreshing;
 
     public BetterRefreshViewModel(Application application) {
         super(application);
     }
 
-    protected abstract LiveDataInterface<Result<OUT>> executeUseCase();
+    protected abstract RefreshLiveDataInterface<Result<OUT>> executeUseCase();
 
-    public LiveDataInterface<Result<OUT>> getData() {
+    public RefreshLiveDataInterface<Result<OUT>> getData() {
         if (data == null) {
             data = executeUseCase();
         }

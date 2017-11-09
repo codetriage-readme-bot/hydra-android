@@ -4,44 +4,29 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import be.ugent.zeus.hydra.domain.usecases.Executor;
-import java8.util.function.BiFunction;
-import java8.util.function.Function;
-
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A {@link LiveData} that supports merging multiple sources, similar to {@link MediatorLiveData}.
  *
- * The main difference is support for {@link LiveDataInterface} and
+ * One difference is that this class implements and supports the methods from {@link RefreshLiveDataInterface}.
  *
  * @author Niko Strijbol
  */
-public class MergeLiveData<T> extends BaseLiveData<T> {
+public class MergeLiveData<D> extends RefreshLiveDataInterface<D> {
 
     private static final String TAG = "MergeLiveData";
 
     private Map<LiveData<?>, Source<?>> sources = new HashMap<>();
 
-    private ArrayDeque<Update<?>> scheduled = new ArrayDeque<>();
-    private final Object lock = new Object();
-
-    public MergeLiveData(Executor executor) {
-        super(executor);
-    }
-
-    public MergeLiveData(Executor executor, boolean shouldLoadNow) {
-        super(executor, shouldLoadNow);
-    }
+    private OnDataLoadListener listener = null;
 
     @MainThread
-    public <V> void addSource(LiveData<V> source, BiFunction<T, V, T> mergeFunction) {
-        ExistingObserver<V> newObserver = new ExistingObserver<>(mergeFunction);
-        Source<V> e = new Source<>(source, newObserver);
+    public void addSource(LiveData<D> source) {
+        Observer<D> newObserver = new ExistingObserver();
+        Source<D> e = new Source<>(source, newObserver);
         Source<?> existing = sources.putIfAbsent(source, e);
         if (existing != null && existing.getObserver() != newObserver) {
             throw new IllegalArgumentException("This source was already added with a different observer");
@@ -53,7 +38,7 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
     }
 
     @MainThread
-    public void removeSource(SingleLiveData<?> toRemote) {
+    public void removeSource(LiveData<?> toRemote) {
         Source<?> source = sources.remove(toRemote);
         if (source != null) {
             source.unplug();
@@ -76,82 +61,54 @@ public class MergeLiveData<T> extends BaseLiveData<T> {
         super.onInactive();
     }
 
+    /**
+     * Request a refresh. The method will propagate the request to all contained instances that
+     * implement {@link RefreshLiveDataInterface}.
+     * If a contained LiveData does not implement this class, the request will not be propagated.
+     *
+     * A registered {@link android.arch.lifecycle.RefreshLiveDataInterface.OnDataLoadListener} will be notified when
+     * the the propagation begins, regardless if there are actually any LiveData.
+     */
     @Override
-    protected void produceData(Bundle args) {
-        for (Map.Entry<LiveData<?>, Source<?>> entry: sources.entrySet()) {
-            if (entry.getKey() instanceof LiveDataInterface) {
-                ((LiveDataInterface) entry.getKey()).requestRefresh(args);
+    public void requestRefresh() {
+        if (listener != null) {
+            listener.onDataLoadStart();
+        }
+
+        for (LiveData<?> data: sources.keySet()) {
+            if (data instanceof RefreshLiveDataInterface) {
+                ((RefreshLiveDataInterface) data).requestRefresh();
             }
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Same as {@link #requestRefresh()}, but with an argument.
      *
-     * The mapper function will be executed on the main thread.
+     * @param args The bundle to pass.
      */
     @Override
-    public <E> LiveDataInterface<E> map(BiFunction<Executor.Companion, T, E> mapper) {
-        return new SimpleWrapper<>(this, t -> mapper.apply(() -> false, t));
+    public void requestRefresh(Bundle args) {
+        if (listener != null) {
+            listener.onDataLoadStart();
+        }
+
+        for (LiveData<?> data: sources.keySet()) {
+            if (data instanceof RefreshLiveDataInterface) {
+                ((RefreshLiveDataInterface) data).requestRefresh(args);
+            }
+        }
     }
 
     @Override
-    public <E> LiveDataInterface<E> map(Function<T, E> function) {
-        return new SimpleWrapper<>(this, function);
+    public void registerDataLoadListener(@Nullable OnDataLoadListener listener) {
+        this.listener = listener;
     }
 
-    private class ExistingObserver<V> implements Observer<V> {
-
-        private final BiFunction<T, V, T> function;
-
-        private ExistingObserver(BiFunction<T, V, T> function) {
-            this.function = function;
-        }
-
+    private class ExistingObserver implements Observer<D> {
         @Override
-        public void onChanged(@Nullable V newValue) {
-            postUpdate(new Update<>(function, newValue));
-        }
-    }
-
-    @Override
-    protected void setValue(T value) {
-        super.setValue(value);
-        synchronized (lock) {
-            Log.d(TAG, "POPPING UPDATE, size is " + scheduled.size());
-            scheduled.poll();
-            if (!scheduled.isEmpty()) {
-                Log.d(TAG, "EXECUTING NEXT UPDATE");
-                scheduled.peek().execute();
-            }
-        }
-    }
-
-    private class Update<V> {
-        private final BiFunction<T, V, T> function;
-        private final V newValue;
-
-        private Update(BiFunction<T, V, T> function, V value) {
-            this.function = function;
-            this.newValue = value;
-        }
-
-        private void execute() {
-            executor.execute(() -> {
-                T computedValue = function.apply(getValue(), newValue);
-                postValue(computedValue);
-            });
-        }
-    }
-
-    private void postUpdate(Update<?> update) {
-        synchronized (lock) {
-            Log.d(TAG, "POSTING UPDATE, size is " + scheduled.size());
-            scheduled.add(update);
-            if (scheduled.size() == 1) {
-                Log.d(TAG, "EXECUTING UPDATE");
-                update.execute();
-            }
+        public void onChanged(@Nullable D newValue) {
+            postValue(newValue);
         }
     }
 }

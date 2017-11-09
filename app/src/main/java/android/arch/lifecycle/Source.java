@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
  * @author Niko Strijbol
  */
 public class Source<V> implements Observer<V> {
+
+
     private final LiveData<V> liveData;
     private final Observer<V> observer;
     private int mVersion = -1;

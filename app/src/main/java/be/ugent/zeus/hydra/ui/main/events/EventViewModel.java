@@ -3,9 +3,10 @@ package be.ugent.zeus.hydra.ui.main.events;
 import android.app.Application;
 
 import be.ugent.zeus.hydra.HydraApplication;
-import be.ugent.zeus.hydra.domain.requests.Result;
 import be.ugent.zeus.hydra.domain.usecases.event.GetEvents;
-import android.arch.lifecycle.LiveDataInterface;
+
+import android.arch.lifecycle.RefreshLiveDataInterface;
+
 import be.ugent.zeus.hydra.ui.common.BetterRefreshViewModel;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class EventViewModel extends BetterRefreshViewModel<List<EventItem>> {
     }
 
     @Override
-    protected LiveDataInterface<Result<List<EventItem>>> executeUseCase() {
+    protected RefreshLiveDataInterface executeUseCase() {
         return useCase.execute(null).map(listResult -> listResult.map(new EventItem.Converter()));
     }
 }
