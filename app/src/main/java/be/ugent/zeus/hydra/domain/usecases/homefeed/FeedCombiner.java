@@ -42,7 +42,7 @@ public class FeedCombiner implements Function<Pair<Integer, Result<List<HomeCard
         }
 
         // Remove existing cards for this type.
-        Iterables.removeIf(feedItems, homeCard -> homeCard.getCardType() == listResult.first);
+        Iterables.removeIf(feedItems, homeCard -> listResult.first.equals(homeCard.getCardType()));
 
         feedItems.addAll(listResult.second.orElse(Collections.emptyList()));
 

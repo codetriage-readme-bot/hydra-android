@@ -34,6 +34,7 @@ public class GetHomeFeed extends MergeLiveData<Result<List<HomeCard>>> implement
 
     @Override
     public RefreshLiveDataInterface<Result<List<HomeCard>>> execute(Void ignored) {
+        requestRefresh();
         return this;
     }
 
@@ -44,11 +45,13 @@ public class GetHomeFeed extends MergeLiveData<Result<List<HomeCard>>> implement
 
         // Actually combines all feeds into one.
         FeedCombiner feedCombiner = new FeedCombiner();
+        List<FeedSource> sources = getSources();
+        feedCombiner.reset(sources.size());
 
         FeedSource.Args arguments = new FeedSource.Args(options);
 
         // Map and add the sources.
-        for (FeedSource source: getSources()) {
+        for (FeedSource source: sources) {
             LiveDataInterface<Result<List<HomeCard>>> result = source.execute(arguments)
                     .map(listResult -> new Pair<>(source.getCardType(), listResult))
                     .map(feedCombiner);
