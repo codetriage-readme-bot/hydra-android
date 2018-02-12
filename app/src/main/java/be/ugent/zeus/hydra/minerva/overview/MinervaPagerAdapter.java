@@ -1,4 +1,4 @@
-package be.ugent.zeus.hydra.minerva.mainui;
+package be.ugent.zeus.hydra.minerva.overview;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -29,7 +29,7 @@ import be.ugent.zeus.hydra.common.ui.BaseActivity;
 import be.ugent.zeus.hydra.feed.HomeFeedFragment;
 import be.ugent.zeus.hydra.info.list.InfoFragment;
 import be.ugent.zeus.hydra.library.list.LibraryListFragment;
-import be.ugent.zeus.hydra.minerva.mainui.OverviewFragment;
+import be.ugent.zeus.hydra.minerva.overview.OverviewFragment;
 import be.ugent.zeus.hydra.onboarding.OnboardingActivity;
 import be.ugent.zeus.hydra.resto.menu.RestoFragment;
 import be.ugent.zeus.hydra.schamper.list.SchamperFragment;

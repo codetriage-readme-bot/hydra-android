@@ -3,4 +3,4 @@
  *
  * @author Niko Strijbol
  */
-package be.ugent.zeus.hydra.minerva.mainui;
+package be.ugent.zeus.hydra.minerva.overview;
