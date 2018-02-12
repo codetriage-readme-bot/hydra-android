@@ -1,11 +1,8 @@
 package be.ugent.zeus.hydra.minerva.overview;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
+import android.accounts.*;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,19 +18,14 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.Toast;
 
-import be.ugent.zeus.hydra.R;
-import be.ugent.zeus.hydra.common.database.RepositoryFactory;
 import be.ugent.zeus.hydra.MainActivity;
+import be.ugent.zeus.hydra.R;
 import be.ugent.zeus.hydra.common.sync.SyncUtils;
 import be.ugent.zeus.hydra.common.ui.recyclerview.ResultStarter;
 import be.ugent.zeus.hydra.minerva.account.AccountUtils;
 import be.ugent.zeus.hydra.minerva.account.MinervaConfig;
-import be.ugent.zeus.hydra.minerva.announcement.database.AnnouncementRepository;
-import be.ugent.zeus.hydra.minerva.calendar.AgendaItemRepository;
 import be.ugent.zeus.hydra.minerva.common.sync.MinervaAdapter;
-import be.ugent.zeus.hydra.minerva.common.sync.NotificationHelper;
 import be.ugent.zeus.hydra.minerva.common.sync.SyncBroadcast;
-import be.ugent.zeus.hydra.minerva.course.CourseRepository;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
@@ -57,6 +49,11 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
     private AccountManager manager;
     private Snackbar syncBar;
 
+    private View loginText;
+    private View logoutText;
+
+    private AccountViewModel accountViewModel;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_minerva_overview, container, false);
@@ -72,69 +69,137 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button authorize = view.findViewById(R.id.authorize);
-        authorize.setOnClickListener(v -> maybeLaunchAuthorization());
-
+        // Initialise the local stuff, but don't do anything related to the activity yet.
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         manager = AccountManager.get(getContext());
+
+        Button authorize = view.findViewById(R.id.authorize);
+        authorize.setOnClickListener(v -> accountViewModel.getAccountStateLiveData().setState(AccountState.LOGGING_IN));
+
+        loginText = view.findViewById(R.id.login_text);
+        logoutText = view.findViewById(R.id.logout_text);
         authWrapper = view.findViewById(R.id.auth_wrapper);
         viewPager = view.findViewById(R.id.pager);
-        tabLayout = getActivity().findViewById(R.id.tab_layout);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-    }
-
-    private void onLoggedIn() {
-        authWrapper.setVisibility(View.GONE);
-        tabLayout.setVisibility(View.VISIBLE);
-        minervaPagerAdapter = new MinervaPagerAdapter(getChildFragmentManager());
-        minervaPagerAdapter.setLoggedIn(true);
-        viewPager.setAdapter(minervaPagerAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                //
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                getActivity().invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //
-            }
-        });
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setVisibility(View.VISIBLE);
-    }
-
-    private void maybeLaunchAuthorization() {
-        if (!isLoggedIn()) {
-            manager.addAccount(MinervaConfig.ACCOUNT_TYPE, MinervaConfig.DEFAULT_SCOPE, null, null, getActivity(), accountManagerFuture -> {
-                try {
-                    Bundle result = accountManagerFuture.getResult();
-                    Log.d(TAG, "Account " + result.getString(AccountManager.KEY_ACCOUNT_NAME) + " was created.");
-                    onAccountAdded();
-                } catch (OperationCanceledException e) {
-                    Toast.makeText(getContext().getApplicationContext(), R.string.minerva_no_permission, Toast.LENGTH_LONG).show();
-                } catch (IOException | AuthenticatorException e) {
-                    Log.w(TAG, "Account not added.", e);
-                }
-            }, null);
-        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //If we are logged in, we can start loading the data.
-        if (isLoggedIn()) {
-            onLoggedIn();
-            tabLayout.setVisibility(View.VISIBLE);
+        assert getActivity() != null;
+
+        // Initialise the activity-related stuff.
+        tabLayout = getActivity().findViewById(R.id.tab_layout);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(viewPager);
+        minervaPagerAdapter = new MinervaPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(minervaPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                getActivity().invalidateOptionsMenu();
+            }
+        });
+
+        // Bind the observer.
+        accountViewModel.getAccountStateLiveData().observe(this, accountState -> {
+            if (accountState == null) return; // Ignore null.
+            switch (accountState) {
+                case LOGGED_IN:
+                    onLoggedIn();
+                    return;
+                case LOGGING_OUT:
+                    onLoggingOut();
+                    return;
+                case LOGGED_OUT:
+                    onLoggedOut();
+                    return;
+                case LOGGING_IN:
+                    onStartLoggingIn(); // We handle this ourselves.
+                    return;
+                default:
+                    throw new IllegalStateException("Non-exhaustive switch.");
+            }
+        });
+
+        if (!accountViewModel.getAccountStateLiveData().isInitialised()) {
+            Log.d(TAG, "onActivityCreated: not initialised");
+            // The chance that the account is logging out is very small, so we ignore that.
+            accountViewModel.getAccountStateLiveData().setState(isLoggedIn() ? AccountState.LOGGED_IN : AccountState.LOGGED_OUT);
         }
     }
 
-    private void onAccountAdded() {
+    /**
+     * Called when the user has just logged in.
+     */
+    private void onLoggedIn() {
+        Log.d(TAG, "onLoggedIn");
+        authWrapper.setVisibility(View.GONE);
+        minervaPagerAdapter.setLoggedIn(true);
+        viewPager.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.VISIBLE);
+        getActivity().invalidateOptionsMenu();
+    }
+
+    /**
+     * Called when the user has logged out.
+     */
+    private void onLoggedOut() {
+        Log.d(TAG, "onLoggedOut");
+        authWrapper.setVisibility(View.VISIBLE);
+        loginText.setVisibility(View.VISIBLE);
+        logoutText.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.GONE);
+        minervaPagerAdapter.setLoggedIn(false);
+    }
+
+    /**
+     * Called when the user is logging out.
+     */
+    private void onLoggingOut() {
+        Log.d(TAG, "onLoggingOut");
+        authWrapper.setVisibility(View.VISIBLE);
+        loginText.setVisibility(View.GONE);
+        logoutText.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.GONE);
+        minervaPagerAdapter.setLoggedIn(false);
+        getActivity().invalidateOptionsMenu();
+        dismissSyncBar();
+    }
+
+    /**
+     * Called when the user wants to log in.
+     */
+    private void onStartLoggingIn() {
+        Log.d(TAG, "onStartLoggingIn");
+        AccountManagerCallback<Bundle> callback = future -> {
+            try {
+                Bundle result = future.getResult();
+                Log.d(TAG, "Account " + result.getString(AccountManager.KEY_ACCOUNT_NAME) + " was created.");
+                // Handle the actions for the added account.
+                requestFirstSync();
+                accountViewModel.getAccountStateLiveData().setState(AccountState.LOGGED_IN);
+            } catch (OperationCanceledException e) {
+                Toast.makeText(getContext().getApplicationContext(), R.string.minerva_no_permission, Toast.LENGTH_LONG).show();
+            } catch (IOException | AuthenticatorException e) {
+                Log.w(TAG, "Account not added.", e);
+            }
+        };
+
+        manager.addAccount(
+                MinervaConfig.ACCOUNT_TYPE,
+                MinervaConfig.DEFAULT_SCOPE,
+                null,
+                null,
+                getActivity(),
+                callback,
+                null
+        );
+    }
+
+    private void requestFirstSync() {
+        Log.d(TAG, "requestFirstSync");
         //Get an account
         Account account = AccountUtils.getAccount(getContext());
 
@@ -146,11 +211,10 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
         Bundle bundle = new Bundle();
         bundle.putBoolean(MinervaAdapter.EXTRA_FIRST_SYNC, true);
         SyncUtils.requestSync(account, MinervaConfig.SYNC_AUTHORITY, bundle);
-        onLoggedIn();
     }
 
     /**
-     * @return True if the user is logged in to minerva.
+     * @return True if the user is logged in to Minerva.
      */
     private boolean isLoggedIn() {
         return AccountUtils.hasAccount(getContext());
@@ -167,7 +231,7 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                signOut();
+                accountViewModel.getAccountStateLiveData().logout(getContext());
                 return true;
             case R.id.action_sync_all:
                 manualSync();
@@ -185,44 +249,6 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
         SyncUtils.requestSync(account, MinervaConfig.SYNC_AUTHORITY, bundle);
     }
 
-    /**
-     * Sign out and hide the data.
-     */
-    private void signOut() {
-        //Sign out first, and then remove all data.
-        Account a = AccountUtils.getAccount(getContext());
-        ContentResolver.cancelSync(a, MinervaConfig.SYNC_AUTHORITY);
-        Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
-        manager.removeAccount(a, accountManagerFuture -> {
-            // Delete any notifications that could be present.
-            NotificationHelper.cancelAll(getContext());
-            //Delete items
-            if (minervaPagerAdapter != null) {
-                minervaPagerAdapter.setLoggedIn(false);
-            }
-            //Hide fragments
-            viewPager.setVisibility(View.GONE);
-            tabLayout.setVisibility(View.GONE);
-            //Show login prompt
-            authWrapper.setVisibility(View.VISIBLE);
-            //Destroy loaders
-            //model.destroyInstance();
-            //Delete database
-            clearDatabase();
-            //Reload options
-            getActivity().invalidateOptionsMenu();
-        }, null);
-    }
-
-    private void clearDatabase() {
-        CourseRepository courseDao = RepositoryFactory.getCourseRepository(getContext());
-        courseDao.deleteAll();
-        AnnouncementRepository announcementDao = RepositoryFactory.getAnnouncementRepository(getContext());
-        announcementDao.deleteAll();
-        AgendaItemRepository agendaItemRepository = RepositoryFactory.getAgendaItemRepository(getContext());
-        agendaItemRepository.deleteAll();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -235,6 +261,10 @@ public class OverviewFragment extends Fragment implements ResultStarter, MainAct
         super.onPause();
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getContext());
         manager.unregisterReceiver(syncReceiver);
+        dismissSyncBar();
+    }
+
+    private void dismissSyncBar() {
         if (syncBar != null && syncBar.isShown()) {
             syncBar.dismiss();
             syncBar = null;

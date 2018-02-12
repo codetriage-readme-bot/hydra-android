@@ -435,4 +435,5 @@
     <string name="minerva_exporting_account_desc">De details van uw Minerva-account worden geëxporteerd.</string>
     <string name="card_title_hide_card">Alleen deze kaart verbergen</string>
     <string name="card_title_hide_single_type">Deze kaart verbergen</string>
+    <string name="minerva_logging_out">Afmelden…</string>
 </resources>

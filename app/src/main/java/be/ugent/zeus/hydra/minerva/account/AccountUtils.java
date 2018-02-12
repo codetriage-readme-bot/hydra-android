@@ -1,18 +1,24 @@
 package be.ugent.zeus.hydra.minerva.account;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
+import android.accounts.*;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import be.ugent.zeus.hydra.BuildConfig;
+import be.ugent.zeus.hydra.common.database.RepositoryFactory;
+import be.ugent.zeus.hydra.common.request.Request;
+import be.ugent.zeus.hydra.minerva.announcement.database.AnnouncementRepository;
 import be.ugent.zeus.hydra.minerva.auth.oauth.BearerToken;
 import be.ugent.zeus.hydra.minerva.auth.oauth.NewAccessTokenRequest;
 import be.ugent.zeus.hydra.minerva.auth.oauth.RefreshAccessTokenRequest;
-import be.ugent.zeus.hydra.common.request.Request;
+import be.ugent.zeus.hydra.minerva.calendar.AgendaItemRepository;
+import be.ugent.zeus.hydra.minerva.common.sync.NotificationHelper;
+import be.ugent.zeus.hydra.minerva.course.CourseRepository;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
@@ -108,7 +114,7 @@ public class AccountUtils {
             Bundle result = manager.getAuthToken(account, MinervaConfig.DEFAULT_SCOPE, null, true, null, null).getResult();
 
             //If the bundle contains an authorisation code.
-            if(result.containsKey(AccountManager.KEY_AUTHTOKEN)) {
+            if (result.containsKey(AccountManager.KEY_AUTHTOKEN)) {
                 //Check the expiration date
                 LocalDateTime expires = getExpirationDate(manager, account);
                 LocalDateTime now = LocalDateTime.now();
@@ -116,7 +122,7 @@ public class AccountUtils {
                 String token = result.getString(AccountManager.KEY_AUTHTOKEN);
 
                 //The token is invalid, so get get new one.
-                if(result.get(AccountManager.KEY_AUTHTOKEN) != null && now.isAfter(expires)) {
+                if (result.get(AccountManager.KEY_AUTHTOKEN) != null && now.isAfter(expires)) {
                     Log.d(TAG, "Expired token. Setting to null.");
                     manager.invalidateAuthToken(MinervaConfig.ACCOUNT_TYPE, token);
                     //Get the token again.
@@ -134,23 +140,91 @@ public class AccountUtils {
 
     /**
      * Get the account. This assumes there is an account.
+     *
      * @param context The context.
+     *
      * @return The account.
      */
     public static Account getAccount(Context context) {
-       return AccountManager.get(context).getAccountsByType(MinervaConfig.ACCOUNT_TYPE)[0];
+        return AccountManager.get(context).getAccountsByType(MinervaConfig.ACCOUNT_TYPE)[0];
     }
 
     /**
      * Get the expiration date of the access token for an account.
      *
      * @param manager The account manager.
-     *
      * @param account The account to get the date for.
+     *
      * @return The date.
      */
     public static LocalDateTime getExpirationDate(AccountManager manager, Account account) {
         String exp = manager.getUserData(account, EXP_DATE);
         return LocalDateTime.parse(exp, MinervaAuthenticator.formatter);
+    }
+
+    /**
+     * Log-out the user, and delete as much data as we can.
+     *
+     * Note: this does not support activities or intents from the account manager. This method assumes
+     * the account manager is able to remove the account.
+     *
+     * @param context  The context to use.
+     *
+     * @return The result. True if the account was removed, false otherwise.
+     */
+    @WorkerThread
+    public static boolean logout(@NonNull Context context) {
+        AccountManager manager = AccountManager.get(context);
+        Account account = getAccount(context);
+
+        ContentResolver.cancelSync(account, MinervaConfig.SYNC_AUTHORITY);
+
+        boolean result;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
+            @SuppressWarnings("deprecation")
+            AccountManagerFuture<Boolean> future = manager.removeAccount(account, null, null);
+            try {
+                result = future.getResult();
+            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                Log.w(TAG, "Error during logout.", e);
+                result = false;
+            }
+        } else {
+            AccountManagerFuture<Bundle> future = manager.removeAccount(account, null, null, null);
+            try {
+                Bundle bundle = future.getResult();
+                result = bundle.getBoolean(AccountManager.KEY_BOOLEAN_RESULT, false);
+            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                Log.w(TAG, "Error during logout.", e);
+                result = false;
+            }
+        }
+
+        if (result) {
+            // Cancel all notifications.
+            NotificationHelper.cancelAll(context);
+            // Clear the database.
+            CourseRepository courseRepository = RepositoryFactory.getCourseRepository(context);
+            AgendaItemRepository agendaItemRepository = RepositoryFactory.getAgendaItemRepository(context);
+            AnnouncementRepository announcementRepository = RepositoryFactory.getAnnouncementRepository(context);
+            clearDatabase(courseRepository, agendaItemRepository, announcementRepository);
+            // Other things like the device calendar are cleared for us by the framework.
+        } else {
+            Log.w(TAG, "Account was not removed, skipping post-account deletion.");
+        }
+
+        return true;
+    }
+
+    private static void clearDatabase(CourseRepository courseRepository,
+                                      AgendaItemRepository agendaItemRepository,
+                                      AnnouncementRepository announcementRepository) {
+        /*
+        Normally, the database should remove all announcements and calendar items when we clear the course table.
+        However, since this is not easily checked nor enforced, we don't rely on that.
+         */
+        announcementRepository.deleteAll();
+        agendaItemRepository.deleteAll();
+        courseRepository.deleteAll();
     }
 }
